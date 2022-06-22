@@ -1,4 +1,4 @@
-# fyp
+# Remdii_AI_User_APP
 
 A new Flutter project.
 
