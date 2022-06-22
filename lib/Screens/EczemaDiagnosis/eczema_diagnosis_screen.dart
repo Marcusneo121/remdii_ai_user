@@ -7,18 +7,18 @@ class EDiagnosisScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-        // centerTitle: true,
-        // title: Text(
-        //   "Eczema Diagnosis",
-        //   style: TextStyle(
-        //       fontFamily: 'Lato', fontWeight: FontWeight.w800, fontSize: 22.0),
-        // ),
-        // backgroundColor: Colors.white,
-        // foregroundColor: hintColor,
-        // bottomOpacity: 0.0,
-        // elevation: 0.0,
-      // ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Eczema Management",
+          style: TextStyle(
+              fontFamily: 'Lato', fontWeight: FontWeight.w800, fontSize: 22.0),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+      ),
       body: Body(),
     );
   }
