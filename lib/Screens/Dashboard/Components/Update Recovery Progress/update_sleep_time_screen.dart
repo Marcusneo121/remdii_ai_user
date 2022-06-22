@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/Screens/Dashboard/Components/Update%20Recovery%20Progress/sleeping_analysis_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
+import 'package:fyp/components/rounded_button_outline.dart';
 import 'package:fyp/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -239,7 +240,7 @@ class _UpdateSleepTimeScreenState extends State<UpdateSleepTimeScreen> {
                 RoundedButton(
                     text: "Continue",
                     color: buttonColor,
-                    press: () {
+                    press: () async {
                       if (formGlobalKey.currentState!.validate()) {
                         formGlobalKey.currentState!.save();
                         Navigator.push(
@@ -251,7 +252,23 @@ class _UpdateSleepTimeScreenState extends State<UpdateSleepTimeScreen> {
                           ),
                         );
                       }
-
+                    }),
+                RoundedOutlinedButton(
+                    text: "Skip",
+                    press: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString('date', '');
+                      prefs.setString('sleepTime', '');
+                      prefs.setString('wakeTime', '');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SleepingAnalysisScreen();
+                          },
+                        ),
+                      );
                     }),
               ],
             ),

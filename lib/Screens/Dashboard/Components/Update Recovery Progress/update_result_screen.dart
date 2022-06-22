@@ -155,7 +155,7 @@ class _UpdateResultScreenState extends State<UpdateResultScreen> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Doctor's Comment: ",
+                            "Consultant's Comment: ",
                             style: TextStyle(
                                 fontFamily: 'Lato',
                                 fontWeight: FontWeight.w800,

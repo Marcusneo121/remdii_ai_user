@@ -139,48 +139,50 @@ class _ViewAIResultScreenState extends State<ViewAIResultScreen> {
                           ),
                           SizedBox(height: 10.0),
                           //Initial Version Code
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     'Result: ${snapshot.data[0].result}',
-                          //     style: TextStyle(
-                          //         fontFamily: 'Lato',
-                          //         fontWeight: FontWeight.w800,
-                          //         fontSize: 18.0),
-                          //   ),
-                          // ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Result : -',
+                              'Result: ${snapshot.data[0].result}',
                               style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,
                                   fontSize: 18.0),
                             ),
                           ),
+                          //Dummy Code
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     'Result : -',
+                          //     style: TextStyle(
+                          //         fontFamily: 'Lato',
+                          //         fontWeight: FontWeight.w800,
+                          //         fontSize: 18.0),
+                          //   ),
+                          // ),
                           SizedBox(height: 10.0),
                           //Initial Version Code
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     'Severity: ${snapshot.data[0].severity}',
-                          //     style: TextStyle(
-                          //         fontFamily: 'Lato',
-                          //         fontWeight: FontWeight.w800,
-                          //         fontSize: 18.0),
-                          //   ),
-                          // ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Severity : -',
+                              'Severity: ${snapshot.data[0].severity}',
                               style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,
                                   fontSize: 18.0),
                             ),
                           ),
+                          //Dummy Code
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     'Severity : -',
+                          //     style: TextStyle(
+                          //         fontFamily: 'Lato',
+                          //         fontWeight: FontWeight.w800,
+                          //         fontSize: 18.0),
+                          //   ),
+                          // ),
                           SizedBox(height: 10.0),
                           Align(
                             alignment: Alignment.centerLeft,
@@ -220,14 +222,13 @@ class _ViewAIResultScreenState extends State<ViewAIResultScreen> {
                           RoundedButton(
                               text: "To Eczema Info Screen",
                               press: () {
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return ViewInfoScreenAfterResult();
                                     },
                                   ),
-                                  (route) => false,
                                 );
                               }),
                           RoundedOutlinedButton(

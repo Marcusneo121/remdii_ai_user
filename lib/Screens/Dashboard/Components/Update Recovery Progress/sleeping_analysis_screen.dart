@@ -27,10 +27,22 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
 
   getTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    date = prefs.getString('date');
-    date = DateTime.parse(date);
-    sleepTime = DateTime.parse(prefs.getString('sleepTime')!);
-    wakeUpTime = DateTime.parse(prefs.getString('wakeTime')!);
+    // date = prefs.getString('date');
+    // date = DateTime.parse(date);
+    // sleepTime = DateTime.parse(prefs.getString('sleepTime')!);
+    // wakeUpTime = DateTime.parse(prefs.getString('wakeTime')!);
+
+    date = prefs.getString('date') != ''
+        ? prefs.getString('date')
+        : DateTime.now().toString();
+    date =
+        prefs.getString('date') != '' ? DateTime.parse(date) : DateTime.now();
+    sleepTime = prefs.getString('sleepTime') != ''
+        ? DateTime.parse(prefs.getString('sleepTime')!)
+        : DateTime.parse('2022-06-22 00:00:00.000');
+    wakeUpTime = prefs.getString('sleepTime') != ''
+        ? DateTime.parse(prefs.getString('wakeTime')!)
+        : DateTime.parse('2022-06-22 00:00:00.000');
     // print(date.runtimeType);
     // print(sleepTime.runtimeType);
 
@@ -38,24 +50,27 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
     print(sleepTime);
     print(wakeUpTime);
     var diff;
-    if(wakeUpTime.isBefore(sleepTime)){
+    if (wakeUpTime.isBefore(sleepTime)) {
       diff = wakeUpTime.add(const Duration(hours: 24)).difference(sleepTime);
-    }else
+    } else
       diff = wakeUpTime.difference(sleepTime);
     print(diff.runtimeType);
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
 
     duration = "${twoDigits(diff.inHours)} hours $twoDigitMinutes minutes";
-    int hour= int.parse(twoDigits(diff.inHours));
+    int hour = int.parse(twoDigits(diff.inHours));
     print(hour);
-    if(hour<5){
+    if (hour == 0) {
+      star = 0;
+      status = "Skipped";
+    } else if (hour < 5) {
       star = 1;
       status = "Bad";
-    }else if(hour < 7){
+    } else if (hour < 7) {
       star = 3;
       status = "Average";
-    }else {
+    } else {
       star = 5;
       status = "Good";
     }
@@ -92,7 +107,7 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
       body: FutureBuilder(
           future: _future,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.hasData){
+            if (snapshot.hasData) {
               return Container(
                 width: double.infinity,
                 height: size.height,
@@ -231,7 +246,7 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
                                 db: connection.db);
                             var conn = await MySqlConnection.connect(settings);
                             SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                             var now = new DateTime.now();
                             var date = new DateFormat('dd/MM/yyyy');
                             String formattedDate = date.format(now);
@@ -239,30 +254,48 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
                             String formattedTime = time.format(now);
 
                             int nextID = -1;
-                            var checkID = await conn.query('SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "remdii_db" AND TABLE_NAME = "casedetails"');
-                            for(var row in checkID){
+                            var checkID = await conn.query(
+                                'SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "remdii_db" AND TABLE_NAME = "casedetails"');
+                            for (var row in checkID) {
                               nextID = row[0];
                             }
 
-                            var results = await conn.query('SELECT caseID FROM casehistory WHERE user_id = ? '
-                                'ORDER BY caseID DESC LIMIT 1',[prefs.getInt('userID')]);
+                            var results = await conn.query(
+                                'SELECT caseID FROM casehistory WHERE user_id = ? '
+                                'ORDER BY caseID DESC LIMIT 1',
+                                [prefs.getInt('userID')]);
                             print(results);
                             int? _caseID;
-                            for(var row in results){
+                            for (var row in results) {
                               _caseID = row[0];
                             }
 
                             await conn.query(
-                                'INSERT INTO casedetails (caseImg, date, time, foodLog, '
-                                    'wakeUpTime, sleepTime, sleepingHrs, q1, q1Ans, q2, q2Ans, q3, q3Ans, '
-                                    'q4, q4Ans, status, comments, caseID, result, severity, reviewStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                                'INSERT INTO casedetails (caseImg, date, time, foodLog, otherFood,'
+                                'wakeUpTime, sleepTime, sleepingHrs, q1, q1Ans, q2, q2Ans, q3, q3Ans, '
+                                'q4, q4Ans, status, comments, caseID, result, severity, reviewStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                                 [
                                   prefs.getString('caseImg'),
                                   formattedDate,
                                   formattedTime,
                                   prefs.getStringList('foodLog')!.join(", "),
-                                  DateFormat.Hm().format(DateTime.parse(prefs.getString('sleepTime')!)),
-                                  DateFormat.Hm().format(DateTime.parse(prefs.getString('wakeTime')!)),
+                                  prefs.getString('otherFood'),
+                                  DateFormat.Hm().format(
+                                      prefs.getString('sleepTime') != ''
+                                          ? DateTime.parse(
+                                              prefs.getString('sleepTime')!)
+                                          : DateTime.parse(
+                                              '2022-06-22 00:00:00.000')),
+                                  DateFormat.Hm().format(
+                                      prefs.getString('sleepTime') != ''
+                                          ? DateTime.parse(
+                                              prefs.getString('wakeTime')!)
+                                          : DateTime.parse(
+                                              '2022-06-22 00:00:00.000')),
+                                  // DateFormat.Hm().format(DateTime.parse(
+                                  //     prefs.getString('sleepTime')!)),
+                                  // DateFormat.Hm().format(DateTime.parse(
+                                  //     prefs.getString('wakeTime')!)),
                                   prefs.getInt('sHour'),
                                   prefs.getString('q1'),
                                   prefs.getString('q1Ans'),
@@ -275,8 +308,8 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
                                   'Pending',
                                   '-',
                                   prefs.getInt('caseID'),
-                                  'Will be further verified soon by doctor ...',
-                                  'Will be further verified soon by doctor ...',
+                                  'Will be further verified soon by consultant ...',
+                                  'Will be further verified soon by consultant ...',
                                   'Unassigned',
                                 ]);
                             await conn.close();
@@ -313,7 +346,9 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return UpdateResultScreen(nextID: nextID,);
+                                  return UpdateResultScreen(
+                                    nextID: nextID,
+                                  );
                                 },
                               ),
                             );
@@ -322,10 +357,9 @@ class _SleepingAnalysisScreenState extends State<SleepingAnalysisScreen> {
                   ),
                 ),
               );
-            }else{
+            } else {
               return Center();
             }
-
           }),
     );
   }

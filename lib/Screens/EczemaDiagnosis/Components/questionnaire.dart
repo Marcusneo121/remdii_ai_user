@@ -423,7 +423,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                       AlertDialog(
                                     title: const Text('Disclaimer Message'),
                                     content: const Text(
-                                        'This tool does not provide medical advice It is intended for informational purposes only. It is not a substitute for professional medical advice, diagnosis or treatment.'),
+                                        'This tool does not provide medical advice. It is intended for informational purposes only. It is not a substitute for professional medical advice, diagnosis or treatment.'),
                                     actions: <Widget>[
                                       TextButton(
                                           child: const Text('OK'),
@@ -504,8 +504,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                                   'Not Verified',
                                                   '-',
                                                   0,
-                                                  result.toString(),
-                                                  severity.toString(),
+                                                  'Will be review by consultant ...',
+                                                  'Will be review by consultant ...',
+                                                  // result.toString(),
+                                                  // severity.toString(),
                                                   'Unassigned',
                                                 ]);
 

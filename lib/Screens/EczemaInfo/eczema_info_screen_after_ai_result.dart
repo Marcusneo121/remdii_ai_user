@@ -70,150 +70,165 @@ class _ViewInfoScreenAfterResultState extends State<ViewInfoScreenAfterResult> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return FutureBuilder(
-        future: _future,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return Container(
-                width: double.infinity,
-                height: size.height,
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(bottom: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Eczema Info Centre",
-                            style: TextStyle(
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.w800,
-                                fontSize: 22.0),
-                          ),
-                          InkWell(
-                            child: Text(
-                              "Back to Home",
-                              style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF42995C),
-                                  fontSize: 15.0),
-                            ),
-                            onTap: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return Homepage();
-                                  },
-                                ),
-                                (route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            Container(
-                          width: size.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: 5.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return EInfoDetails(
-                                      info: snapshot.data[index],
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: Card(
-                              elevation: 5.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  ClipRect(
-                                    child: Image.memory(
-                                      base64.decode(
-                                          '${snapshot.data[index].info_img_list.split(',')[0]}'),
-                                      fit: BoxFit.cover,
-                                      width: 2000.0,
-                                      height: 200.0,
-                                    ),
+    return Scaffold(
+      appBar: AppBar(
+        //centerTitle: true,
+        title: Text(
+          "Eczema Info Centre",
+          style: TextStyle(
+              fontFamily: 'Lato', fontWeight: FontWeight.w800, fontSize: 22.0),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+      ),
+      body: FutureBuilder(
+          future: _future,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Container(
+                  width: double.infinity,
+                  height: size.height,
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      // Container(
+                      //   alignment: Alignment.centerLeft,
+                      //   padding: EdgeInsets.only(bottom: 10.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         "Eczema Info Centre",
+                      //         style: TextStyle(
+                      //             fontFamily: 'Lato',
+                      //             fontWeight: FontWeight.w800,
+                      //             fontSize: 22.0),
+                      //       ),
+                      //       InkWell(
+                      //         child: Text(
+                      //           "Back to Home",
+                      //           style: TextStyle(
+                      //               fontFamily: 'Lato',
+                      //               fontWeight: FontWeight.w600,
+                      //               color: Color(0xFF42995C),
+                      //               fontSize: 15.0),
+                      //         ),
+                      //         onTap: () {
+                      //           Navigator.pushAndRemoveUntil(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //               builder: (context) {
+                      //                 return Homepage();
+                      //               },
+                      //             ),
+                      //             (route) => false,
+                      //           );
+                      //         },
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Container(
+                            width: size.width,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 5.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return EInfoDetails(
+                                        info: snapshot.data[index],
+                                      );
+                                    },
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${snapshot.data[index].info_name}'
-                                              .toUpperCase(),
-                                          style: TextStyle(
-                                              fontFamily: 'Lato',
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 16.0),
-                                        ),
-                                        SizedBox(
-                                          height: 15.0,
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Text(
-                                                '${snapshot.data[index].info_des}',
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.justify,
-                                                style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 14.0,
+                                );
+                              },
+                              child: Card(
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    ClipRect(
+                                      child: Image.memory(
+                                        base64.decode(
+                                            '${snapshot.data[index].info_img_list.split(',')[0]}'),
+                                        fit: BoxFit.cover,
+                                        width: 2000.0,
+                                        height: 200.0,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${snapshot.data[index].info_name}'
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontFamily: 'Lato',
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 16.0),
+                                          ),
+                                          SizedBox(
+                                            height: 15.0,
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Text(
+                                                  '${snapshot.data[index].info_des}',
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Lato',
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 14.0,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
+              }
+              return Center(child: Text('Network error'));
             }
-            return Center(child: Text('Network error'));
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        });
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
+    );
 
     // : Center(
     //     child: CircularProgressIndicator(),

@@ -35,7 +35,6 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
     // checkRadio();
   }
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,7 +71,8 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
                 ),
                 SizedBox(height: 30),
                 FormBuilderRadioGroup(
-                  validator: FormBuilderValidators.required(context, errorText: 'Your answer is required'),
+                  validator: FormBuilderValidators.required(context,
+                      errorText: 'Your answer is required'),
                   activeColor: buttonColor,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
@@ -147,85 +147,88 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
                 SizedBox(
                   height: 30,
                 ),
+                //Update Flares
+
+                // FormBuilderRadioGroup(
+                //   validator: FormBuilderValidators.required(context, errorText: 'Your answer is required'),
+                //   activeColor: buttonColor,
+                //   decoration: InputDecoration(
+                //     contentPadding: EdgeInsets.all(10),
+                //     labelText: '2. Are you having flares up today? \*',
+                //     border: OutlineInputBorder(),
+                //     // filled: true,
+                //     labelStyle: TextStyle(
+                //         fontFamily: 'Lato',
+                //         fontWeight: FontWeight.w800,
+                //         fontSize: 20.0,
+                //         color: Colors.black),
+                //   ),
+                //   name: "question_2",
+                //   // validator: FormBuilderValidators.required(context),
+                //   onChanged: (value) {
+                //     if (value == "Yes") {
+                //       setState(() {
+                //         isVisible2 = true;
+                //         q2 = value;
+                //       });
+                //     } else {
+                //       setState(() {
+                //         isVisible2 = false;
+                //         q2 = value;
+                //       });
+                //     }
+                //   },
+                //   options: [
+                //     "Yes",
+                //     "No",
+                //   ]
+                //       .map((value2) => FormBuilderFieldOption(
+                //             value: value2,
+                //             child: Text(
+                //               value2,
+                //             ),
+                //           ))
+                //       .toList(growable: false),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // Visibility(
+                //   visible: isVisible2,
+                //   child: TextFormField(
+                //     keyboardType: TextInputType.number,
+                //     // maxLines: 4,
+                //     // maxLength: 100,
+                //     controller: q2Controller,
+                //     decoration: const InputDecoration(
+                //       labelStyle: TextStyle(
+                //           fontFamily: 'Lato',
+                //           fontWeight: FontWeight.w800,
+                //           fontSize: 16.0,
+                //           color: Colors.black),
+                //       hintText: ' How many times you having flares?',
+                //       labelText: ' How many times you having flares?',
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: buttonColor,
+                //           width: 2.0,
+                //         ),
+                //       ),
+                //     ),
+                //     validator: (value) {
+                //       if (value!.isEmpty) {
+                //         return 'Your answer is required ';
+                //       }
+                //       return null;
+                //     },
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 30,
+                // ),
                 FormBuilderRadioGroup(
-                  validator: FormBuilderValidators.required(context, errorText: 'Your answer is required'),
-                  activeColor: buttonColor,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    labelText: '2. Are you having flares up today? \*',
-                    border: OutlineInputBorder(),
-                    // filled: true,
-                    labelStyle: TextStyle(
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20.0,
-                        color: Colors.black),
-                  ),
-                  name: "question_2",
-                  // validator: FormBuilderValidators.required(context),
-                  onChanged: (value) {
-                    if (value == "Yes") {
-                      setState(() {
-                        isVisible2 = true;
-                        q2 = value;
-                      });
-                    } else {
-                      setState(() {
-                        isVisible2 = false;
-                        q2 = value;
-                      });
-                    }
-                  },
-                  options: [
-                    "Yes",
-                    "No",
-                  ]
-                      .map((value2) => FormBuilderFieldOption(
-                            value: value2,
-                            child: Text(
-                              value2,
-                            ),
-                          ))
-                      .toList(growable: false),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Visibility(
-                  visible: isVisible2,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    // maxLines: 4,
-                    // maxLength: 100,
-                    controller: q2Controller,
-                    decoration: const InputDecoration(
-                      labelStyle: TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16.0,
-                          color: Colors.black),
-                      hintText: ' How many times you having flares?',
-                      labelText: ' How many times you having flares?',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: buttonColor,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Your answer is required ';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                FormBuilderRadioGroup(
-                  validator: FormBuilderValidators.required(context, errorText: 'Your answer is required'),
+                  validator: FormBuilderValidators.required(context,
+                      errorText: 'Your answer is required'),
                   activeColor: buttonColor,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
@@ -302,7 +305,8 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
                   height: 30,
                 ),
                 FormBuilderRadioGroup(
-                  validator: FormBuilderValidators.required(context, errorText: 'Your answer is required'),
+                  validator: FormBuilderValidators.required(context,
+                      errorText: 'Your answer is required'),
                   activeColor: buttonColor,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
@@ -392,29 +396,29 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
                                   await SharedPreferences.getInstance();
 
                               prefs.setString('q1', q1);
-                              if(q1 == "Yes"){
+                              if (q1 == "Yes") {
                                 prefs.setString('q1Ans', q1Controller.text);
-                              }else{
+                              } else {
                                 prefs.setString('q1Ans', '-');
                               }
                               print('Checked!!');
                               print(prefs.getString('q1'));
                               print(prefs.getString('q1Ans'));
 
-                              prefs.setString('q2', q2);
-                              if(q2 == "Yes"){
-                                prefs.setString('q2Ans', q2Controller.text);
-                              }else{
-                                prefs.setString('q2Ans', '-');
-                              }
-                              print('Checked!!');
-                              print(prefs.getString('q2'));
-                              print(prefs.getString('q2Ans'));
+                              // prefs.setString('q2', q2);
+                              // if (q2 == "Yes") {
+                              //   prefs.setString('q2Ans', q2Controller.text);
+                              // } else {
+                              //   prefs.setString('q2Ans', '-');
+                              // }
+                              // print('Checked!!');
+                              // print(prefs.getString('q2'));
+                              // print(prefs.getString('q2Ans'));
 
                               prefs.setString('q3', q3);
-                              if(q3 == "Yes"){
+                              if (q3 == "Yes") {
                                 prefs.setString('q3Ans', q3Controller.text);
-                              }else{
+                              } else {
                                 prefs.setString('q3Ans', '-');
                               }
                               print('Checked!!');
@@ -422,9 +426,9 @@ class _UpdateQuestionnaireScreenState extends State<UpdateQuestionnaireScreen> {
                               print(prefs.getString('q3Ans'));
 
                               prefs.setString('q4', q4);
-                              if(q4 == "Yes"){
+                              if (q4 == "Yes") {
                                 prefs.setString('q4Ans', q4Controller.text);
-                              }else{
+                              } else {
                                 prefs.setString('q4Ans', '-');
                               }
                               print('Checked!!');

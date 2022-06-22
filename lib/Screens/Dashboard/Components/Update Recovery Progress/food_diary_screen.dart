@@ -14,8 +14,11 @@ class FoodDiaryScreen extends StatefulWidget {
 }
 
 class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
-  int counter = 0;final formGlobalKey = GlobalKey<FormState>();
+  int counter = 0;
+  final formGlobalKey = GlobalKey<FormState>();
   List<String> tmpArray = [];
+  bool otherTF = false;
+  final otherController = TextEditingController();
   // final foodList =[
   //   CheckBoxState(title: "Eggs"),
   //   CheckBoxState(title: "Milk"),
@@ -35,25 +38,75 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
     'Soy': false,
     'Seafood': false,
     'Nuts': false,
-    'Food Additives': false,
-    'Citrus fruits': false,
-    'Strawberries': false,
+    'Others': false,
+    // 'Food Additives': false,
+    // 'Citrus fruits': false,
+    // 'Strawberries': false,
   };
 
   getCheckboxItems() async {
-    values.forEach((key, value) {
-      if (value == true) {
-        tmpArray.add(key);
+    if (otherTF == true) {
+      if (formGlobalKey.currentState!.validate()) {
+        formGlobalKey.currentState!.save();
+
+        values.forEach((key, value) {
+          if (value == true) {
+            tmpArray.add(key);
+          }
+        });
+        // Printing all selected items on Terminal screen.
+        print(tmpArray);
+        print('Storing pref for foodLog');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setStringList('foodLog', tmpArray);
+        print('Checked!!');
+        print(prefs.getStringList('foodLog'));
+        prefs.setString('otherFood', otherController.text.toString());
+        print(prefs.getString('otherFood'));
+        tmpArray.clear();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return UpdateSleepTimeScreen();
+            },
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text('Please enter other food you had eaten.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: new Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
-    });
-    // Printing all selected items on Terminal screen.
-    print(tmpArray);
-    print('Storing pref for foodLog');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('foodLog', tmpArray);
-    print('Checked!!');
-    print(prefs.getStringList('foodLog'));
-    tmpArray.clear();
+    } else {
+      values.forEach((key, value) {
+        if (value == true) {
+          tmpArray.add(key);
+        }
+      });
+      // Printing all selected items on Terminal screen.
+      print(tmpArray);
+      print('Storing pref for foodLog');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setStringList('foodLog', tmpArray);
+      prefs.setString('otherFood', '');
+      print('Checked!!');
+      print(prefs.getStringList('foodLog'));
+      tmpArray.clear();
+    }
   }
 
   @override
@@ -65,7 +118,9 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
           title: Text(
             "Update Recovery Progress",
             style: TextStyle(
-                fontFamily: 'Lato', fontWeight: FontWeight.w800, fontSize: 22.0),
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w800,
+                fontSize: 22.0),
           ),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -110,6 +165,15 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
                           onChanged: (bool? value) {
                             setState(() {
                               values[key] = value!;
+                              if (values['Others'] == true) {
+                                setState(() {
+                                  otherTF = true;
+                                });
+                              } else {
+                                setState(() {
+                                  otherTF = false;
+                                });
+                              }
 
                               if (value) {
                                 counter += 1;
@@ -126,21 +190,43 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
                       }).toList(),
                     ),
                   ),
+                  Visibility(
+                    visible: otherTF,
+                    child: TextFormField(
+                      // keyboardType: TextInputType.number,
+                      // maxLines: 4,
+                      // maxLength: 100,
+                      controller: otherController,
+                      decoration: const InputDecoration(
+                        labelStyle: TextStyle(
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16.0,
+                            color: Colors.black),
+                        hintText: 'What other food you had eaten?',
+                        labelText: ' What other food you had eaten?',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: buttonColor,
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Your answer is required ';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                   RoundedButton(
                       text: "Continue",
                       color: buttonColor,
                       press: () {
-                        if(counter > 0){
+                        if (counter > 0) {
                           getCheckboxItems();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return UpdateSleepTimeScreen();
-                              },
-                            ),
-                          );
-                        } else{
+                        } else {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -164,9 +250,7 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
               ),
             ),
           ),
-        )
-
-    );
+        ));
   }
   // Widget buildSingleCheckBox(CheckBoxState checkbox) => CheckboxListTile(
   //   controlAffinity: ListTileControlAffinity.leading,
