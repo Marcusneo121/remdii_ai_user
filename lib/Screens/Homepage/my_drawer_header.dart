@@ -4,6 +4,7 @@ import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fyp/DB_Models/connection.dart';
+import 'dart:convert';
 
 class MyHeaderDrawer extends StatefulWidget {
   const MyHeaderDrawer({Key? key}) : super(key: key);
@@ -29,11 +30,10 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
 
   fetchUserData() async {
     try {
-     SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       List<User> user = [];
       var conn = await MySqlConnection.connect(settings);
       print(prefs.getInt('userID'));
-
       if (prefs.getInt('userID') != null) {
         var results = await conn.query(
             'SELECT * FROM customer WHERE user_id = ?',
@@ -42,14 +42,16 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
 
         for (var row in results) {
           user.add(User(
-              user_name: row[1].toString(),
-              user_email: row[2].toString(),
-              user_id: row[0],
-              user_phone: row[4].toString(),
-              user_ic: row[5].toString(),
-              user_add_1: row[6].toString(),
-              user_add_2: row[7].toString(),
-              user_add_3: row[8]));
+            user_name: row[1].toString(),
+            user_email: row[2].toString(),
+            user_id: row[0],
+            user_phone: row[4].toString(),
+            user_ic: row[5].toString(),
+            user_add_1: row[6].toString(),
+            user_add_2: row[7].toString(),
+            user_add_3: row[8],
+            user_img: row[9].toString(),
+          ));
         }
         await conn.close();
         return user;
@@ -65,7 +67,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
         future: _future,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if(snapshot.hasData){
+            if (snapshot.hasData) {
               return Container(
                 width: double.infinity,
                 height: 200,
@@ -88,13 +90,28 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 10.0),
-                      height: 120,
-                      decoration: BoxDecoration(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        height: 120,
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('assets/images/profile.jpg'),
-                          )),
+                            image: Image.memory(
+                              base64.decode(snapshot.data[0].user_img),
+                              fit: BoxFit.fill,
+                              width: 100.0,
+                              height: 100.0,
+                            ).image,
+                            //image: AssetImage('assets/images/profile.jpg'),
+                          ),
+                        ),
+                        // child: Image.memory(
+                        //   base64.decode(snapshot.data[0].user_img),
+                        //   fit: BoxFit.fill,
+                        //   width: 110.0,
+                        //   height: 110.0,
+                        // ),
+                      ),
                     ),
                     Text(
                       snapshot.data[0].user_name,
@@ -109,9 +126,9 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             }
             return Center(child: Text('Network error'));
           }
-          return Center(child: CircularProgressIndicator(),);
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         });
-
-
   }
 }

@@ -62,7 +62,8 @@ class _UnpaidOrderDetailsState extends State<UnpaidOrderDetails> {
             user_ic: '',
             user_add_1: row[2],
             user_add_2: row[3],
-            user_add_3: row[4]));
+            user_add_3: row[4],
+            user_img: row[5].toString()));
       }
       print('Check order ID');
       print(widget.order.orderID);

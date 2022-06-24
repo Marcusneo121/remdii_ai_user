@@ -1,5 +1,6 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
@@ -10,6 +11,12 @@ import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+import 'dart:io' as io;
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 
 class BodyPage extends StatefulWidget {
   const BodyPage({Key? key}) : super(key: key);
@@ -33,6 +40,8 @@ class _BodyPageState extends State<BodyPage> {
   // late EmailAuth emailAuth;
 
   bool checkEmail = false;
+
+  String? imagenConvertida;
 
   var settings = new ConnectionSettings(
       host: connection.host,
@@ -59,6 +68,22 @@ class _BodyPageState extends State<BodyPage> {
 
   Future userSignUp() async {
     try {
+      // setState(() {
+      //   var bytes = _image!.readAsBytesSync();
+      //   imagenConvertida = base64.encode(bytes);
+      //   print(bytes);
+      //   print(imagenConvertida);
+      // });
+      //
+      // print(_image);
+
+      ByteData bytes =
+          await rootBundle.load('assets/images/defaultProfile.jpg');
+      var buffer = bytes.buffer;
+      String image = base64.encode(Uint8List.view(buffer));
+
+      print(image);
+
       EasyLoading.show(status: 'Signing Up...');
       var conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
@@ -68,7 +93,7 @@ class _BodyPageState extends State<BodyPage> {
         var insertResult = await conn.query(
             'insert into customer '
             '(user_name, user_email, user_pwd, user_phone, user_ic, '
-            'user_add_1, user_add_2, user_add_3) values (?, ?, ?, ?, ?, ?, ?, ?)',
+            'user_add_1, user_add_2, user_add_3, user_img) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
               nameController.text,
               emailController.text,
@@ -78,6 +103,7 @@ class _BodyPageState extends State<BodyPage> {
               '',
               '',
               '',
+              image,
               // ICController.text,
               // add1Controller.text,
               // add2Controller.text,
@@ -91,6 +117,9 @@ class _BodyPageState extends State<BodyPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setInt('userID', row[0]);
           print(prefs.getInt('userID'));
+          print('Storing pref for img');
+          prefs.setString('userImg', row[9].toString());
+          print(prefs.getString('userImg'));
         }
         EasyLoading.dismiss();
         Navigator.pushAndRemoveUntil(
@@ -430,6 +459,7 @@ class _BodyPageState extends State<BodyPage> {
                     if (formGlobalKey.currentState!.validate()) {
                       formGlobalKey.currentState!.save();
                       await userSignUp();
+                      //await testImage();
                       //verifyOTP();
                       // if (checkEmail) {
                       //   await userSignUp();

@@ -6,7 +6,8 @@ class User {
       user_ic,
       user_add_1,
       user_add_2,
-      user_add_3;
+      user_add_3,
+      user_img;
 
   User({
     required this.user_id,
@@ -17,17 +18,20 @@ class User {
     required this.user_add_1,
     required this.user_add_2,
     required this.user_add_3,
+    required this.user_img,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        user_id: int.parse(json['user_id']),
-        user_name: json['user_name'],
-        user_email: json['user_email'],
-        user_phone: json['user_phone'],
-        user_ic: json['user_ic'],
-        user_add_1: json['user_add_1'],
-        user_add_2: json['user_add_2'],
-        user_add_3: json['user_add_3']);
+      user_id: int.parse(json['user_id']),
+      user_name: json['user_name'],
+      user_email: json['user_email'],
+      user_phone: json['user_phone'],
+      user_ic: json['user_ic'],
+      user_add_1: json['user_add_1'],
+      user_add_2: json['user_add_2'],
+      user_add_3: json['user_add_3'],
+      user_img: json['user_img'],
+    );
   }
 }

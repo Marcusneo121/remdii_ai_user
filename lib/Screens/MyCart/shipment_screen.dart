@@ -57,14 +57,16 @@ class _ShipmentScreenState extends State<ShipmentScreen> {
         print(results);
         for (var row in results) {
           user.add(User(
-              user_name: row[1].toString(),
-              user_email: row[2].toString(),
-              user_id: row[0],
-              user_phone: row[4].toString(),
-              user_ic: row[5].toString(),
-              user_add_1: row[6].toString(),
-              user_add_2: row[7].toString(),
-              user_add_3: row[8]));
+            user_name: row[1].toString(),
+            user_email: row[2].toString(),
+            user_id: row[0],
+            user_phone: row[4].toString(),
+            user_ic: row[5].toString(),
+            user_add_1: row[6].toString(),
+            user_add_2: row[7].toString(),
+            user_add_3: row[8],
+            user_img: row[9].toString(),
+          ));
 
           setState(() {
             nameController.text = row[1].toString();
@@ -284,12 +286,15 @@ class _ShipmentScreenState extends State<ShipmentScreen> {
                                 RoundedButton(
                                     text: "Continue",
                                     press: () async {
-                                      if (formGlobalKey.currentState!.validate()) {
+                                      if (formGlobalKey.currentState!
+                                          .validate()) {
                                         formGlobalKey.currentState!.save();
                                         var conn =
-                                        await MySqlConnection.connect(settings);
+                                            await MySqlConnection.connect(
+                                                settings);
                                         SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
+                                            await SharedPreferences
+                                                .getInstance();
                                         prefs.setString(
                                             'rName', nameController.text);
                                         prefs.setString(

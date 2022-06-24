@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
@@ -36,8 +40,16 @@ class _BodyState extends State<Body> {
     });
     String userEmail = emailController.text;
     String userPwd = passwordController.text;
+    String imageToSave = '';
 
     try {
+      ByteData bytes =
+          await rootBundle.load('assets/images/defaultProfile.jpg');
+      var buffer = bytes.buffer;
+      String image = base64.encode(Uint8List.view(buffer));
+
+      print(image);
+
       EasyLoading.show(status: 'Logging in...');
       var conn = await MySqlConnection.connect(settings);
       var results = await conn
@@ -51,7 +63,19 @@ class _BodyState extends State<Body> {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setInt('userID', row[0]);
             print(prefs.getInt('userID'));
+            print('Storing pref for img');
 
+            if (row[9] != null) {
+              setState(() {
+                imageToSave = row[9].toString();
+              });
+            } else {
+              setState(() {
+                imageToSave = image;
+              });
+            }
+            prefs.setString('userImg', imageToSave);
+            print(prefs.getString('userImg'));
             setState(() {
               visible = false;
             });

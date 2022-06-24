@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fyp/DB_Models/User.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
@@ -58,14 +60,16 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
         print(results);
         for (var row in results) {
           user.add(User(
-              user_name: row[1].toString(),
-              user_email: row[2].toString(),
-              user_id: row[0],
-              user_phone: row[4].toString(),
-              user_ic: row[5].toString(),
-              user_add_1: row[6].toString(),
-              user_add_2: row[7].toString(),
-              user_add_3: row[8]));
+            user_name: row[1].toString(),
+            user_email: row[2].toString(),
+            user_id: row[0],
+            user_phone: row[4].toString(),
+            user_ic: row[5].toString(),
+            user_add_1: row[6].toString(),
+            user_add_2: row[7].toString(),
+            user_add_3: row[8],
+            user_img: row[9].toString(),
+          ));
 
           setState(() {
             nameController.text = row[1].toString();
@@ -122,8 +126,12 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/profile.jpg'),
+                              backgroundImage: Image.memory(
+                                base64.decode(snapshot.data[0].user_img),
+                                fit: BoxFit.fill,
+                                width: 100.0,
+                                height: 100.0,
+                              ).image,
                               radius: 80.0,
                             ),
                             SizedBox(height: 20),
@@ -299,9 +307,11 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (BuildContext context) => HomepageScreen(),
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          HomepageScreen(),
                                                 ),
-                                                    (route) => false,
+                                                (route) => false,
                                               );
                                             },
                                           ),

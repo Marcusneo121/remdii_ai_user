@@ -46,19 +46,21 @@ class _CompletedOrderDetailsState extends State<CompletedOrderDetails> {
           'WHERE deliveryrecipient.orderID = orderhistory.orderID '
           'AND orderhistory.orderID = ? AND orderhistory.user_id = ?',
           [widget.order.orderID, prefs.getInt('userID')]);
-      print(widget.order.orderID.toString() + prefs.getInt('userID').toString());
+      print(
+          widget.order.orderID.toString() + prefs.getInt('userID').toString());
       print(results.length);
       for (var row in results) {
         recipientDetails.add(User(
-            user_id: 0,
-            user_name: row[0],
-            user_email: '',
-            user_phone: row[1],
-            user_ic: '',
-            user_add_1: row[2],
-            user_add_2: row[3],
-            user_add_3: row[4]));
-
+          user_id: 0,
+          user_name: row[0],
+          user_email: '',
+          user_phone: row[1],
+          user_ic: '',
+          user_add_1: row[2],
+          user_add_2: row[3],
+          user_add_3: row[4],
+          user_img: row[5].toString(),
+        ));
       }
       print(recipientDetails);
       return recipientDetails;

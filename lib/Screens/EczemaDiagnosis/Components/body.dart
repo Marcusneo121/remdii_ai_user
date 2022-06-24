@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
   Future getImage() async {
     try {
       var image = await _picker.pickImage(
-          source: ImageSource.camera,
+          source: ImageSource.gallery,
           maxHeight: 480,
           maxWidth: 640,
           imageQuality: 50);
@@ -39,8 +39,8 @@ class _BodyState extends State<Body> {
         _image = File(image!.path);
         var bytes = _image!.readAsBytesSync();
         imagenConvertida = base64.encode(bytes);
-        print(bytes);
-        print(imagenConvertida);
+        print('this is byte ${bytes}');
+        print('this is string ${imagenConvertida} end here.');
       });
       print('_image');
       print(_image);
