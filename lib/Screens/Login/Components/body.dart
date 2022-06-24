@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/Screens/Login/forgot_pw_screen.dart';
@@ -37,6 +38,7 @@ class _BodyState extends State<Body> {
     String userPwd = passwordController.text;
 
     try {
+      EasyLoading.show(status: 'Logging in...');
       var conn = await MySqlConnection.connect(settings);
       var results = await conn
           .query('SELECT * FROM customer WHERE user_email = ?', [userEmail]);
@@ -53,7 +55,7 @@ class _BodyState extends State<Body> {
             setState(() {
               visible = false;
             });
-
+            EasyLoading.dismiss();
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -66,7 +68,7 @@ class _BodyState extends State<Body> {
             setState(() {
               visible = false;
             });
-
+            EasyLoading.dismiss();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -91,6 +93,7 @@ class _BodyState extends State<Body> {
         setState(() {
           visible = false;
         });
+        EasyLoading.dismiss();
         showDialog(
           context: context,
           builder: (BuildContext context) {

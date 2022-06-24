@@ -1,5 +1,6 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
@@ -58,6 +59,7 @@ class _BodyPageState extends State<BodyPage> {
 
   Future userSignUp() async {
     try {
+      EasyLoading.show(status: 'Signing Up...');
       var conn = await MySqlConnection.connect(settings);
       var result = await conn.query(
           'SELECT * FROM customer WHERE user_email = ?',
@@ -90,7 +92,7 @@ class _BodyPageState extends State<BodyPage> {
           prefs.setInt('userID', row[0]);
           print(prefs.getInt('userID'));
         }
-
+        EasyLoading.dismiss();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -99,6 +101,7 @@ class _BodyPageState extends State<BodyPage> {
           (route) => false,
         );
       } else {
+        EasyLoading.dismiss();
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -520,7 +523,7 @@ class _BodyPageState extends State<BodyPage> {
       _msg = "Your password is required";
       return _msg;
     } else if (value.length <= 7 || value.length >= 13) {
-      _msg = "Your password length must be 8-12 characters";
+      _msg = "Length must be 8-12 characters";
       pwdController.text = '';
       return _msg;
     }
@@ -533,7 +536,7 @@ class _BodyPageState extends State<BodyPage> {
       _msg = "Your password is required";
       return _msg;
     } else if (value != pwdController.text) {
-      _msg = "Your repeated password must be same as password";
+      _msg = "Must be same as password";
       rePwdController.text = '';
       return _msg;
     }
