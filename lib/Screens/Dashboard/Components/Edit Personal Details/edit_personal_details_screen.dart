@@ -1,13 +1,19 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fyp/DB_Models/User.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/components/rounded_input_field.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../constants.dart';
 
 class EditPersonalDetails extends StatefulWidget {
   const EditPersonalDetails({Key? key}) : super(key: key);
@@ -32,6 +38,7 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
   final add1Controller = TextEditingController();
   final add2Controller = TextEditingController();
   final add3Controller = TextEditingController();
+  String userImg = '';
   var settings = new ConnectionSettings(
       host: connection.host,
       port: connection.port,
@@ -40,10 +47,43 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
       db: connection.db);
   late Future _future;
 
+  File? _image;
+  String? imagenConvertida;
+  final ImagePicker _picker = ImagePicker();
+
   void initState() {
     // TODO: implement initState
     _future = fetchUserData();
     super.initState();
+  }
+
+  Future getImage() async {
+    try {
+      var image = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 480,
+          maxWidth: 640,
+          imageQuality: 50);
+
+      setState(() {
+        // _image = image;
+        // _image = image as io.File;
+        _image = File(image!.path);
+        var bytes = _image!.readAsBytesSync();
+        imagenConvertida = base64.encode(bytes);
+        print('this is byte ${bytes}');
+        print('this is string ${imagenConvertida} end here.');
+      });
+      print('_image');
+      print(_image);
+      print('done');
+      EasyLoading.showInfo(
+        'Please press save to ensure information is updated.',
+        duration: Duration(seconds: 3),
+      );
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
   }
 
   fetchUserData() async {
@@ -52,6 +92,12 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
       List<User> user = [];
       var conn = await MySqlConnection.connect(settings);
       print(prefs.getInt('userID'));
+
+      setState(() {
+        userImg = prefs.getString('userImg').toString();
+      });
+
+      print(userImg);
 
       if (prefs.getInt('userID') != null) {
         var results = await conn.query(
@@ -91,7 +137,6 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
 
   @override
   Widget build(BuildContext context) {
-    var name;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -125,15 +170,88 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: Image.memory(
-                                base64.decode(snapshot.data[0].user_img),
-                                fit: BoxFit.fill,
-                                width: 100.0,
-                                height: 100.0,
-                              ).image,
-                              radius: 80.0,
-                            ),
+                            Stack(children: [
+                              Container(
+                                child: _image != null
+                                    ? Container(
+                                        height: 120,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(80),
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              // cover, contain,
+                                              image: FileImage(
+                                                  io.File(_image!.path)),
+                                            )),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage: snapshot
+                                                    .data[0].user_img ==
+                                                null
+                                            ? Image.memory(
+                                                base64
+                                                    .decode(userImg.toString()),
+                                                fit: BoxFit.fill,
+                                                width: 90.0,
+                                                height: 90.0,
+                                              ).image
+                                            : Image.memory(
+                                                base64.decode(
+                                                    snapshot.data[0].user_img),
+                                                fit: BoxFit.fill,
+                                                width: 90.0,
+                                                height: 90.0,
+                                              ).image,
+                                        radius: 80.0,
+                                      ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 1,
+                                //child: buildEditIcon(color),
+                                child: ClipOval(
+                                  child: InkWell(
+                                    onTap: () {
+                                      getImage();
+                                      //getImage();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(4),
+                                      color: Colors.white,
+                                      child: ClipOval(
+                                        child: Container(
+                                          padding: EdgeInsets.all(7),
+                                          color: Color(0xFF42995C),
+                                          child: Icon(
+                                            Icons.add_a_photo,
+                                            color: Colors.white,
+                                            size: 17,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                            // CircleAvatar(
+                            //   backgroundImage: snapshot.data[0].user_img == null
+                            //       ? Image.memory(
+                            //           base64.decode(userImg.toString()),
+                            //           fit: BoxFit.fill,
+                            //           width: 100.0,
+                            //           height: 100.0,
+                            //         ).image
+                            //       : Image.memory(
+                            //           base64.decode(snapshot.data[0].user_img),
+                            //           fit: BoxFit.fill,
+                            //           width: 100.0,
+                            //           height: 100.0,
+                            //         ).image,
+                            //   radius: 80.0,
+                            // ),
                             SizedBox(height: 20),
                             RoundedInputField(
                               //initialValue: snapshot.data[0].user_name,
@@ -169,41 +287,41 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                               enableMode: true,
                               controller: phoneController,
                             ),
-                            RoundedInputField(
-                              //initialValue: snapshot.data[0].user_ic,
-                              icon: Icons.badge,
-                              onChanged: (value) {},
-                              validator: validateIC,
-                              hintText: 'IC Number',
-                              enableMode: true,
-                              controller: ICController,
-                            ),
-                            RoundedInputField(
-                              //initialValue: snapshot.data[0].user_add_1,
-                              icon: Icons.location_on,
-                              onChanged: (value) {},
-                              validator: validateAddress,
-                              hintText: 'Address Line 1',
-                              enableMode: true,
-                              controller: add1Controller,
-                            ),
-                            RoundedInputField(
-                              //initialValue: snapshot.data[0].user_add_2,
-                              icon: Icons.location_on,
-                              onChanged: (value) {},
-                              validator: validateAddress,
-                              hintText: 'Address Line 2',
-                              enableMode: true,
-                              controller: add2Controller,
-                            ),
-                            RoundedInputField(
-                                //initialValue: snapshot.data[0].user_add_3,
-                                icon: Icons.location_on,
-                                onChanged: (value) {},
-                                validator: validateAddress,
-                                hintText: 'Address Line 3',
-                                enableMode: true,
-                                controller: add3Controller),
+                            // RoundedInputField(
+                            //   //initialValue: snapshot.data[0].user_ic,
+                            //   icon: Icons.badge,
+                            //   onChanged: (value) {},
+                            //   validator: validateIC,
+                            //   hintText: 'IC Number',
+                            //   enableMode: true,
+                            //   controller: ICController,
+                            // ),
+                            // RoundedInputField(
+                            //   //initialValue: snapshot.data[0].user_add_1,
+                            //   icon: Icons.location_on,
+                            //   onChanged: (value) {},
+                            //   validator: validateAddress,
+                            //   hintText: 'Address Line 1',
+                            //   enableMode: true,
+                            //   controller: add1Controller,
+                            // ),
+                            // RoundedInputField(
+                            //   //initialValue: snapshot.data[0].user_add_2,
+                            //   icon: Icons.location_on,
+                            //   onChanged: (value) {},
+                            //   validator: validateAddress,
+                            //   hintText: 'Address Line 2',
+                            //   enableMode: true,
+                            //   controller: add2Controller,
+                            // ),
+                            // RoundedInputField(
+                            //     //initialValue: snapshot.data[0].user_add_3,
+                            //     icon: Icons.location_on,
+                            //     onChanged: (value) {},
+                            //     validator: validateAddress,
+                            //     hintText: 'Address Line 3',
+                            //     enableMode: true,
+                            //     controller: add3Controller),
                             // Align(
                             //     alignment: Alignment(0.02, 1.0),
                             //   child: Icon(
@@ -283,7 +401,7 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                                       await SharedPreferences.getInstance();
                                   await conn.query(
                                       'UPDATE customer SET user_name = ?, user_phone = ?, user_ic = ?, user_add_1 = ?, '
-                                      'user_add_2 = ?, user_add_3 = ? WHERE user_id = ?',
+                                      'user_add_2 = ?, user_add_3 = ? , user_img = ? WHERE user_id = ?',
                                       [
                                         nameController.text,
                                         phoneController.text,
@@ -291,6 +409,7 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                                         add1Controller.text,
                                         add2Controller.text,
                                         add3Controller.text,
+                                        imagenConvertida.toString(),
                                         prefs.getInt('userID')
                                       ]);
 

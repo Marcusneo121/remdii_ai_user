@@ -90,29 +90,43 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 10.0),
-                        height: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: Image.memory(
-                              base64.decode(snapshot.data[0].user_img),
-                              fit: BoxFit.fill,
-                              width: 100.0,
-                              height: 100.0,
-                            ).image,
-                            //image: AssetImage('assets/images/profile.jpg'),
-                          ),
-                        ),
-                        // child: Image.memory(
-                        //   base64.decode(snapshot.data[0].user_img),
-                        //   fit: BoxFit.fill,
-                        //   width: 110.0,
-                        //   height: 110.0,
-                        // ),
+                      height: 120,
+                      margin: EdgeInsets.only(bottom: 10.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage: Image.memory(
+                          base64.decode(snapshot.data[0].user_img),
+                          fit: BoxFit.fill,
+                          width: 100.0,
+                          height: 100.0,
+                        ).image,
+                        radius: 80.0,
                       ),
                     ),
+                    // Container(
+                    //   child: Container(
+                    //     margin: EdgeInsets.only(bottom: 10.0),
+                    //     height: 120,
+                    //     decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       image: DecorationImage(
+                    //         image: Image.memory(
+                    //           base64.decode(snapshot.data[0].user_img),
+                    //           fit: BoxFit.fill,
+                    //           width: 100.0,
+                    //           height: 100.0,
+                    //         ).image,
+                    //         //image: AssetImage('assets/images/profile.jpg'),
+                    //       ),
+                    //     ),
+                    //     // child: Image.memory(
+                    //     //   base64.decode(snapshot.data[0].user_img),
+                    //     //   fit: BoxFit.fill,
+                    //     //   width: 110.0,
+                    //     //   height: 110.0,
+                    //     // ),
+                    //   ),
+                    // ),
                     Text(
                       snapshot.data[0].user_name,
                       style: TextStyle(

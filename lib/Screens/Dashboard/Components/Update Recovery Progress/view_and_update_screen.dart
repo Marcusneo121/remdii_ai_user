@@ -112,7 +112,10 @@ class _ViewUpdateState extends State<ViewUpdate> {
           future: _future,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
+              if (snapshot.data.isEmpty) {
+                return Center(
+                    child: Text('Your diagnosis history is empty now.'));
+              } else {
                 return ListView.builder(
                   shrinkWrap: true,
                   itemCount: snapshot.data.length,
@@ -228,8 +231,6 @@ class _ViewUpdateState extends State<ViewUpdate> {
                   ),
                 );
               }
-              return Center(
-                  child: Text('Your diagnosis history is empty now.'));
             }
             return Center(
               child: CircularProgressIndicator(),

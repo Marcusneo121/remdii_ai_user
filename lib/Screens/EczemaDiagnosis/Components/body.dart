@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
   Future getImage() async {
     try {
       var image = await _picker.pickImage(
-          source: ImageSource.gallery,
+          source: ImageSource.camera,
           maxHeight: 480,
           maxWidth: 640,
           imageQuality: 50);
