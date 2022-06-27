@@ -30,8 +30,10 @@ class LocalNotifyManager {
   }
 
   initializePlatform() {
+    // var initSettingAndroid =
+    //     AndroidInitializationSettings('app_notification_icon');
     var initSettingAndroid =
-        AndroidInitializationSettings('app_notification_icon');
+        AndroidInitializationSettings('logoBig_foreground');
     var initSettingIOS = IOSInitializationSettings(
         requestSoundPermission: true,
         requestBadgePermission: true,
@@ -83,7 +85,8 @@ class LocalNotifyManager {
   }
 
   Future<void> scheduleNotification() async {
-    var scheduleNotificationDateTime = DateTime.now().add(Duration(days: 3));
+    // var scheduleNotificationDateTime = DateTime.now().add(Duration(days: 2));
+    var scheduleNotificationDateTime = DateTime.now().add(Duration(minutes: 1));
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -97,7 +100,7 @@ class LocalNotifyManager {
     );
     var IOSChannel = IOSNotificationDetails();
     var platformChannel =
-    NotificationDetails(android: androidChannel, iOS: IOSChannel);
+        NotificationDetails(android: androidChannel, iOS: IOSChannel);
 
     await _flutterLocalNotificationsPlugin!.schedule(
       0,
