@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1021371004904",
-    "project_id": "flutterpushnotification-33e3b",
-    "storage_bucket": "flutterpushnotification-33e3b.appspot.com"
+    "project_number": "572670734310",
+    "project_id": "remdiiproject",
+    "storage_bucket": "remdiiproject.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1021371004904:android:d95946a52239e3174b165d",
+        "mobilesdk_app_id": "1:572670734310:android:b7aea16c1e95dc95dab027",
         "android_client_info": {
-          "package_name": "com.example.fyp"
+          "package_name": "com.lipiware.remdiiuser"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1021371004904-4dqrfprqg29916i6d09a5hhfkg6jd5ni.apps.googleusercontent.com",
+          "client_id": "572670734310-opsas5ofjiv9appu69tidlbp3qh798pt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDiXlXzDXi4v_q5uHn3FCdAPg0PvXBnGeA"
+          "current_key": "AIzaSyBCIDH_LCeViEJercHRwGloPvcwQXtUqVw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1021371004904-4dqrfprqg29916i6d09a5hhfkg6jd5ni.apps.googleusercontent.com",
+              "client_id": "572670734310-opsas5ofjiv9appu69tidlbp3qh798pt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

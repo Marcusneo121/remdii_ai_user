@@ -1,4 +1,4 @@
-package com.example.fyp
+package com.lipiware.remdiiuser
 
 import io.flutter.embedding.android.FlutterActivity
 

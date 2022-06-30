@@ -23,20 +23,20 @@ import 'Screens/Homepage/homepage_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // runApp(DevicePreview(builder: (context) => MyApp(), enabled: !kReleaseMode,));
   runApp(MyApp());
 }
 
 // only work when app is on background (Receive msg when app is in background, solution for on message
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
-  print(message.data.toString());
-  print(message.notification!.title);
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   // await Firebase.initializeApp();
+//   print(message.data.toString());
+//   print(message.notification!.title);
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -60,9 +60,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // }
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
-  static final FirebaseMessaging _firebaseMessaging =
-      FirebaseMessaging.instance;
+  // // This widget is the root of your application.
+  // static final FirebaseMessaging _firebaseMessaging =
+  //     FirebaseMessaging.instance;
 
   @override
   State<MyApp> createState() => _MyAppState();

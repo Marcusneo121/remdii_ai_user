@@ -106,6 +106,15 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
       print('Checked!!');
       print(prefs.getStringList('foodLog'));
       tmpArray.clear();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return UpdateSleepTimeScreen();
+          },
+        ),
+      );
     }
   }
 

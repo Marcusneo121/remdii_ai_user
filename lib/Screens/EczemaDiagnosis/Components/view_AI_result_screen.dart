@@ -142,7 +142,7 @@ class _ViewAIResultScreenState extends State<ViewAIResultScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Result: ${snapshot.data[0].result}',
+                              'Result:',
                               style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,
@@ -150,22 +150,22 @@ class _ViewAIResultScreenState extends State<ViewAIResultScreen> {
                             ),
                           ),
                           //Dummy Code
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     'Result : -',
-                          //     style: TextStyle(
-                          //         fontFamily: 'Lato',
-                          //         fontWeight: FontWeight.w800,
-                          //         fontSize: 18.0),
-                          //   ),
-                          // ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '${snapshot.data[0].result}',
+                              style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 16.0),
+                            ),
+                          ),
                           SizedBox(height: 10.0),
                           //Initial Version Code
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Severity: ${snapshot.data[0].severity}',
+                              'Severity:',
                               style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,
@@ -173,16 +173,16 @@ class _ViewAIResultScreenState extends State<ViewAIResultScreen> {
                             ),
                           ),
                           //Dummy Code
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     'Severity : -',
-                          //     style: TextStyle(
-                          //         fontFamily: 'Lato',
-                          //         fontWeight: FontWeight.w800,
-                          //         fontSize: 18.0),
-                          //   ),
-                          // ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              ' ${snapshot.data[0].severity}',
+                              style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 16.0),
+                            ),
+                          ),
                           SizedBox(height: 10.0),
                           Align(
                             alignment: Alignment.centerLeft,

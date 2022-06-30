@@ -85,8 +85,9 @@ class LocalNotifyManager {
   }
 
   Future<void> scheduleNotification() async {
-    // var scheduleNotificationDateTime = DateTime.now().add(Duration(days: 2));
-    var scheduleNotificationDateTime = DateTime.now().add(Duration(minutes: 1));
+    var scheduleNotificationDateTime = DateTime.now().add(Duration(days: 2));
+    // var scheduleNotificationDateTime =
+    //     DateTime.now().add(Duration(seconds: 10));
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',

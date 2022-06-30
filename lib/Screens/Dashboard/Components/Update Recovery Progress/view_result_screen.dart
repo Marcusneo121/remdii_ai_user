@@ -7,7 +7,10 @@ import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/constants.dart';
 
 class ViewResult extends StatefulWidget {
-  const ViewResult({Key? key, required this.caseDetails,}) : super(key: key);
+  const ViewResult({
+    Key? key,
+    required this.caseDetails,
+  }) : super(key: key);
   final CaseDetails caseDetails;
   @override
   _ViewResultState createState() => _ViewResultState();
@@ -49,8 +52,7 @@ class _ViewResultState extends State<ViewResult> {
                 SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
+                  child: Text(
                     "Diagnosis Date: ${widget.caseDetails.date}",
                     style: TextStyle(
                         fontFamily: 'Lato',
@@ -61,8 +63,7 @@ class _ViewResultState extends State<ViewResult> {
                 SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
+                  child: Text(
                     "Diagnosis Time: ${widget.caseDetails.time}",
                     style: TextStyle(
                         fontFamily: 'Lato',
@@ -73,50 +74,70 @@ class _ViewResultState extends State<ViewResult> {
                 SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
-                    "Result: ${widget.caseDetails.result}",
+                  child: Text(
+                    "Result:",
                     style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
                         fontSize: 18.0),
+                  ),
+                ),
+                SizedBox(height: 5.0),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    " ${widget.caseDetails.result}",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0),
                   ),
                 ),
                 SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
-                    "Severity: ${widget.caseDetails.severity}",
+                  child: Text(
+                    "Severity:",
                     style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
                         fontSize: 18.0),
+                  ),
+                ),
+                SizedBox(height: 5.0),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "${widget.caseDetails.severity}",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0),
                   ),
                 ),
                 SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
-                    "Doctor's Comment: ",
+                  child: Text(
+                    "Consultant's Comment: ",
                     style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
                         fontSize: 18.0),
                   ),
                 ),
-                SizedBox(height: 2.0),
+                SizedBox(height: 5.0),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                  Text(
+                  child: Text(
                     "${widget.caseDetails.comments}",
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
-                        fontSize: 18.0),
+                        fontSize: 16.0),
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -141,7 +162,9 @@ class _ViewResultState extends State<ViewResult> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return ViewReportScreen(caseID: widget.caseDetails.caseID,);
+                          return ViewReportScreen(
+                            caseID: widget.caseDetails.caseID,
+                          );
                         },
                       ),
                     );
