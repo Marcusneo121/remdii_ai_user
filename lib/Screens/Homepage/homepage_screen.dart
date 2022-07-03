@@ -104,6 +104,8 @@ class _HomepageState extends State<Homepage> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.remove('userID');
               print(prefs.getInt('userID'));
+              await prefs.remove('userInputEmail');
+              await prefs.remove('userInputPassword');
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

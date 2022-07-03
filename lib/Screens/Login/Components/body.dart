@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -64,6 +63,11 @@ class _BodyState extends State<Body> {
             prefs.setInt('userID', row[0]);
             print(prefs.getInt('userID'));
             print('Storing pref for img');
+            prefs.setString('userInputEmail', emailController.text.toString());
+            prefs.setString(
+                'userInputPassword', passwordController.text.toString());
+            print(prefs.getString('userInputEmail'));
+            print(prefs.getString('userInputPassword'));
 
             if (row[9] != null) {
               setState(() {
@@ -154,9 +158,12 @@ class _BodyState extends State<Body> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(
-                "assets/images/logo.png",
-                height: size.height * 0.17,
+              Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  "assets/images/logo.png",
+                  height: size.height * 0.17,
+                ),
               ),
               SizedBox(height: size.height * 0.04),
               Text(

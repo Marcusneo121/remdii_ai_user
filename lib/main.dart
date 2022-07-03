@@ -15,6 +15,7 @@ import 'PushNotificationService.dart';
 import 'Screens/Dashboard/Components/Update Recovery Progress/update_sleep_time_screen.dart';
 import 'Screens/Dashboard/Components/Update Recovery Progress/view_and_update_screen.dart';
 import 'Screens/Homepage/homepage_screen.dart';
+import 'Screens/Welcome/splashscreen.dart';
 
 // void main() {
 //   runApp(DevicePreview(builder: (context) => MyApp(), enabled: !kReleaseMode,));
@@ -141,7 +142,8 @@ class _MyAppState extends State<MyApp> {
         // unselectedWidgetColor: buttonColor
       ),
       builder: EasyLoading.init(),
-      home: WelcomeScreen(),
+      home: Splashscreen(),
+      //home: WelcomeScreen(),
       // home: HomepageScreen()
       // home: TestNotifyScreen(),
       // home: UpdateSleepTimeScreen()
