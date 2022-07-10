@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
+import 'package:fyp/Services/database.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/components/rounded_input_field.dart';
 import 'package:fyp/components/rounded_password_field.dart';
@@ -112,7 +113,6 @@ class _BodyPageState extends State<BodyPage> {
         var chkResult = await conn.query(
             'SELECT * FROM customer WHERE user_email = ?',
             [emailController.text]);
-
         for (var row in chkResult) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setInt('userID', row[0]);
@@ -120,15 +120,31 @@ class _BodyPageState extends State<BodyPage> {
           print('Storing pref for img');
           prefs.setString('userImg', row[9].toString());
           print(prefs.getString('userImg'));
+          prefs.setString('userInputEmail', emailController.text.toString());
+          prefs.setString('userInputPassword', pwdController.text.toString());
+          prefs.setString('userUsername', row[1].toString());
+
+          Map<String, dynamic> userInfoMap = {
+            "userID": row[0],
+            "email": row[2].toString(),
+            "avatarName": row[2].replaceAll("@gmail.com", ""),
+            "username": row[1].toString(),
+            "imgUrl": row[9].toString(),
+          };
+
+          DatabaseMethods()
+              .addUserInfoToDB(prefs.getInt('userID').toString(), userInfoMap)
+              .then((value) {
+            EasyLoading.dismiss();
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => HomepageScreen(),
+              ),
+              (route) => false,
+            );
+          });
         }
-        EasyLoading.dismiss();
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => HomepageScreen(),
-          ),
-          (route) => false,
-        );
       } else {
         EasyLoading.dismiss();
         showDialog(

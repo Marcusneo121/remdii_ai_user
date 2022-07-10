@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/Screens/Chat/Models/chatMessageModel.dart';
@@ -6,9 +7,11 @@ import 'package:fyp/Screens/Chat/Models/ownMessageCard.model.dart';
 import 'package:fyp/Screens/Chat/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:linkable/linkable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-
+import '../../Services/database.dart';
+import 'AllChat/chatWithStaff.dart';
 import 'Models/buttonModel.dart';
 
 class ChatDetailPage extends StatefulWidget {
@@ -24,17 +27,54 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     ChatMessage(messageContent: "Hi", messageType: "sender", img: "null"),
   ];
 
+  String chatRoomID = "", messageID = "";
+  String myAvatarName = "", myEmail = "", myUsername = "";
+  late int myID;
+
+  getChatRoomIdByUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
+
+  getMyInfoFromSharedPreference() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    myID = pref.getInt('userID')!;
+    myAvatarName =
+        pref.getString('userInputEmail')!.replaceAll("@gmail.com", "");
+    myUsername = pref.getString('userUsername')!;
+    //myEmail = pref.getString('adminEmail')!;
+    setState(() {});
+  }
+
   void initState() {
+    getMyInfoFromSharedPreference();
+    getAdminUserInfo();
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
-            (_) => getBotResponse(messages[0].messageContent));
+        (_) => getBotResponse(messages[0].messageContent));
+  }
+
+  String profilePicUrl = "", name = "", avatarName = "";
+  //String chattingWithUsername = "";
+
+  getAdminUserInfo() async {
+    QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(0);
+    print("something ${querySnapshot.docs[0]["userID"]}");
+    setState(() {
+      name = "${querySnapshot.docs[0]["username"]}";
+      avatarName = "${querySnapshot.docs[0]["avatarName"]}";
+      profilePicUrl = "${querySnapshot.docs[0]["imgUrl"]}";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Timer(
       Duration(seconds: 1),
-          () => _controller.jumpTo(_controller.position.maxScrollExtent),
+      () => _controller.jumpTo(_controller.position.maxScrollExtent),
     );
     return Scaffold(
       appBar: AppBar(
@@ -151,9 +191,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                           setState(() => messages.add(
                                               new ChatMessage(
                                                   messageContent:
-                                                  messages[index]
-                                                      .btn[position]
-                                                      .title,
+                                                      messages[index]
+                                                          .btn[position]
+                                                          .title,
                                                   messageType: "sender",
                                                   img: "null",
                                                   btn: null)));
@@ -292,12 +332,39 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
       // } else if (choice == Constants.Clear) {
       //   setState(() => messages = []);
+
+      var chatRoomID = getChatRoomIdByUsername("admin1", myAvatarName);
+
+      Map<String, dynamic> chatRoomInfoMap = {
+        "users": [
+          myID,
+          myUsername,
+          myAvatarName,
+          0,
+          "admin1"
+          // myID,
+          // myUsername
+        ]
+      };
+
+      DatabaseMethods().createChatRoom(chatRoomID, chatRoomInfoMap);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) {
+          return ChatScreenWithStaff(
+            chatWithName: "REMDII Staff",
+            chatWithUsername: "admin1",
+            chatWithUserID: 0,
+          );
+        }),
+      );
     } else if (choice == Constants.Restart) {
       // restart
       setState(() => messages = [
-        ChatMessage(
-            messageContent: "Hi", messageType: "sender", img: "null")
-      ]);
+            ChatMessage(
+                messageContent: "Hi", messageType: "sender", img: "null")
+          ]);
       getBotResponse(messages[0].messageContent);
     }
   }

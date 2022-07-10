@@ -61,13 +61,15 @@ class _BodyState extends State<Body> {
             //shared preference here
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setInt('userID', row[0]);
-            print(prefs.getInt('userID'));
+            print("User ID :" + prefs.getInt('userID').toString());
             print('Storing pref for img');
             prefs.setString('userInputEmail', emailController.text.toString());
             prefs.setString(
                 'userInputPassword', passwordController.text.toString());
+            prefs.setString('userUsername', row[1].toString());
             print(prefs.getString('userInputEmail'));
             print(prefs.getString('userInputPassword'));
+            print(prefs.getString('userUsername'));
 
             if (row[9] != null) {
               setState(() {
