@@ -28,7 +28,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   ];
 
   String chatRoomID = "", messageID = "";
-  String myAvatarName = "", myEmail = "", myUsername = "";
+  String myAvatarName = "", myEmail = "", myUsername = "", myProfilePic = "";
   late int myID;
 
   getChatRoomIdByUsername(String a, String b) {
@@ -45,6 +45,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     myAvatarName =
         pref.getString('userInputEmail')!.replaceAll("@gmail.com", "");
     myUsername = pref.getString('userUsername')!;
+    myProfilePic = pref.getString('userImg')!;
     //myEmail = pref.getString('adminEmail')!;
     setState(() {});
   }
@@ -340,6 +341,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           myID,
           myUsername,
           myAvatarName,
+          myProfilePic,
           0,
           "admin1"
           // myID,

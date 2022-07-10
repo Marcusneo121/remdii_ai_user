@@ -13,6 +13,8 @@ import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Services/database.dart';
+
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -85,14 +87,27 @@ class _BodyState extends State<Body> {
             setState(() {
               visible = false;
             });
-            EasyLoading.dismiss();
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => HomepageScreen(),
-              ),
-              (route) => false,
-            );
+
+            Map<String, dynamic> userInfoMap = {
+              "userID": row[0],
+              "email": row[2].toString(),
+              "avatarName": row[2].replaceAll("@gmail.com", ""),
+              "username": row[1].toString(),
+              "imgUrl": imageToSave,
+            };
+
+            DatabaseMethods()
+                .addUserInfoToDB(prefs.getInt('userID').toString(), userInfoMap)
+                .then((value) {
+              EasyLoading.dismiss();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => HomepageScreen(),
+                ),
+                (route) => false,
+              );
+            });
           } else if (userPwd != row[3].toString()) {
             print("Wrong password");
             setState(() {
