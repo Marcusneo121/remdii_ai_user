@@ -106,6 +106,7 @@ class _HomepageState extends State<Homepage> {
               print(prefs.getInt('userID'));
               await prefs.remove('userInputEmail');
               await prefs.remove('userInputPassword');
+              await prefs.clear();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
