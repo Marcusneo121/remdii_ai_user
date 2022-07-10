@@ -88,6 +88,8 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
           sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
@@ -243,6 +245,8 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
                   children: [
                     Expanded(
                       child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Type a message...",
