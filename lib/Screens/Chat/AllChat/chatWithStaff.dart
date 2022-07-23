@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Services/database.dart';
+import '../../../constants.dart';
 
 class ChatScreenWithStaff extends StatefulWidget {
   final String chatWithUsername, chatWithName;
@@ -82,14 +84,14 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
     }
   }
 
-  Widget chatMessageTile(String message, bool sendByMe) {
+  Widget chatMessageTile(DateTime time, String message, bool sendByMe) {
     return Row(
       mainAxisAlignment:
           sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 200),
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 110),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
@@ -97,13 +99,28 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
               topRight: Radius.circular(20),
               bottomRight: sendByMe ? Radius.circular(0) : Radius.circular(24),
             ),
-            color: sendByMe ? Colors.blue : Color(0xFF3E4042),
+            //color: sendByMe ? Colors.blue : Color(0xFF3E4042),
+            color: sendByMe ? buttonColor : Color(0xFF3E4042),
           ),
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           padding: EdgeInsets.all(16),
-          child: Text(
-            message,
-            style: TextStyle(color: Colors.white),
+          child: Column(
+            crossAxisAlignment:
+                sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Text(
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              SizedBox(height: 5),
+              Text(
+                DateFormat('yyyy/MM/dd, hh:mm a').format(time).toString(),
+                style: TextStyle(
+                  color: sendByMe ? Colors.white.withOpacity(0.6) : Colors.grey,
+                  fontSize: 12,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -121,8 +138,8 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (BuildContext context, int index) {
                   var ds = snapshot.data?.docs[index];
-                  return chatMessageTile(
-                      ds!["message"], myUsername == ds["sendBy"]);
+                  return chatMessageTile(ds!["timeSent"].toDate(),
+                      ds["message"], myUsername == ds["sendBy"]);
                 },
               )
             : Center(
@@ -267,7 +284,7 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
                       },
                       child: Icon(
                         Icons.send,
-                        color: Colors.white,
+                        color: buttonColor,
                       ),
                     ),
                   ],

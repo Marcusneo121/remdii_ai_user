@@ -78,8 +78,8 @@ class _ViewResultState extends State<ViewResult> {
                 Image.memory(
                   base64.decode(widget.caseDetails.caseImg),
                   fit: BoxFit.fill,
-                  width: 300.0,
-                  height: 200.0,
+                  width: 280.0,
+                  height: 190.0,
                 ),
                 SizedBox(height: 10.0),
                 Align(
@@ -172,92 +172,95 @@ class _ViewResultState extends State<ViewResult> {
                         fontSize: 16.0),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 12.0),
                 Container(
                   width: size.width * 0.8,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(29),
-                          child: FlatButton(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 35),
-                              color: buttonColor,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return ProductScreen();
-                                    },
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                "Our Product",
-                                style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.0,
-                                    color: Colors.white),
-                              )),
+                  margin: EdgeInsets.symmetric(vertical: 4),
+                  child: FlatButton(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: buttonColor,
+                          width: 1,
+                          style: BorderStyle.solid,
                         ),
+                        borderRadius: BorderRadius.circular(29),
                       ),
-                      SizedBox(width: 9),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(29),
-                          child: FlatButton(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 35),
-                              color: buttonColor,
-                              onPressed: () {
-                                var chatRoomID = getChatRoomIdByUsername(
-                                    "admin1", myAvatarName);
-
-                                Map<String, dynamic> chatRoomInfoMap = {
-                                  "users": [
-                                    myID,
-                                    myUsername,
-                                    myAvatarName,
-                                    myProfilePic,
-                                    0,
-                                    "admin1"
-                                    // myID,
-                                    // myUsername
-                                  ]
-                                };
-
-                                DatabaseMethods().createChatRoom(
-                                    chatRoomID, chatRoomInfoMap);
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (_) {
-                                    return ChatScreenWithStaff(
-                                      chatWithName: "REMDII Staff",
-                                      chatWithUsername: "admin1",
-                                      chatWithUserID: 0,
-                                    );
-                                  }),
-                                );
-                              },
-                              child: Text(
-                                "Chat With Us",
-                                style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.0,
-                                    color: Colors.white),
-                              )),
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ProductScreen();
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Our Products",
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.5,
+                            color: buttonColor),
+                      )),
+                ),
+                Container(
+                  width: size.width * 0.8,
+                  margin: EdgeInsets.symmetric(vertical: 4),
+                  child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: buttonColor,
+                          width: 1,
+                          style: BorderStyle.solid,
                         ),
+                        borderRadius: BorderRadius.circular(29),
                       ),
-                    ],
-                  ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+                      color: Colors.white,
+                      onPressed: () {
+                        var chatRoomID =
+                            getChatRoomIdByUsername("admin1", myAvatarName);
+
+                        Map<String, dynamic> chatRoomInfoMap = {
+                          "users": [
+                            myID,
+                            myUsername,
+                            myAvatarName,
+                            myProfilePic,
+                            0,
+                            "admin1"
+                            // myID,
+                            // myUsername
+                          ]
+                        };
+
+                        DatabaseMethods()
+                            .createChatRoom(chatRoomID, chatRoomInfoMap);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) {
+                            return ChatScreenWithStaff(
+                              chatWithName: "REMDII Staff",
+                              chatWithUsername: "admin1",
+                              chatWithUserID: 0,
+                            );
+                          }),
+                        );
+                      },
+                      child: Text(
+                        "Chat With Us",
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.5,
+                            color: buttonColor),
+                      )),
                 ),
                 RoundedButton(
                   text: "Update Recovery Progress",
