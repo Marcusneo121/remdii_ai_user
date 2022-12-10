@@ -20,17 +20,19 @@ class RoundedOutlinedButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       width: size.width * 0.8,
-      child: FlatButton(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: color,
-              width: 1,
-              style: BorderStyle.solid,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // background (button) color
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: color,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(29),
             ),
-            borderRadius: BorderRadius.circular(29),
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
           ),
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-          color: Colors.white,
           onPressed: press,
           child: Text(
             text,

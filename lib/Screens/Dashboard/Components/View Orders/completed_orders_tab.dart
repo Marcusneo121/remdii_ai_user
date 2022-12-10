@@ -26,7 +26,7 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
   // var numOfItems = [1, 2, 1];
   // var totalPayment = [70.00, 25.00, 65.00];
   // final List<String> prod_img = <String>[
-  //   'assets/images/REMDII® Intensive Moisturising Cream 112ml.png',
+  //   'assets/images/REMDII Intensive Moisturising Cream 112ml.png',
   //   'assets/images/intensive_moisturing_cream.png',
   //   'assets/images/remdii_senstive_scalp_repair_spray.png',
   // ];
@@ -53,19 +53,24 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var orderIDResults = await conn.query(
-          'SELECT * FROM orderhistory WHERE user_id = ?', [prefs.getInt('userID')]);
+          'SELECT * FROM orderhistory WHERE user_id = ?',
+          [prefs.getInt('userID')]);
       for (var row1 in orderIDResults) {
         // print(id[0]);
         var detailResults = await conn.query(
             'SELECT prod_img, name, prod_desc, add_info, stock, '
-                'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
-                'FROM products, orderDetails, orderhistory '
-                'WHERE orderDetails.prodID = products.prod_id '
-                'AND orderhistory.orderID = orderdetails.orderID '
-                'AND status = "Completed" '
-                'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
+            'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
+            'FROM products, orderDetails, orderhistory '
+            'WHERE orderDetails.prodID = products.prod_id '
+            'AND orderhistory.orderID = orderdetails.orderID '
+            'AND status = "Completed" '
+            'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
             // [prefs.getInt('userID').toString()]);
-            [prefs.getInt('userID').toString(),row1[0].toString(),row1[0].toString()]);
+            [
+              prefs.getInt('userID').toString(),
+              row1[0].toString(),
+              row1[0].toString()
+            ]);
         print('hahahah');
         print(row1[0]);
 
@@ -87,26 +92,28 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
         print('a');
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-                'orderID, status, trackingNo, user_id, completedDate, completedTime, shippedDate, shippedTime, paymentImg '
-                'FROM orderhistory WHERE status = "Completed" '
-                'AND user_id = ? AND orderID = ?',
+            'orderID, status, trackingNo, user_id, completedDate, completedTime, shippedDate, shippedTime, paymentImg '
+            'FROM orderhistory WHERE status = "Completed" '
+            'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
         print('aa');
         for (var row in orderResults) {
-          orderList.add(Order(
-              orderTime: row[0],
-              orderDate: row[1],
-              orderDetails: orderDetail,
-              amount: row[2],
-              shippingFee: row[3],
-              orderID: row[4].toString(),
-              status: row[5],
-              trackingNo: row[6],
-              comTime: row[9],
-              comDate: row[8],
-              shippedTime: row[10],
-              shippedDate: row[11],
-          paymentImg: row[12].toString()),);
+          orderList.add(
+            Order(
+                orderTime: row[0],
+                orderDate: row[1],
+                orderDetails: orderDetail,
+                amount: row[2],
+                shippingFee: row[3],
+                orderID: row[4].toString(),
+                status: row[5],
+                trackingNo: row[6],
+                comTime: row[9],
+                comDate: row[8],
+                shippedTime: row[10],
+                shippedDate: row[11],
+                paymentImg: row[12].toString()),
+          );
         }
         orderDetail = [];
         print(orderResults);
@@ -114,7 +121,6 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
         print('orderlist ' + orderList.toString());
         print('orderDetails ' + orderDetail.toString());
         print(orderDetail.length);
-
       }
       return orderList;
     } catch (e) {
@@ -137,7 +143,8 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) => Container(
                     width: size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: Card(
                       elevation: 5.0,
                       shape: RoundedRectangleBorder(
@@ -145,7 +152,8 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
                       ),
                       child: Container(
                         width: size.width,
-                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +164,8 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
                                 width: 110.0,
                                 height: 100.0,
                                 child: Image.memory(
-                                  base64.decode('${snapshot.data[index].orderDetails[0].products.prod_img}'),
+                                  base64.decode(
+                                      '${snapshot.data[index].orderDetails[0].products.prod_img}'),
                                   fit: BoxFit.fill,
                                   width: 110.0,
                                   height: 100.0,
@@ -195,7 +204,7 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
                                   SizedBox(
                                     height: 10.0,
                                   ),
-                                  FlatButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -208,9 +217,13 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
                                         ),
                                       );
                                     },
-                                    color: buttonColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          buttonColor, // background (button) color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                     child: Text(
                                       'View',
@@ -238,9 +251,6 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
           return Center(
             child: CircularProgressIndicator(),
           );
-        }
-    );
-
-
+        });
   }
 }

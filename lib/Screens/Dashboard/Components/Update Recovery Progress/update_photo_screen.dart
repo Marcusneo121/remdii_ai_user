@@ -41,8 +41,8 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
       final request = http.MultipartRequest("POST", Uri.parse(url));
       final headers = {"Content-type": "multipart/form-data"};
 
-      request.files.add(http.MultipartFile('image',
-          _image!.readAsBytes().asStream(), _image!.lengthSync(),
+      request.files.add(http.MultipartFile(
+          'image', _image!.readAsBytes().asStream(), _image!.lengthSync(),
           filename: _image!.path.split("/").last));
 
       request.headers.addAll(headers);
@@ -158,7 +158,8 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
                           press: () async {
                             if (_image != null) {
                               print('Storing pref for img');
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
                               prefs.setString('caseImg', imagenConvertida!);
                               print('Checked!!');
                               print(prefs.getString('caseImg'));
@@ -171,15 +172,14 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
                                   },
                                 ),
                               );
-                            }else{
+                            } else {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: new Text(
-                                        'Please capture an image.'),
+                                    title: new Text('Please capture an image.'),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      ElevatedButton(
                                         child: new Text("OK"),
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -190,10 +190,6 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
                                 },
                               );
                             }
-
-
-
-
                           }))
                 ],
               )

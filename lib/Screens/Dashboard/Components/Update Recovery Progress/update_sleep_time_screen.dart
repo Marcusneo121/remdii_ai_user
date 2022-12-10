@@ -168,7 +168,7 @@ class _UpdateSleepTimeScreenState extends State<UpdateSleepTimeScreen> {
                     name: 'sleep_time',
                     inputType: InputType.time,
                     format: DateFormat.Hm(),
-                    alwaysUse24HourFormat: true,
+                    //alwaysUse24HourFormat: true,
                     initialTime: TimeOfDay(hour: 23, minute: 0),
                     decoration: InputDecoration(
                       icon: Icon(FontAwesomeIcons.solidMoon,
@@ -205,7 +205,7 @@ class _UpdateSleepTimeScreenState extends State<UpdateSleepTimeScreen> {
                     name: 'wake_up_time',
                     inputType: InputType.time,
                     format: DateFormat.Hm(),
-                    alwaysUse24HourFormat: true,
+                    //alwaysUse24HourFormat: true,
                     initialTime: TimeOfDay(hour: 8, minute: 0),
                     decoration: InputDecoration(
                       icon: Icon(FontAwesomeIcons.solidSun,

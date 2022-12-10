@@ -47,12 +47,12 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
         // print(id[0]);
         var detailResults = await conn.query(
             'SELECT prod_img, name, prod_desc, add_info, stock, '
-                'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
-                'FROM products, orderDetails, orderhistory '
-                'WHERE orderDetails.prodID = products.prod_id '
-                'AND orderhistory.orderID = orderdetails.orderID '
-                'AND status = "Ongoing"'
-                'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
+            'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
+            'FROM products, orderDetails, orderhistory '
+            'WHERE orderDetails.prodID = products.prod_id '
+            'AND orderhistory.orderID = orderdetails.orderID '
+            'AND status = "Ongoing"'
+            'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
             [
               prefs.getInt('userID').toString(),
               row1[0].toString(),
@@ -81,9 +81,9 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
 
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-                'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg '
-                'FROM orderhistory WHERE status = "Ongoing" '
-                'AND user_id = ? AND orderID = ?',
+            'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg '
+            'FROM orderhistory WHERE status = "Ongoing" '
+            'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
         print(orderResults);
         for (var row in orderResults) {
@@ -101,7 +101,7 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                 comDate: '',
                 shippedTime: row[9],
                 shippedDate: row[8],
-            paymentImg: row[10].toString()),
+                paymentImg: row[10].toString()),
           );
         }
         orderDetail = [];
@@ -132,7 +132,7 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                   itemBuilder: (BuildContext context, int index) => Container(
                     width: size.width,
                     padding:
-                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: Card(
                       elevation: 5.0,
                       shape: RoundedRectangleBorder(
@@ -152,7 +152,8 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                                 width: 110.0,
                                 height: 100.0,
                                 child: Image.memory(
-                                  base64.decode('${snapshot.data[index].orderDetails[0].products.prod_img}'),
+                                  base64.decode(
+                                      '${snapshot.data[index].orderDetails[0].products.prod_img}'),
                                   fit: BoxFit.fill,
                                   width: 110.0,
                                   height: 100.0,
@@ -191,7 +192,7 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                                   SizedBox(
                                     height: 10.0,
                                   ),
-                                  FlatButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -204,10 +205,13 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                                         ),
                                       );
                                     },
-                                    color: buttonColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(20.0),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          buttonColor, // background (button) color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                     child: Text(
                                       'View',

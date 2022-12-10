@@ -356,7 +356,7 @@ class _OngoingOrderDetailsState extends State<OngoingOrderDetails> {
                                     title: new Text(
                                         'Your order has been completed successfully.'),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      ElevatedButton(
                                         child: new Text("Back to Home"),
                                         onPressed: () {
                                           Navigator.pushAndRemoveUntil(

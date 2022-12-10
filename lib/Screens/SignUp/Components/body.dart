@@ -154,7 +154,7 @@ class _BodyPageState extends State<BodyPage> {
               title: new Text(
                   'Email existed in our database. Please sign up with a new email.'),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: new Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();

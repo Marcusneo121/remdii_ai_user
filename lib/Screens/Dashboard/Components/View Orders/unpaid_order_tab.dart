@@ -47,12 +47,12 @@ class _UnpaidOrderTabState extends State<UnpaidOrderTab> {
         // print(id[0]);
         var detailResults = await conn.query(
             'SELECT prod_img, name, prod_desc, add_info, stock, '
-                'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
-                'FROM products, orderDetails, orderhistory '
-                'WHERE orderDetails.prodID = products.prod_id '
-                'AND orderhistory.orderID = orderdetails.orderID '
-                'AND status = "Unpaid"'
-                'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
+            'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
+            'FROM products, orderDetails, orderhistory '
+            'WHERE orderDetails.prodID = products.prod_id '
+            'AND orderhistory.orderID = orderdetails.orderID '
+            'AND status = "Unpaid"'
+            'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
             [
               prefs.getInt('userID').toString(),
               row1[0].toString(),
@@ -79,9 +79,9 @@ class _UnpaidOrderTabState extends State<UnpaidOrderTab> {
 
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-                'orderID, status, trackingNo, user_id, shippedDate, shippedTime '
-                'FROM orderhistory WHERE status = "Unpaid" '
-                'AND user_id = ? AND orderID = ?',
+            'orderID, status, trackingNo, user_id, shippedDate, shippedTime '
+            'FROM orderhistory WHERE status = "Unpaid" '
+            'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
         print(orderResults);
         for (var row in orderResults) {
@@ -98,7 +98,8 @@ class _UnpaidOrderTabState extends State<UnpaidOrderTab> {
                 comTime: '',
                 comDate: '',
                 shippedTime: row[9],
-                shippedDate: row[8], paymentImg: ''),
+                shippedDate: row[8],
+                paymentImg: ''),
           );
         }
         orderDetail = [];
@@ -119,119 +120,123 @@ class _UnpaidOrderTabState extends State<UnpaidOrderTab> {
     return FutureBuilder(
         future: _future,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
-        if (snapshot.data.length > 0) {
-          return Container(
-            padding: EdgeInsets.only(top: 15.0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) => Container(
-                width: size.width,
-                padding:
-                EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                child: Card(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0.0),
-                  ),
-                  child: Container(
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data.length > 0) {
+              return Container(
+                padding: EdgeInsets.only(top: 15.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) => Container(
                     width: size.width,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: 110.0,
-                            height: 100.0,
-                            child: Image.memory(
-                              base64.decode('${snapshot.data[index].orderDetails[0].products.prod_img}'),
-                              fit: BoxFit.fill,
-                              width: 110.0,
-                              height: 100.0,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      child: Container(
+                        width: size.width,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: 110.0,
+                                height: 100.0,
+                                child: Image.memory(
+                                  base64.decode(
+                                      '${snapshot.data[index].orderDetails[0].products.prod_img}'),
+                                  fit: BoxFit.fill,
+                                  width: 110.0,
+                                  height: 100.0,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Order Date: ${snapshot.data[index].orderDate}',
-                                style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 16.0),
-                              ),
-                              Text(
-                                '${snapshot.data[index].orderDetails.length} ITEM(S)',
-                                style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 16.0),
-                              ),
-                              Text(
-                                'TOTAL PAYMENT: RM ${snapshot.data[index].amount.toStringAsFixed(2)}',
-                                style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 16.0),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return UnpaidOrderDetails(
-                                          order: snapshot.data[index],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                color: buttonColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(20.0),
-                                ),
-                                child: Text(
-                                  'View',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18.0,
-                                    color: Colors.white,
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Order Date: ${snapshot.data[index].orderDate}',
+                                    style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.0),
                                   ),
-                                ),
+                                  Text(
+                                    '${snapshot.data[index].orderDetails.length} ITEM(S)',
+                                    style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.0),
+                                  ),
+                                  Text(
+                                    'TOTAL PAYMENT: RM ${snapshot.data[index].amount.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.0),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return UnpaidOrderDetails(
+                                              order: snapshot.data[index],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          buttonColor, // background (button) color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'View',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }
+            return Center(child: Text('Your order history is empty now.'));
+          }
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        }
-        return Center(child: Text('Your order history is empty now.'));
-      }
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    });
+        });
   }
 }

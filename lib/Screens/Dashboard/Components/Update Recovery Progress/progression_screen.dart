@@ -76,20 +76,20 @@ class _ProgressionScreenState extends State<ProgressionScreen> {
                   RoundedButton(
                     text: "I'm Recovering",
                     color: buttonColor2,
-                    press: ()  {
+                    press: () {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => HomepageScreen(),
                         ),
-                            (route) => false,
+                        (route) => false,
                       );
                     },
                   ),
                   RoundedButton(
                     text: "Continue Update",
                     press: () async {
-                      await localNotifyManager.scheduleNotification();
+                      //await localNotifyManager.scheduleNotification();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(

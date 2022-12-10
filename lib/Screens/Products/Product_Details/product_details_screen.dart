@@ -196,96 +196,99 @@ class PDetailsScreen extends StatelessWidget {
               // RelatedProducts(),
               RoundedButton(
                 text: "Add to Cart",
-                press: product.stock == 'Out of Stock'? (){
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: new Text(
-                            'The item is out of stock.'),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: new Text("OK"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  var settings = new ConnectionSettings(
-                    host: connection.host,
-                    port: connection.port,
-                    user: connection.user,
-                    password: connection.pw,
-                    db: connection.db,
-                  );
-                  var conn = await MySqlConnection.connect(settings);
-                  print(getCounter());
-                  var counterValue = getCounter();
-                  if (getCounter() == null) counterValue = 1;
-                  var result = await conn.query(
-                      'SELECT * FROM cart '
-                      'WHERE user_id = ? AND prod_id = ?',
-                      [prefs.getInt('userID'), product.prod_id]);
+                press: product.stock == 'Out of Stock'
+                    ? () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: new Text('The item is out of stock.'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: new Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    : () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        var settings = new ConnectionSettings(
+                          host: connection.host,
+                          port: connection.port,
+                          user: connection.user,
+                          password: connection.pw,
+                          db: connection.db,
+                        );
+                        var conn = await MySqlConnection.connect(settings);
+                        print(getCounter());
+                        var counterValue = getCounter();
+                        if (getCounter() == null) counterValue = 1;
+                        var result = await conn.query(
+                            'SELECT * FROM cart '
+                            'WHERE user_id = ? AND prod_id = ?',
+                            [prefs.getInt('userID'), product.prod_id]);
 
-                  if (result.isEmpty) {
-                    await conn.query(
-                        'INSERT INTO cart'
-                        '(user_id, prod_id, qty) VALUE (?, ?, ?)',
-                        [
-                          prefs.getInt('userID'),
-                          product.prod_id,
-                          counterValue
-                        ]);
-                    final snackBar = SnackBar(
-                      content: const Text('Added to cart successfully!'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    var qty;
-                    for (var row in result) {
-                      qty = row[2];
-                    }
-                    counterValue += qty;
-                    if (counterValue <= 10) {
-                      await conn.query(
-                          'UPDATE cart SET qty=? WHERE user_id=? AND prod_id = ?',
-                          [
-                            counterValue,
-                            prefs.getInt('userID'),
-                            product.prod_id
-                          ]);
-                      final snackBar = SnackBar(
-                        content: const Text('Added to cart successfully!'),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }else{
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: new Text(
-                                'You have reached the maximum number of purchase limit.'),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: new Text("OK"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
+                        if (result.isEmpty) {
+                          await conn.query(
+                              'INSERT INTO cart'
+                              '(user_id, prod_id, qty) VALUE (?, ?, ?)',
+                              [
+                                prefs.getInt('userID'),
+                                product.prod_id,
+                                counterValue
+                              ]);
+                          final snackBar = SnackBar(
+                            content: const Text('Added to cart successfully!'),
                           );
-                        },
-                      );
-                    }
-                  }
-                  await conn.close();
-                },
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          var qty;
+                          for (var row in result) {
+                            qty = row[2];
+                          }
+                          counterValue += qty;
+                          if (counterValue <= 10) {
+                            await conn.query(
+                                'UPDATE cart SET qty=? WHERE user_id=? AND prod_id = ?',
+                                [
+                                  counterValue,
+                                  prefs.getInt('userID'),
+                                  product.prod_id
+                                ]);
+                            final snackBar = SnackBar(
+                              content:
+                                  const Text('Added to cart successfully!'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text(
+                                      'You have reached the maximum number of purchase limit.'),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: new Text("OK"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                        await conn.close();
+                      },
               ),
             ],
           ),

@@ -182,7 +182,7 @@ class _AffectBodyState extends State<AffectBody> {
                             title:
                                 new Text('Please enter at least one option.'),
                             actions: <Widget>[
-                              FlatButton(
+                              ElevatedButton(
                                 child: new Text("OK"),
                                 onPressed: () {
                                   Navigator.of(context).pop();

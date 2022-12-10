@@ -17,14 +17,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomepageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Homepage(),
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-    );
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: Homepage(),
+    // theme: ThemeData(
+    //   primaryColor: kPrimaryColor,
+    //   scaffoldBackgroundColor: Colors.white,
+    // ),
+    // );
+    return Homepage();
   }
 }
 

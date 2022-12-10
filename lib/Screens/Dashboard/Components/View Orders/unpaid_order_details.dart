@@ -392,7 +392,7 @@ class _UnpaidOrderDetailsState extends State<UnpaidOrderDetails> {
                                       title: new Text(
                                           'Your payment receipt has been uploaded for verification purpose. Your order will be placed once the payment has been verified by our staff.'),
                                       actions: <Widget>[
-                                        FlatButton(
+                                        ElevatedButton(
                                           child: new Text("Back to Home"),
                                           onPressed: () {
                                             Navigator.pushAndRemoveUntil(
@@ -418,7 +418,7 @@ class _UnpaidOrderDetailsState extends State<UnpaidOrderDetails> {
                                       title: new Text(
                                           'Please upload your payment receipt for verification purpose to place your order.'),
                                       actions: <Widget>[
-                                        FlatButton(
+                                        ElevatedButton(
                                           child: new Text("OK"),
                                           onPressed: () {
                                             Navigator.pop(context);

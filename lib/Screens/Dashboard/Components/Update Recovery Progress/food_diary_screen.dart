@@ -80,7 +80,7 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
             return AlertDialog(
               title: new Text('Please enter other food you had eaten.'),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: new Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -243,7 +243,7 @@ class _FoodDiaryScreenState extends State<FoodDiaryScreen> {
                                 title: new Text(
                                     'Please enter at least one option.'),
                                 actions: <Widget>[
-                                  FlatButton(
+                                  ElevatedButton(
                                     child: new Text("OK"),
                                     onPressed: () {
                                       Navigator.of(context).pop();

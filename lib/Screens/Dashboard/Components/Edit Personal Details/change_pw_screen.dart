@@ -26,29 +26,30 @@ class _ChangePWScreenState extends State<ChangePWScreen> {
       db: connection.db);
 
   changePW() async {
-    try{
+    try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var conn = await MySqlConnection.connect(settings);
       print(prefs.getInt('userID'));
 
-      if(prefs.getInt('userID') != null){
+      if (prefs.getInt('userID') != null) {
         String oldPW = '';
-        var readPW = await conn.query('SELECT user_pwd FROM customer WHERE user_id = ?', [prefs.getInt('userID')]);
-        for(var row in readPW){
+        var readPW = await conn.query(
+            'SELECT user_pwd FROM customer WHERE user_id = ?',
+            [prefs.getInt('userID')]);
+        for (var row in readPW) {
           oldPW = row[0].toString();
         }
-        if(oldPW == oldPwdController.text){
+        if (oldPW == oldPwdController.text) {
           var results = await conn.query(
-              'UPDATE customer SET user_pwd = ? WHERE user_id = ? ' ,
+              'UPDATE customer SET user_pwd = ? WHERE user_id = ? ',
               [pwdController.text, prefs.getInt('userID').toString()]);
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: new Text(
-                    'Your passwords have been changed.'),
+                title: new Text('Your passwords have been changed.'),
                 actions: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                     child: new Text("OK"),
                     onPressed: () {
                       Navigator.push(
@@ -65,15 +66,14 @@ class _ChangePWScreenState extends State<ChangePWScreen> {
               );
             },
           );
-        }else{
+        } else {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: new Text(
-                    'Your old password is incorrect'),
+                title: new Text('Your old password is incorrect'),
                 actions: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                     child: new Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -86,7 +86,7 @@ class _ChangePWScreenState extends State<ChangePWScreen> {
         }
       }
       await conn.close();
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
@@ -169,7 +169,7 @@ class _ChangePWScreenState extends State<ChangePWScreen> {
                 ),
                 RoundedButton(
                   text: "Change Password",
-                  press: () async{
+                  press: () async {
                     if (formGlobalKey.currentState!.validate()) {
                       formGlobalKey.currentState!.save();
                       await changePW();

@@ -31,22 +31,22 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
       password: connection.pw,
       db: connection.db);
 
-  forgotPW() async{
+  forgotPW() async {
     var conn = await MySqlConnection.connect(settings);
-    try{
+    try {
       var results = await conn.query(
           'SELECT * FROM customer WHERE user_email = ?',
           [emailController.text]);
 
-      if(results.isEmpty){
+      if (results.isEmpty) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: new Text(
-                  'User not found. Please sign up with new account.'),
+              title:
+                  new Text('User not found. Please sign up with new account.'),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: new Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -56,10 +56,10 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
             );
           },
         );
-      }else{
-        for(var row in results){
+      } else {
+        for (var row in results) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setInt('userID',row[0]);
+          prefs.setInt('userID', row[0]);
         }
 
         Navigator.push(
@@ -72,7 +72,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
         );
       }
       await conn.close();
-    }catch (e) {
+    } catch (e) {
       print(e);
     }
   }
@@ -84,13 +84,13 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
           'SELECT * FROM customer WHERE user_email = ?',
           [emailController.text]);
 
-      if(Qresult.isNotEmpty){
+      if (Qresult.isNotEmpty) {
         var result = await emailAuth.sendOtp(
           recipientMail: emailController.value.text,
           otpLength: 6,
         );
 
-        if(result){
+        if (result) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -98,7 +98,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
                 title: new Text(
                     'One-time password (OTP) has been sent to your email. Please enter the one-time password (OTP) given.'),
                 actions: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                     child: new Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -108,7 +108,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
               );
             },
           );
-        } else{
+        } else {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -116,7 +116,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
                 title: new Text(
                     'Fail to send one-time password (OTP) to your email. Please re-enter a valid email address.'),
                 actions: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                     child: new Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -127,7 +127,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
             },
           );
         }
-      }else{
+      } else {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -135,7 +135,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
               title: new Text(
                   'Email not existed in our database. Please sign up with a new email.'),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: new Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -146,7 +146,6 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
           },
         );
       }
-
     } on Exception catch (e) {
       // TODO
       print(e);
@@ -161,7 +160,6 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
     if (result) {
       print("OTP Verfied");
       checkEmail = true;
-
     } else {
       showDialog(
         context: context,
@@ -170,7 +168,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
             title: new Text(
                 'Invalid one-time password (OTP) given. Please re-enter the one-time password (OTP) sent to your email.'),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: new Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -294,11 +292,11 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
                 ),
                 RoundedButton(
                   text: "Next",
-                  press: () async{
+                  press: () async {
                     if (formGlobalKey.currentState!.validate()) {
                       formGlobalKey.currentState!.save();
                       verifyOTP();
-                      if(checkEmail){
+                      if (checkEmail) {
                         await forgotPW();
                       }
                     }

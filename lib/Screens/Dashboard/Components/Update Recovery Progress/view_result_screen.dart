@@ -176,18 +176,21 @@ class _ViewResultState extends State<ViewResult> {
                 Container(
                   width: size.width * 0.8,
                   margin: EdgeInsets.symmetric(vertical: 4),
-                  child: FlatButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: buttonColor,
-                          width: 1,
-                          style: BorderStyle.solid,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.white, // background (button) color
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: buttonColor,
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                          borderRadius: BorderRadius.circular(29),
                         ),
-                        borderRadius: BorderRadius.circular(29),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 35),
                       ),
-                      color: Colors.white,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -210,18 +213,21 @@ class _ViewResultState extends State<ViewResult> {
                 Container(
                   width: size.width * 0.8,
                   margin: EdgeInsets.symmetric(vertical: 4),
-                  child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: buttonColor,
-                          width: 1,
-                          style: BorderStyle.solid,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.white, // background (button) color
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: buttonColor,
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                          borderRadius: BorderRadius.circular(29),
                         ),
-                        borderRadius: BorderRadius.circular(29),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 35),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-                      color: Colors.white,
                       onPressed: () {
                         var chatRoomID =
                             getChatRoomIdByUsername("admin1", myAvatarName);

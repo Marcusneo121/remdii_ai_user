@@ -28,10 +28,10 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
   // var numOfItems = [1, 2, 1, 3, 1, 2];
   // var totalPayment = [70.00, 25.00, 65.00, 88.00, 90.00, 35.00];
   // final List<String> prod_img = <String>[
-  //   'assets/images/REMDII® Calming Body Wash.png',
+  //   'assets/images/REMDII Calming Body Wash.png',
   //   'assets/images/intensive_moisturing_cream.png',
   //   'assets/images/remdii_senstive_scalp_repair_spray.png',
-  //   'assets/images/REMDII® Intensive Moisturising Cream 112ml.png',
+  //   'assets/images/REMDII Intensive Moisturising Cream 112ml.png',
   //   'assets/images/intensive_moisturing_cream.png',
   //   'assets/images/remdii_senstive_scalp_repair_spray.png',
   // ];
@@ -117,7 +117,7 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
                 comDate: '',
                 shippedTime: row[9],
                 shippedDate: row[8],
-            paymentImg: row[10].toString()),
+                paymentImg: row[10].toString()),
           );
         }
         orderDetail = [];
@@ -168,7 +168,8 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
                                 width: 110.0,
                                 height: 100.0,
                                 child: Image.memory(
-                                  base64.decode('${snapshot.data[index].orderDetails[0].products.prod_img}'),
+                                  base64.decode(
+                                      '${snapshot.data[index].orderDetails[0].products.prod_img}'),
                                   fit: BoxFit.fill,
                                   width: 110.0,
                                   height: 100.0,
@@ -207,7 +208,7 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
                                   SizedBox(
                                     height: 10.0,
                                   ),
-                                  FlatButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -220,10 +221,13 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
                                         ),
                                       );
                                     },
-                                    color: buttonColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          buttonColor, // background (button) color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                     child: Text(
                                       'View',

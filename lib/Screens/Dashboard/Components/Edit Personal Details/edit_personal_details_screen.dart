@@ -420,7 +420,7 @@ class _EditPersonalDetailsState extends State<EditPersonalDetails> {
                                         title: new Text(
                                             'Your changes have been saved successfully.'),
                                         actions: <Widget>[
-                                          FlatButton(
+                                          ElevatedButton(
                                             child: new Text("Back to Home"),
                                             onPressed: () {
                                               Navigator.pushAndRemoveUntil(

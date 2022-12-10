@@ -454,8 +454,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                             }
                                             // final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-                                            await localNotifyManager
-                                                .scheduleNotification();
+                                            // await localNotifyManager
+                                            //     .scheduleNotification();
 
                                             // print(prefs.getStringList('bodyPart')!.join(","));
                                             await conn.query(

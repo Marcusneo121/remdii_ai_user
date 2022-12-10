@@ -4,6 +4,8 @@ import 'package:fyp/Screens/EczemaDiagnosis/Components/body.dart';
 class EDiagnosisScreen extends StatelessWidget {
   //const EDiagnosisScreen({Key? key}) : super(key: key);
 
+  //we are using FVM 2.2.6
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

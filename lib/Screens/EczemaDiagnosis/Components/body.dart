@@ -197,7 +197,7 @@ class _BodyState extends State<Body> {
                                   return AlertDialog(
                                     title: new Text('Please capture an image.'),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      ElevatedButton(
                                         child: new Text("OK"),
                                         onPressed: () {
                                           Navigator.pop(context);

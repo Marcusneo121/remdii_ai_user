@@ -190,7 +190,7 @@ class _ViewUpdateState extends State<ViewUpdate> {
                             Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(top: 52.0),
-                              child: FlatButton(
+                              child: ElevatedButton(
                                 onPressed: () async {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
@@ -209,9 +209,12 @@ class _ViewUpdateState extends State<ViewUpdate> {
                                     ),
                                   );
                                 },
-                                color: buttonColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      buttonColor, // background (button) color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
                                 ),
                                 child: Text(
                                   'View',

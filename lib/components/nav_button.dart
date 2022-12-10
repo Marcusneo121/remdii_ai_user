@@ -16,9 +16,15 @@ class nav_button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FlatButton(
+      child: ElevatedButton(
         onPressed: press,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+            backgroundColor: Color(0xFFDEDEDE), // background (button) color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(29.0),
+            ),
+            elevation: 0.0),
         child: Row(
           children: [
             Icon(

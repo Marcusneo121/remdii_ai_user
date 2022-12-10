@@ -25,7 +25,7 @@ List<Product> products = [
   Product(
       id: 2,
       title: "REMDII® Calming Body Wash 250ml",
-      image: "assets/images/REMDII® Calming Body Wash.png",
+      image: "assets/images/REMDII Calming Body Wash.png",
       price: 32.00,
       description:
           "This refreshing body wash enriched with vitamin E to remove dirt thoroughly while maintaining skin moisturized",
@@ -34,7 +34,7 @@ List<Product> products = [
   Product(
       id: 3,
       title: "REMDII® Intensive Moisturising Cream 112ml",
-      image: "assets/images/REMDII® Intensive Moisturising Cream 112ml.png",
+      image: "assets/images/REMDII Intensive Moisturising Cream 112ml.png",
       price: 85.00,
       description:
           "A lightweight intensive moisturizing cream formulated with bioengineered vitamin E, which provides instant hydration to relieve dry skin",
@@ -43,7 +43,7 @@ List<Product> products = [
   Product(
       id: 4,
       title: "REMDII® Intensive Moisturising Cream 250ml",
-      image: "assets/images/REMDII® Intensive Moisturising Cream 250ml.png",
+      image: "assets/images/REMDII Intensive Moisturising Cream 250ml.png",
       price: 150.00,
       description:
           "A lightweight intensive moisturizing cream formulated with bioengineered vitamin E, which provides instant hydration to relieve dry skin",
@@ -71,7 +71,7 @@ List<Product> products = [
       id: 7,
       title: "REMDII® Ultra Sensitive Intensive Barrier Repair Cream 50ml",
       image:
-          "assets/images/REMDII® Ultra Sensitive Intensive Barrier Repair Cream 50ml.png",
+          "assets/images/REMDII Ultra Sensitive Intensive Barrier Repair Cream 50ml.png",
       price: 80.00,
       description:
           "A nourishing rich texture intensive moisturizing cream that provides deep skin moisturized, makes it ideal for intensive and long-lasting skin hydration",
@@ -81,7 +81,7 @@ List<Product> products = [
       id: 8,
       title: "REMDII® Ultra Sensitive Intensive Barrier Repair Cream 150ml",
       image:
-          "assets/images/REMDII® Ultra Sensitive Intensive Barrier Repair Cream 150ml.png",
+          "assets/images/REMDII Ultra Sensitive Intensive Barrier Repair Cream 150ml.png",
       price: 150.00,
       description:
           "A nourishing rich texture intensive moisturizing cream that provides deep skin moisturized, makes it ideal for intensive and long-lasting skin hydration.",

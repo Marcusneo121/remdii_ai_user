@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                   title: new Text(
                       'Invalid password entered. Please provide a valid password.'),
                   actions: <Widget>[
-                    FlatButton(
+                    ElevatedButton(
                       child: new Text("OK"),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -146,7 +146,7 @@ class _BodyState extends State<Body> {
               title: new Text(
                   'Email does not exist. Please create a new account.'),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: new Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
