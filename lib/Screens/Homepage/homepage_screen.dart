@@ -148,7 +148,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget menuItem(int id, String title, IconData icon, bool selected) {
     return Material(
-      color: selected ? Colors.grey[200] : Colors.transparent,
+      color: selected ? Colors.white : Colors.transparent,
       child: InkWell(
         onTap: () {
           Navigator.pop(context);

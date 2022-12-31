@@ -11,6 +11,7 @@ import 'package:fyp/components/rounded_password_field.dart';
 import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:fyp/DB_Models/connection.dart';
+import 'package:mysql_client/mysql_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -68,6 +69,13 @@ class _BodyPageState extends State<BodyPage> {
   // }
 
   Future userSignUp() async {
+    // final conn = await MySQLConnection.createConnection(
+    //   host: connection.host,
+    //   port: connection.port,
+    //   userName: connection.user,
+    //   password: connection.pw,
+    //   databaseName: connection.db, // optional
+    // );
     try {
       // setState(() {
       //   var bytes = _image!.readAsBytesSync();
@@ -87,9 +95,19 @@ class _BodyPageState extends State<BodyPage> {
 
       EasyLoading.show(status: 'Signing Up...');
       var conn = await MySqlConnection.connect(settings);
+
       var result = await conn.query(
           'SELECT * FROM customer WHERE user_email = ?',
           [emailController.text]);
+
+      //MySQL 3.8
+      // await conn.connect();
+      // var result = await conn.execute(
+      //   "SELECT * FROM customer WHERE user_email = :userEmail",
+      //   {
+      //     "userEmail": emailController.text,
+      //   },
+      // );
       if (result.isEmpty) {
         var insertResult = await conn.query(
             'insert into customer '
@@ -110,9 +128,28 @@ class _BodyPageState extends State<BodyPage> {
               // add2Controller.text,
               // add3Controller.text
             ]);
+
+        //MySQL 3.8
+        // var insertResult = await conn.execute(
+        //   "INSERT INTO customer (user_name, user_email, user_pwd, user_phone,"
+        //   "user_ic, user_add_1, user_add_2, user_add_3, user_img)"
+        //   "VALUES (:username, :email, :password, :phone, :ic, :address1, :address2, :address3, userimage)",
+        //   {
+        //     "username": nameController.text,
+        //     "email": emailController.text,
+        //     "password": pwdController.text,
+        //     "phone": phoneController.text,
+        //     "ic": '',
+        //     "address1": '',
+        //     "address2": '',
+        //     "address3": '',
+        //     "userimage": image,
+        //   },
+        // );
         var chkResult = await conn.query(
             'SELECT * FROM customer WHERE user_email = ?',
             [emailController.text]);
+
         for (var row in chkResult) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setInt('userID', row[0]);
@@ -131,6 +168,32 @@ class _BodyPageState extends State<BodyPage> {
             "username": row[1].toString(),
             "imgUrl": row[9].toString(),
           };
+
+          //MySQL 3.8 version
+          // var chkResult = await conn.execute(
+          //   "SELECT * FROM customer WHERE user_email = :userEmail",
+          //   {
+          //     "userEmail": emailController.text,
+          //   },
+          // );
+          // for (var row in chkResult.rows) {
+          //   SharedPreferences prefs = await SharedPreferences.getInstance();
+          //   prefs.setString('userID', row.colAt(0).toString());
+          //   print(prefs.getString('userID'));
+          //   print('Storing pref for img');
+          //   prefs.setString('userImg', row.colAt(9).toString());
+          //   print(prefs.getString('userImg'));
+          //   prefs.setString('userInputEmail', emailController.text.toString());
+          //   prefs.setString('userInputPassword', pwdController.text.toString());
+          //   prefs.setString('userUsername', row.colAt(1).toString());
+
+          //   Map<String, dynamic> userInfoMap = {
+          //     "userID": row.colAt(0).toString(),
+          //     "email": row.colAt(2).toString(),
+          //     "avatarName": row.colAt(2).toString().replaceAll("@gmail.com", ""),
+          //     "username": row.colAt(1).toString(),
+          //     "imgUrl": row.colAt(9).toString(),
+          //   };
 
           DatabaseMethods()
               .addUserInfoToDB(prefs.getInt('userID').toString(), userInfoMap)

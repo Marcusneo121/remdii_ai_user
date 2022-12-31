@@ -20,7 +20,7 @@ class nav_button extends StatelessWidget {
         onPressed: press,
         style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-            backgroundColor: Color(0xFFDEDEDE), // background (button) color
+            backgroundColor: Color(0xFFFFFFFF), // background (button) color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(29.0),
             ),
@@ -39,6 +39,7 @@ class nav_button extends StatelessWidget {
               text,
               style: TextStyle(
                   fontFamily: 'Lato',
+                  color: Colors.black,
                   fontWeight: FontWeight.w800,
                   fontSize: 20.0),
             ),
