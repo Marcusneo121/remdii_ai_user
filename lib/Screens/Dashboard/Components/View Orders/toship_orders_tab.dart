@@ -64,11 +64,11 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
         var detailResults = await conn.query(
             'SELECT prod_img, name, prod_desc, add_info, stock, '
             'orderdetails.prodID, series_id, price, qty, totalPrice, orderhistory.orderID, status '
-            'FROM products, orderDetails, orderhistory '
-            'WHERE orderDetails.prodID = products.prod_id '
+            'FROM products, orderdetails, orderhistory '
+            'WHERE orderdetails.prodID = products.prod_id '
             'AND orderhistory.orderID = orderdetails.orderID '
             'AND status = "Shipping"'
-            'AND orderhistory.user_id = ? AND orderDetails.orderID = ? AND orderHistory.orderID = ? ',
+            'AND orderhistory.user_id = ? AND orderdetails.orderID = ? AND orderhistory.orderID = ? ',
             [
               prefs.getInt('userID').toString(),
               row1[0].toString(),

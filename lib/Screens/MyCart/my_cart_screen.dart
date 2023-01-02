@@ -181,6 +181,7 @@ class _CheckCartDetailsState extends State<CheckCartDetails> {
                             },
                           );
                         } else {
+                          print(total.toString());
                           Navigator.push(
                             context,
                             MaterialPageRoute(

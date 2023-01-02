@@ -22,6 +22,7 @@ class _OrderCompletedScreenState extends State<OrderCompletedScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Checkout",
@@ -58,13 +59,8 @@ class _OrderCompletedScreenState extends State<OrderCompletedScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/images/completed.png"),
-                SizedBox(
-                  height: 80.0,
-                ),
-                Image.asset("assets/images/OrderCompleted.png"),
-                SizedBox(
-                  height: 90.0,
-                ),
+                Image.asset("assets/images/OrderCompleted2.png"),
+                SizedBox(height: 5),
                 RoundedButton(
                     text: "Back to Home",
                     press: () async {
@@ -103,7 +99,7 @@ class _OrderCompletedScreenState extends State<OrderCompletedScreen> {
                             total,
                             6,
                             '-',
-                            'Unpaid',
+                            'Paid', //this was Unpaid, after payment gateway integrated, so need Paid
                             prefs.getInt('userID'),
                             '-',
                             '-',

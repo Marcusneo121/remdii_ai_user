@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/DB_Models/User.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
+import 'package:fyp/Screens/MyCart/checkout_confirmation.dart';
 import 'package:fyp/Screens/MyCart/payment_info_screen.dart';
 import 'package:fyp/Screens/MyCart/payment_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
@@ -40,6 +41,7 @@ class _ShipmentScreenState extends State<ShipmentScreen> {
     // TODO: implement initState
     _future = fetchUserData();
     subValue = widget.subtotal;
+    print(subValue.toString());
     super.initState();
   }
 
@@ -305,11 +307,21 @@ class _ShipmentScreenState extends State<ShipmentScreen> {
                                             'rAdd2', add2Controller.text);
                                         prefs.setString(
                                             'rAdd3', add3Controller.text);
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) {
+                                        //       return PaymentScreen();
+                                        //     },
+                                        //   ),
+                                        // );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              return PaymentScreen();
+                                              return CheckoutConfirmation(
+                                                total: subValue + shippingFee,
+                                              );
                                             },
                                           ),
                                         );

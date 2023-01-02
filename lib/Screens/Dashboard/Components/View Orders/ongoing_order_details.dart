@@ -60,7 +60,8 @@ class _OngoingOrderDetailsState extends State<OngoingOrderDetails> {
           user_add_1: row[2],
           user_add_2: row[3],
           user_add_3: row[4],
-          user_img: row[5].toString(),
+          user_img: '',
+          //user_img: row[5].toString(),
         ));
       }
       print('Check order ID');

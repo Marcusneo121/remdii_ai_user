@@ -48,15 +48,17 @@ class _ToShipOrderDetailsState extends State<ToShipOrderDetails> {
 
       for (var row in results) {
         recipientDetails.add(User(
-            user_id: 0,
-            user_name: row[0],
-            user_email: '',
-            user_phone: row[1],
-            user_ic: '',
-            user_add_1: row[2],
-            user_add_2: row[3],
-            user_add_3: row[4],
-            user_img: row[5].toString()));
+          user_id: 0,
+          user_name: row[0],
+          user_email: '',
+          user_phone: row[1],
+          user_ic: '',
+          user_add_1: row[2],
+          user_add_2: row[3],
+          user_add_3: row[4],
+          user_img: '',
+          //user_img: row[5].toString(),
+        ));
       }
       print('Check order ID');
       print(widget.order.orderID);
