@@ -289,25 +289,25 @@ class _PaidOrderDetailsState extends State<PaidOrderDetails> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(
-                          "Payment Details",
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        Divider(
-                          color: hintColor,
-                        ),
-                        Image.memory(base64.decode(widget.order.paymentImg)),
-                        Text(
-                          'Please wait for the admin to verify your payment. Declined payment will be sent back to "Unpaid" tabs and a new payment receipt should be uploaded again to complete your order.',
-                          style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16.0),
-                        ),
+                        // Text(
+                        //   "Payment Details",
+                        //   style: TextStyle(
+                        //     fontFamily: 'Lato',
+                        //     fontWeight: FontWeight.w800,
+                        //     fontSize: 20.0,
+                        //   ),
+                        // ),
+                        // Divider(
+                        //   color: hintColor,
+                        // ),
+                        // Image.memory(base64.decode(widget.order.paymentImg)),
+                        // Text(
+                        //   'Please wait for the admin to verify your payment. Declined payment will be sent back to "Unpaid" tabs and a new payment receipt should be uploaded again to complete your order.',
+                        //   style: TextStyle(
+                        //       fontFamily: 'Lato',
+                        //       fontWeight: FontWeight.w800,
+                        //       fontSize: 16.0),
+                        // ),
                       ],
                     ),
                   ),

@@ -32,21 +32,21 @@ class _ViewOrdersState extends State<ViewOrders> {
                 fontSize: 22.0,
                 color: Colors.black),
           ),
-          actions: [
-            IconButton(
-                icon: Icon(FontAwesomeIcons.infoCircle),
-                color: hintColor,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return OrderInfoScreen();
-                      },
-                    ),
-                  );
-                })
-          ],
+          // actions: [
+          //   IconButton(
+          //       icon: Icon(FontAwesomeIcons.infoCircle),
+          //       color: hintColor,
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) {
+          //               return OrderInfoScreen();
+          //             },
+          //           ),
+          //         );
+          //       })
+          // ],
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           elevation: 0.0,
@@ -59,14 +59,14 @@ class _ViewOrdersState extends State<ViewOrders> {
             indicatorSize: TabBarIndicatorSize.tab,
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             tabs: [
-              Text(
-                "Unpaid",
-                style: TextStyle(
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18.0,
-                ),
-              ),
+              // Text(
+              //   "Unpaid",
+              //   style: TextStyle(
+              //     fontFamily: 'Lato',
+              //     fontWeight: FontWeight.w800,
+              //     fontSize: 18.0,
+              //   ),
+              // ),
               Text(
                 "Paid",
                 style: TextStyle(
@@ -104,7 +104,7 @@ class _ViewOrdersState extends State<ViewOrders> {
         ),
         body: const TabBarView(
           children: [
-            UnpaidOrderTab(),
+            //UnpaidOrderTab(),
             PaidOrderTab(),
             ToShipOrderTab(),
             OngoingOrderTab(),
