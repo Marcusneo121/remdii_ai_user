@@ -5,6 +5,7 @@ import 'package:fyp/Screens/Chat/chat_screen.dart';
 import 'package:fyp/Screens/Dashboard/Components/Update%20Recovery%20Progress/view_and_update_screen.dart';
 import 'package:fyp/Screens/Dashboard/Components/View%20Orders/view_orders_screen.dart';
 import 'package:fyp/Screens/Dashboard/Components/Edit%20Personal%20Details/view_personal_details_screen.dart';
+import 'package:fyp/Screens/Dashboard/Questionnaire/tracker.dart';
 import 'package:fyp/Screens/EczemaDiagnosis/eczema_diagnosis_screen.dart';
 import 'package:fyp/Screens/EczemaInfo/eczema_info_screen.dart';
 import 'package:fyp/Screens/EczemaInfo/eczema_info_screen_after_ai_result.dart';
@@ -102,6 +103,20 @@ class _BodyState extends State<Body> {
                   MaterialPageRoute(
                     builder: (context) {
                       return ChatDetailPage();
+                    },
+                  ),
+                );
+              },
+            ),
+            nav_button(
+              text: "Eczema Tracker",
+              icon: FontAwesomeIcons.chartSimple,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return TrackerScreen();
                     },
                   ),
                 );
