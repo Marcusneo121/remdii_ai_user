@@ -1,9 +1,12 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fyp/Screens/Dashboard/Questionnaire/foodSurvey.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TrackerScreen extends StatefulWidget {
   const TrackerScreen({super.key});
@@ -16,10 +19,20 @@ class _TrackerScreenState extends State<TrackerScreen> {
   int selectedValueQ1 = 5;
   int selectedValueQ2 = 5;
   int selectedValueQ3 = 5;
+  int selectedValueQ4 = 5;
+  int selectedValueQ5 = 5;
+  int selectedValueQ6 = 5;
+  int selectedValueQ7 = 5;
 
   ExpandableController q1ExpandableController = ExpandableController();
   ExpandableController q2ExpandableController = ExpandableController();
   ExpandableController q3ExpandableController = ExpandableController();
+  ExpandableController q4ExpandableController = ExpandableController();
+  ExpandableController q5ExpandableController = ExpandableController();
+  ExpandableController q6ExpandableController = ExpandableController();
+  ExpandableController q7ExpandableController = ExpandableController();
+
+  int poemScore = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -384,12 +397,468 @@ class _TrackerScreenState extends State<TrackerScreen> {
                   ),
                 ],
               ),
+              Column(
+                children: [
+                  ExpandablePanel(
+                    controller: q4ExpandableController,
+                    header: Text(
+                      "4. Over the last week, on how many days has your/your child’s skin been weeping or oozing clear fluid because of the eczema?",
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    expanded: Container(),
+                    collapsed: Column(
+                      children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 0,
+                          groupValue: selectedValueQ4,
+                          title: Text("No days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ4 = 0;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q4ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 1,
+                          groupValue: selectedValueQ4,
+                          title: Text("1 - 2 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ4 = 1;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q4ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 2,
+                          groupValue: selectedValueQ4,
+                          title: Text("3 - 4 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ4 = 2;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q4ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 3,
+                          groupValue: selectedValueQ4,
+                          title: Text("5 - 6 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ4 = 3;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q4ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 4,
+                          groupValue: selectedValueQ4,
+                          title: Text("Everyday"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ4 = 4;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q4ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    // the horizontal line
+                    color: Colors.grey[900],
+                    height: 30,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ExpandablePanel(
+                    controller: q5ExpandableController,
+                    header: Text(
+                      "5. Over the last week, on how many days has your/your child’s skin been cracked because of the eczema?",
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    expanded: Container(),
+                    collapsed: Column(
+                      children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 0,
+                          groupValue: selectedValueQ5,
+                          title: Text("No days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ5 = 0;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q5ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 1,
+                          groupValue: selectedValueQ5,
+                          title: Text("1 - 2 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ5 = 1;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q5ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 2,
+                          groupValue: selectedValueQ5,
+                          title: Text("3 - 4 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ5 = 2;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q5ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 3,
+                          groupValue: selectedValueQ5,
+                          title: Text("5 - 6 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ5 = 3;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q5ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 4,
+                          groupValue: selectedValueQ5,
+                          title: Text("Everyday"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ5 = 4;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q5ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    // the horizontal line
+                    color: Colors.grey[900],
+                    height: 30,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ExpandablePanel(
+                    controller: q6ExpandableController,
+                    header: Text(
+                      "6. Over the last week, on how many days has your/your child’s skin been flaking off because of the eczema?",
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    expanded: Container(),
+                    collapsed: Column(
+                      children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 0,
+                          groupValue: selectedValueQ6,
+                          title: Text("No days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ6 = 0;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q6ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 1,
+                          groupValue: selectedValueQ6,
+                          title: Text("1 - 2 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ6 = 1;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q6ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 2,
+                          groupValue: selectedValueQ6,
+                          title: Text("3 - 4 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ6 = 2;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q6ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 3,
+                          groupValue: selectedValueQ6,
+                          title: Text("5 - 6 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ6 = 3;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q6ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 4,
+                          groupValue: selectedValueQ6,
+                          title: Text("Everyday"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ6 = 4;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q6ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    // the horizontal line
+                    color: Colors.grey[900],
+                    height: 30,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ExpandablePanel(
+                    controller: q7ExpandableController,
+                    header: Text(
+                      "7. Over the last week, on how many days has your/your child’s skin felt dry or rough because of the eczema?",
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    expanded: Container(),
+                    collapsed: Column(
+                      children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 0,
+                          groupValue: selectedValueQ7,
+                          title: Text("No days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ7 = 0;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q7ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 1,
+                          groupValue: selectedValueQ7,
+                          title: Text("1 - 2 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ7 = 1;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q7ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 2,
+                          groupValue: selectedValueQ7,
+                          title: Text("3 - 4 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ7 = 2;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q7ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 3,
+                          groupValue: selectedValueQ7,
+                          title: Text("5 - 6 days"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ7 = 3;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q7ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                        RadioListTile(
+                          activeColor: buttonColor,
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          value: 4,
+                          groupValue: selectedValueQ7,
+                          title: Text("Everyday"),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValueQ7 = 4;
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                q7ExpandableController.toggle();
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    // the horizontal line
+                    color: Colors.grey[900],
+                    height: 30,
+                  ),
+                ],
+              ),
               RoundedButton(
                 text: "Submit",
                 press: () async {
                   if (selectedValueQ1 == 5 ||
                       selectedValueQ2 == 5 ||
-                      selectedValueQ3 == 5) {
+                      selectedValueQ3 == 5 ||
+                      selectedValueQ4 == 5 ||
+                      selectedValueQ5 == 5 ||
+                      selectedValueQ6 == 5 ||
+                      selectedValueQ7 == 5) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -411,7 +880,29 @@ class _TrackerScreenState extends State<TrackerScreen> {
                       },
                     );
                   } else {
-                    Navigator.of(context).pop();
+                    setState(() {
+                      poemScore = selectedValueQ1 +
+                          selectedValueQ2 +
+                          selectedValueQ3 +
+                          selectedValueQ4 +
+                          selectedValueQ5 +
+                          selectedValueQ6 +
+                          selectedValueQ7;
+                    });
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('poemScore', poemScore.toString());
+
+                    String? localPoem = prefs.getString('poemScore');
+                    print(localPoem.toString());
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) {
+                          return FoodSurveyScreen();
+                        },
+                      ),
+                    );
                   }
                 },
               ),
@@ -419,76 +910,6 @@ class _TrackerScreenState extends State<TrackerScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  radioButtonGroup(int selectedValue) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 5,
-        ),
-        RadioListTile(
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          contentPadding: EdgeInsets.zero,
-          value: 0,
-          groupValue: selectedValue,
-          title: Text("No days"),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = 0;
-            });
-          },
-        ),
-        RadioListTile(
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          contentPadding: EdgeInsets.zero,
-          value: 1,
-          groupValue: selectedValue,
-          title: Text("1 - 2 days"),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = 1;
-            });
-          },
-        ),
-        RadioListTile(
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          contentPadding: EdgeInsets.zero,
-          value: 2,
-          groupValue: selectedValue,
-          title: Text("3 - 4 days"),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = 2;
-            });
-          },
-        ),
-        RadioListTile(
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          contentPadding: EdgeInsets.zero,
-          value: 3,
-          groupValue: selectedValue,
-          title: Text("5 - 6 days"),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = 3;
-            });
-          },
-        ),
-        RadioListTile(
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          contentPadding: EdgeInsets.zero,
-          value: 4,
-          groupValue: selectedValue,
-          title: Text("Everyday"),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = 4;
-            });
-          },
-        ),
-      ],
     );
   }
 }
