@@ -2,26 +2,27 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/Models/surveyModel/food_survey_model.dart';
-import 'package:fyp/Screens/Dashboard/Questionnaire/environmentSurvey.dart';
+import 'package:fyp/Models/surveyModel/care_routine_survey_model.dart';
+import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FoodSurveyScreen extends StatefulWidget {
-  const FoodSurveyScreen({super.key});
+class CareRoutineSurveyScreen extends StatefulWidget {
+  const CareRoutineSurveyScreen({super.key});
 
   @override
-  State<FoodSurveyScreen> createState() => _FoodSurveyScreenState();
+  State<CareRoutineSurveyScreen> createState() =>
+      _CareRoutineSurveyScreenState();
 }
 
-class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
-  bool egg = false;
-  bool cowMilk = false;
-  bool soy = false;
-  bool peanut = false;
-  bool seafood = false;
-  bool wheat = false;
+class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
+  bool moisturiser = false;
+  bool topicalSteroids = false;
+  bool medicines = false;
+  bool immunosuppressant = false;
+  bool wetWrapTherapy = false;
+  bool bleachBath = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Food",
+          "Care Routine",
           style: TextStyle(
             fontFamily: 'Lato',
             fontWeight: FontWeight.w800,
@@ -52,7 +53,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                 child: Column(
                   children: [
                     Text(
-                      "Please select food that you have eaten in the past week.",
+                      "Please select care routine you had done in the past week.",
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
@@ -62,7 +63,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                     SizedBox(height: 10),
                     CheckboxListTile(
                       title: Text(
-                        "Egg",
+                        "Moisturiser",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -70,16 +71,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: egg,
+                      value: moisturiser,
                       onChanged: (value) {
                         setState(() {
-                          egg = value!;
+                          moisturiser = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Cow's Milk",
+                        "Topical Steroids",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -87,16 +88,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: cowMilk,
+                      value: topicalSteroids,
                       onChanged: (value) {
                         setState(() {
-                          cowMilk = value!;
+                          topicalSteroids = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Soy",
+                        "Medicines",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -104,16 +105,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: soy,
+                      value: medicines,
                       onChanged: (value) {
                         setState(() {
-                          soy = value!;
+                          medicines = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Peanut",
+                        "Immunosuppressant",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -121,16 +122,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: peanut,
+                      value: immunosuppressant,
                       onChanged: (value) {
                         setState(() {
-                          peanut = value!;
+                          immunosuppressant = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Seafood",
+                        "Wet Wrap Therapy",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -138,16 +139,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: seafood,
+                      value: wetWrapTherapy,
                       onChanged: (value) {
                         setState(() {
-                          seafood = value!;
+                          wetWrapTherapy = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Wheat/Gluten",
+                        "Bleach bath",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -155,10 +156,10 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: wheat,
+                      value: bleachBath,
                       onChanged: (value) {
                         setState(() {
-                          wheat = value!;
+                          bleachBath = value!;
                         });
                       },
                     ),
@@ -169,36 +170,38 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
               RoundedButton(
                 text: "Submit",
                 press: () async {
-                  var foodSurveyJSON = {
-                    'Egg': egg,
-                    'CowMilk': cowMilk,
-                    'Soy': soy,
-                    'Peanut': peanut,
-                    'Seafood': seafood,
-                    'Wheat': wheat,
+                  var careRoutineSurveyJSON = {
+                    "Moisturiser": moisturiser,
+                    "TopicalSteroids": topicalSteroids,
+                    "Medicines": medicines,
+                    "Immunosuppressant": immunosuppressant,
+                    "WetWrapTherapy": wetWrapTherapy,
+                    "BleachBath": bleachBath,
                   };
 
-                  String foodSurveyString = json.encode(foodSurveyJSON);
+                  String careRoutineSurveyString =
+                      json.encode(careRoutineSurveyJSON);
 
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.setString('foodSurveyJSON', foodSurveyString);
+                  prefs.setString(
+                      'careRoutineSurveyJSON', careRoutineSurveyString);
 
-                  String? localFoodSurveyString =
-                      prefs.getString('foodSurveyJSON');
+                  String? localCareRoutineSurveyString =
+                      prefs.getString('contactAllergenSurveyJSON');
 
-                  FoodSurveyModel foodSurveyModel = FoodSurveyModel.fromJson(
-                      json.decode(localFoodSurveyString.toString()));
+                  CareRoutineSurveyModel careRoutineSurveyModel =
+                      CareRoutineSurveyModel.fromJson(
+                          json.decode(localCareRoutineSurveyString.toString()));
 
-                  print(foodSurveyModel.cowMilk.toString());
+                  print(careRoutineSurveyModel.bleachBath.toString());
 
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) {
-                        return EnvironmentSurveyScreen();
-                      },
+                      builder: (BuildContext context) => HomepageScreen(),
                     ),
+                    (route) => false,
                   );
                 },
               ),

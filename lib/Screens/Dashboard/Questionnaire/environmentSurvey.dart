@@ -1,27 +1,26 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/Models/surveyModel/environment_survey_model.dart';
 import 'package:fyp/Models/surveyModel/food_survey_model.dart';
-import 'package:fyp/Screens/Dashboard/Questionnaire/environmentSurvey.dart';
+import 'package:fyp/Screens/Dashboard/Questionnaire/contactAllergensSurvey.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FoodSurveyScreen extends StatefulWidget {
-  const FoodSurveyScreen({super.key});
+class EnvironmentSurveyScreen extends StatefulWidget {
+  const EnvironmentSurveyScreen({super.key});
 
   @override
-  State<FoodSurveyScreen> createState() => _FoodSurveyScreenState();
+  State<EnvironmentSurveyScreen> createState() =>
+      _EnvironmentSurveyScreenState();
 }
 
-class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
-  bool egg = false;
-  bool cowMilk = false;
-  bool soy = false;
-  bool peanut = false;
-  bool seafood = false;
-  bool wheat = false;
+class _EnvironmentSurveyScreenState extends State<EnvironmentSurveyScreen> {
+  bool dust = false;
+  bool sun = false;
+  bool sweat = false;
+  bool pets = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Food",
+          "Environment",
           style: TextStyle(
             fontFamily: 'Lato',
             fontWeight: FontWeight.w800,
@@ -52,7 +51,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                 child: Column(
                   children: [
                     Text(
-                      "Please select food that you have eaten in the past week.",
+                      "Please select environment you had been through in the past week.",
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.w800,
@@ -62,7 +61,7 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                     SizedBox(height: 10),
                     CheckboxListTile(
                       title: Text(
-                        "Egg",
+                        "Dust",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -70,16 +69,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: egg,
+                      value: dust,
                       onChanged: (value) {
                         setState(() {
-                          egg = value!;
+                          dust = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Cow's Milk",
+                        "Sun",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -87,16 +86,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: cowMilk,
+                      value: sun,
                       onChanged: (value) {
                         setState(() {
-                          cowMilk = value!;
+                          sun = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Soy",
+                        "Sweat",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -104,16 +103,16 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: soy,
+                      value: sweat,
                       onChanged: (value) {
                         setState(() {
-                          soy = value!;
+                          sweat = value!;
                         });
                       },
                     ),
                     CheckboxListTile(
                       title: Text(
-                        "Peanut",
+                        "Pets",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w800,
@@ -121,44 +120,10 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                         ),
                       ),
                       activeColor: buttonColor,
-                      value: peanut,
+                      value: pets,
                       onChanged: (value) {
                         setState(() {
-                          peanut = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: Text(
-                        "Seafood",
-                        style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      activeColor: buttonColor,
-                      value: seafood,
-                      onChanged: (value) {
-                        setState(() {
-                          seafood = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: Text(
-                        "Wheat/Gluten",
-                        style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      activeColor: buttonColor,
-                      value: wheat,
-                      onChanged: (value) {
-                        setState(() {
-                          wheat = value!;
+                          pets = value!;
                         });
                       },
                     ),
@@ -169,34 +134,35 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
               RoundedButton(
                 text: "Submit",
                 press: () async {
-                  var foodSurveyJSON = {
-                    'Egg': egg,
-                    'CowMilk': cowMilk,
-                    'Soy': soy,
-                    'Peanut': peanut,
-                    'Seafood': seafood,
-                    'Wheat': wheat,
+                  var environmentSurveyJSON = {
+                    'Dust': dust,
+                    'Sun': sun,
+                    'Sweat': sweat,
+                    'Pets': pets,
                   };
 
-                  String foodSurveyString = json.encode(foodSurveyJSON);
+                  String environmentSurveyString =
+                      json.encode(environmentSurveyJSON);
 
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.setString('foodSurveyJSON', foodSurveyString);
+                  prefs.setString(
+                      'environmentSurveyJSON', environmentSurveyString);
 
-                  String? localFoodSurveyString =
-                      prefs.getString('foodSurveyJSON');
+                  String? localEnvironmentSurveyString =
+                      prefs.getString('environmentSurveyJSON');
 
-                  FoodSurveyModel foodSurveyModel = FoodSurveyModel.fromJson(
-                      json.decode(localFoodSurveyString.toString()));
+                  EnvironmentSurveyModel environmentSurveyModel =
+                      EnvironmentSurveyModel.fromJson(
+                          json.decode(localEnvironmentSurveyString.toString()));
 
-                  print(foodSurveyModel.cowMilk.toString());
+                  print(environmentSurveyModel.dust.toString());
 
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
                       builder: (context) {
-                        return EnvironmentSurveyScreen();
+                        return ContactAllergenSurveyScreen();
                       },
                     ),
                   );
