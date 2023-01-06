@@ -212,7 +212,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
                   await prefs.setString(
                       'careRoutineSurveyJSON', careRoutineSurveyString);
 
-                  insertRadarChartData();
+                  await insertRadarChartData();
 
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -280,11 +280,10 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
       ],
     );
 
-    print(checkSameRecordResult.toString());
-
     if (checkSameRecordResult.isEmpty) {
       //Continue add new record
 
+      //insert new data into RadarChartData Table
       await conn.query(
         'INSERT INTO radarChartData'
         '(publishedAt, user_id, month, week, year,'
@@ -322,9 +321,11 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           careRoutineSurveyModel.bleachBath == true ? 1 : 0,
         ],
       );
+
+      await insertRadarChart(conn, prefs);
+      await insertLineChart(conn, prefs);
     } else {
       //Update Record
-
       await conn.query(
         'UPDATE radarChartData SET publishedAt = ?,'
         'egg = ? , cowMilk = ? , soy = ? , peanut = ? , seafood = ? , wheat = ? , '
@@ -359,6 +360,82 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           prefs.getString('currentWeek').toString(),
           prefs.getString('currentMonth').toString(),
           prefs.getString('currentYear').toString(),
+        ],
+      );
+    }
+  }
+
+  insertRadarChart(var conn, SharedPreferences prefs) async {
+    var getRadarChartDataResult = await conn.query(
+      'SELECT * FROM radarChartData WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
+      [
+        prefs.getInt('userID'),
+        prefs.getString('currentWeek').toString(),
+        prefs.getString('currentMonth').toString(),
+        prefs.getString('currentYear').toString(),
+      ],
+    );
+
+    print(getRadarChartDataResult.toString());
+
+    for (var row in getRadarChartDataResult) {
+      await conn.query(
+        'INSERT INTO radarChart'
+        '(publishedAt, user_id, month, week, year, radarChartDataID)'
+        'VALUES (?, ?, ?, ?, ?, ?)',
+        [
+          row[2],
+          row[1],
+          row[24].toString(),
+          row[25].toString(),
+          row[26].toString(),
+          row[0],
+        ],
+      );
+    }
+  }
+
+  insertLineChart(var conn, SharedPreferences prefs) async {
+    var getRadarChartResult = await conn.query(
+      'SELECT * FROM radarChart WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
+      [
+        prefs.getInt('userID'),
+        prefs.getString('currentWeek').toString(),
+        prefs.getString('currentMonth').toString(),
+        prefs.getString('currentYear').toString(),
+      ],
+    );
+
+    print(getRadarChartResult.toString());
+
+    late int eczemaLevel;
+
+    if (int.parse(poemScore) >= 0 && int.parse(poemScore) <= 2) {
+      eczemaLevel = 0;
+    } else if (int.parse(poemScore) >= 3 && int.parse(poemScore) <= 7) {
+      eczemaLevel = 1;
+    } else if (int.parse(poemScore) >= 8 && int.parse(poemScore) <= 16) {
+      eczemaLevel = 2;
+    } else if (int.parse(poemScore) >= 17 && int.parse(poemScore) <= 24) {
+      eczemaLevel = 3;
+    } else if (int.parse(poemScore) >= 25 && int.parse(poemScore) <= 28) {
+      eczemaLevel = 4;
+    }
+
+    for (var row in getRadarChartResult) {
+      await conn.query(
+        'INSERT INTO lineChart'
+        '(weekLevel, poem, publishedAt, user_id, month, week, year, radarChartID)'
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          eczemaLevel,
+          int.parse(poemScore),
+          row[1],
+          row[2],
+          row[3].toString(),
+          row[4].toString(),
+          row[5].toString(),
+          row[0],
         ],
       );
     }
