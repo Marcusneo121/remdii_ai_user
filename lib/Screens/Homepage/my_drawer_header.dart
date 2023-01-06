@@ -38,7 +38,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
         var results = await conn.query(
             'SELECT * FROM customer WHERE user_id = ?',
             [prefs.getInt('userID').toString()]);
-        print(results);
+        //print(results);
 
         for (var row in results) {
           user.add(User(

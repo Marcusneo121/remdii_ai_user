@@ -104,7 +104,7 @@ class _HomepageState extends State<Homepage> {
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.remove('userID');
-              print(prefs.getInt('userID'));
+              //print(prefs.getInt('userID'));
               await prefs.remove('userInputEmail');
               await prefs.remove('userInputPassword');
               await prefs.clear();

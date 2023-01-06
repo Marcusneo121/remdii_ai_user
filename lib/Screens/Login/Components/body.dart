@@ -83,7 +83,7 @@ class _BodyState extends State<Body> {
               });
             }
             prefs.setString('userImg', imageToSave);
-            print(prefs.getString('userImg'));
+            //print(prefs.getString('userImg'));
             setState(() {
               visible = false;
             });

@@ -893,8 +893,6 @@ class _TrackerScreenState extends State<TrackerScreen> {
                         await SharedPreferences.getInstance();
                     prefs.setString('poemScore', poemScore.toString());
 
-                    String? localPoem = prefs.getString('poemScore');
-                    print(localPoem.toString());
                     Navigator.push(
                       context,
                       CupertinoPageRoute(

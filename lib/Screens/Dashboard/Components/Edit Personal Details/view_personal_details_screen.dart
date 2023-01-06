@@ -42,7 +42,7 @@ class _ViewPersonalDetailsState extends State<ViewPersonalDetails> {
         var results = await conn.query(
             'SELECT * FROM customer WHERE user_id = ?',
             [prefs.getInt('userID').toString()]);
-        print(results);
+        //print(results);
         for (var row in results) {
           user.add(User(
             user_name: row[1].toString(),

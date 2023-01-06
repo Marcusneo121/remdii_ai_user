@@ -188,15 +188,6 @@ class _ContactAllergenSurveyScreenState
                   prefs.setString(
                       'contactAllergenSurveyJSON', contactAllergenSurveyString);
 
-                  String? localContactAllergenSurveyString =
-                      prefs.getString('contactAllergenSurveyJSON');
-
-                  ContactAllergensSurveyModel contactAllergenSurveyModel =
-                      ContactAllergensSurveyModel.fromJson(json
-                          .decode(localContactAllergenSurveyString.toString()));
-
-                  print(contactAllergenSurveyModel.formaldehyde.toString());
-
                   Navigator.push(
                     context,
                     CupertinoPageRoute(

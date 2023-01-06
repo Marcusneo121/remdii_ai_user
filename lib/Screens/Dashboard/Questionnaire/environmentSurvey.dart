@@ -149,15 +149,6 @@ class _EnvironmentSurveyScreenState extends State<EnvironmentSurveyScreen> {
                   prefs.setString(
                       'environmentSurveyJSON', environmentSurveyString);
 
-                  String? localEnvironmentSurveyString =
-                      prefs.getString('environmentSurveyJSON');
-
-                  EnvironmentSurveyModel environmentSurveyModel =
-                      EnvironmentSurveyModel.fromJson(
-                          json.decode(localEnvironmentSurveyString.toString()));
-
-                  print(environmentSurveyModel.dust.toString());
-
                   Navigator.push(
                     context,
                     CupertinoPageRoute(

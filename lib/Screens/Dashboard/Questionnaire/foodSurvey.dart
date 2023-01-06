@@ -184,14 +184,6 @@ class _FoodSurveyScreenState extends State<FoodSurveyScreen> {
                       await SharedPreferences.getInstance();
                   prefs.setString('foodSurveyJSON', foodSurveyString);
 
-                  String? localFoodSurveyString =
-                      prefs.getString('foodSurveyJSON');
-
-                  FoodSurveyModel foodSurveyModel = FoodSurveyModel.fromJson(
-                      json.decode(localFoodSurveyString.toString()));
-
-                  print(foodSurveyModel.cowMilk.toString());
-
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
