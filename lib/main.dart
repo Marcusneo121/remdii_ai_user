@@ -137,10 +137,11 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Auth',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-        // unselectedWidgetColor: buttonColor
-      ),
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          colorScheme: ColorScheme.fromSwatch().copyWith(secondary: buttonColor)
+          // unselectedWidgetColor: buttonColor
+          ),
       builder: EasyLoading.init(),
       home: Splashscreen(),
       //home: WelcomeScreen(),

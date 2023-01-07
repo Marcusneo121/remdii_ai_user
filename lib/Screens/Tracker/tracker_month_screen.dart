@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fyp/DB_Models/Tracker/MonthTracker.dart';
 import 'package:fyp/DB_Models/Tracker/YearTracker.dart';
 import 'package:fyp/DB_Models/connection.dart';
-import 'package:fyp/Screens/Tracker/tracker_month_screen.dart';
-import 'package:fyp/components/rounded_button.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TrackerMainScreen extends StatefulWidget {
-  const TrackerMainScreen({super.key});
+class TrackerMonthScreen extends StatefulWidget {
+  const TrackerMonthScreen({super.key, required this.year});
+  final String year;
 
   @override
-  State<TrackerMainScreen> createState() => _TrackerMainScreenState();
+  State<TrackerMonthScreen> createState() => _TrackerMonthScreenState();
 }
 
-class _TrackerMainScreenState extends State<TrackerMainScreen> {
+class _TrackerMonthScreenState extends State<TrackerMonthScreen> {
   var settings = new ConnectionSettings(
       host: connection.host,
       port: connection.port,
@@ -23,11 +23,12 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
       password: connection.pw,
       db: connection.db);
   late Future _futureDataResults;
-  List<YearTracker> yearList = [];
+  List<MonthTracker> monthList = [];
 
   @override
   void initState() {
     // TODO: implement initState
+    print(widget.year.toString());
     _futureDataResults = fetchYearData();
     super.initState();
   }
@@ -38,15 +39,16 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var yearTrackerResults = await conn.query(
-          'SELECT * FROM lineChart WHERE user_id = ? ORDER BY year DESC',
-          [prefs.getInt('userID')]);
+          'SELECT * FROM lineChart WHERE user_id = ? AND year = ? ORDER BY month ASC',
+          [prefs.getInt('userID'), widget.year]);
 
+      print(yearTrackerResults);
       for (var row in yearTrackerResults) {
-        if (yearList.any((yearTracker) => yearTracker.year == row[7])) {
+        if (monthList.any((monthTracker) => monthTracker.month == row[5])) {
           print('Same year appear, so skipped.');
         } else {
-          yearList.add(
-            YearTracker(
+          monthList.add(
+            MonthTracker(
               lineChartID: row[0],
               weekLevel: row[1],
               poem: row[2],
@@ -56,14 +58,63 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
               week: row[6],
               year: row[7],
               radarChartID: row[8],
+              monthTitle: monthFinder(row[5]),
             ),
           );
         }
       }
-      return yearList;
+      return monthList;
     } catch (e) {
       print("Error message : $e");
     }
+  }
+
+  String monthFinder(String monthNumber) {
+    String foundTitle = '';
+
+    switch (monthNumber) {
+      case '01':
+        foundTitle = 'January';
+        break;
+      case '02':
+        foundTitle = 'February';
+        break;
+      case '03':
+        foundTitle = 'March';
+        break;
+      case '04':
+        foundTitle = 'April';
+        break;
+      case '05':
+        foundTitle = 'May';
+        break;
+      case '06':
+        foundTitle = 'June';
+        break;
+      case '07':
+        foundTitle = 'July';
+        break;
+      case '08':
+        foundTitle = 'August';
+        break;
+      case '09':
+        foundTitle = 'September';
+        break;
+      case '10':
+        foundTitle = 'October';
+        break;
+      case '11':
+        foundTitle = 'November';
+        break;
+      case '12':
+        foundTitle = 'December';
+        break;
+      default:
+        foundTitle = 'Error';
+        break;
+    }
+
+    return foundTitle;
   }
 
   @override
@@ -73,7 +124,7 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Tracker",
+          widget.year.toString(),
           style: TextStyle(
             fontFamily: 'Lato',
             fontWeight: FontWeight.w800,
@@ -97,19 +148,19 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     // itemCount: snapshot.data.length,
-                    itemCount: yearList.length,
+                    itemCount: monthList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Bounceable(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (BuildContext context) =>
-                                  TrackerMonthScreen(
-                                year: yearList[index].year.toString(),
-                              ),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   CupertinoPageRoute(
+                          //     builder: (BuildContext context) =>
+                          //         TrackerMonthScreen(
+                          //       year: monthList[index].year.toString(),
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: Container(
                           width: size.width,
@@ -129,7 +180,7 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    yearList[index].year.toString(),
+                                    monthList[index].monthTitle.toString(),
                                     style: TextStyle(
                                       fontFamily: 'Lato',
                                       fontWeight: FontWeight.w800,

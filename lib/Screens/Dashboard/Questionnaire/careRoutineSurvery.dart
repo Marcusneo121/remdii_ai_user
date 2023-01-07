@@ -362,7 +362,12 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           prefs.getString('currentYear').toString(),
         ],
       );
+
+      await updateRadarChart(conn, prefs);
+      await updateLineChart(conn, prefs);
     }
+
+    await conn.close();
   }
 
   insertRadarChart(var conn, SharedPreferences prefs) async {
@@ -383,6 +388,34 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         'INSERT INTO radarChart'
         '(publishedAt, user_id, month, week, year, radarChartDataID)'
         'VALUES (?, ?, ?, ?, ?, ?)',
+        [
+          row[2],
+          row[1],
+          row[24].toString(),
+          row[25].toString(),
+          row[26].toString(),
+          row[0],
+        ],
+      );
+    }
+  }
+
+  updateRadarChart(var conn, SharedPreferences prefs) async {
+    var getRadarChartDataResult = await conn.query(
+      'SELECT * FROM radarChartData WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
+      [
+        prefs.getInt('userID'),
+        prefs.getString('currentWeek').toString(),
+        prefs.getString('currentMonth').toString(),
+        prefs.getString('currentYear').toString(),
+      ],
+    );
+
+    for (var row in getRadarChartDataResult) {
+      await conn.query(
+        'UPDATE radarChart SET '
+        'publishedAt = ? '
+        'WHERE user_id = ? AND month = ? AND week = ? AND year = ? AND radarChartDataID = ?',
         [
           row[2],
           row[1],
@@ -435,6 +468,52 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           row[3].toString(),
           row[4].toString(),
           row[5].toString(),
+          row[0],
+        ],
+      );
+    }
+  }
+
+  updateLineChart(var conn, SharedPreferences prefs) async {
+    var getRadarChartResult = await conn.query(
+      'SELECT * FROM radarChart WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
+      [
+        prefs.getInt('userID'),
+        prefs.getString('currentWeek').toString(),
+        prefs.getString('currentMonth').toString(),
+        prefs.getString('currentYear').toString(),
+      ],
+    );
+
+    print(getRadarChartResult.toString());
+
+    late int eczemaLevel;
+
+    if (int.parse(poemScore) >= 0 && int.parse(poemScore) <= 2) {
+      eczemaLevel = 0;
+    } else if (int.parse(poemScore) >= 3 && int.parse(poemScore) <= 7) {
+      eczemaLevel = 1;
+    } else if (int.parse(poemScore) >= 8 && int.parse(poemScore) <= 16) {
+      eczemaLevel = 2;
+    } else if (int.parse(poemScore) >= 17 && int.parse(poemScore) <= 24) {
+      eczemaLevel = 3;
+    } else if (int.parse(poemScore) >= 25 && int.parse(poemScore) <= 28) {
+      eczemaLevel = 4;
+    }
+
+    for (var row in getRadarChartResult) {
+      await conn.query(
+        'UPDATE lineChart SET '
+        'weekLevel = ?, poem = ?, publishedAt = ? '
+        'WHERE user_id = ? AND month = ? AND week = ? AND year = ? AND radarChartID = ?',
+        [
+          eczemaLevel,
+          int.parse(poemScore),
+          row[1],
+          row[2],
+          row[3],
+          row[4],
+          row[5],
           row[0],
         ],
       );
