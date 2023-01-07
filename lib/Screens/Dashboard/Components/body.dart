@@ -14,6 +14,7 @@ import 'package:fyp/Screens/EczemaInfo/eczema_info_screen_with_back.dart';
 import 'package:fyp/Screens/Homepage/my_drawer_header.dart';
 import 'package:fyp/Screens/MyCart/my_cart_screen.dart';
 import 'package:fyp/Screens/Products/products.dart';
+import 'package:fyp/Screens/Tracker/tracker_main_screen.dart';
 import 'package:fyp/Screens/Welcome/welcome_screen.dart';
 import 'package:fyp/components/nav_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,6 +119,20 @@ class _BodyState extends State<Body> {
                   CupertinoPageRoute(
                     builder: (context) {
                       return TrackerScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            nav_button(
+              text: "Tracker Result",
+              icon: FontAwesomeIcons.codePullRequest,
+              press: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) {
+                      return TrackerMainScreen();
                     },
                   ),
                 );
