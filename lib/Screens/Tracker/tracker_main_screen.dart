@@ -7,6 +7,7 @@ import 'package:fyp/Screens/Tracker/tracker_month_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vibration/vibration.dart';
 
 class TrackerMainScreen extends StatefulWidget {
   const TrackerMainScreen({super.key});
@@ -101,6 +102,7 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return Bounceable(
                         onTap: () {
+                          Vibration.vibrate(amplitude: 128);
                           Navigator.push(
                             context,
                             CupertinoPageRoute(

@@ -6,6 +6,7 @@ import 'package:fyp/DB_Models/Tracker/YearTracker.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vibration/vibration.dart';
 
 class TrackerMonthScreen extends StatefulWidget {
   const TrackerMonthScreen({super.key, required this.year});
@@ -27,7 +28,6 @@ class _TrackerMonthScreenState extends State<TrackerMonthScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     print(widget.year.toString());
     _futureDataResults = fetchYearData();
     super.initState();
@@ -152,6 +152,7 @@ class _TrackerMonthScreenState extends State<TrackerMonthScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return Bounceable(
                         onTap: () {
+                          Vibration.vibrate(amplitude: 128);
                           // Navigator.push(
                           //   context,
                           //   CupertinoPageRoute(
