@@ -8,6 +8,14 @@ const buttonColor2 = Color(0xFF4974A5);
 const buttonColor3 = Color(0xFFDC5665);
 const buttonColorLight = Color(0x4142995C);
 
+const gridColor = Color(0xff68739f);
+const titleColor = Color(0xff8c95db);
+const fashionColor = Color(0xffe15665);
+const artColor = Color(0xff63e7e5);
+const boxingColor = Color(0xff83dea7);
+const entertainmentColor = Colors.white70;
+const offRoadColor = Color(0xFFFFF59D);
+
 //update_photo_screen.dart
 
 // const var settings = ConnectionSettings(

@@ -134,7 +134,7 @@ class _MyAppState extends State<MyApp> {
     // final pushNotificationService = PushNotificationService(MyApp._firebaseMessaging);
     // pushNotificationService.initialise();
     return MaterialApp(
-      title: 'Flutter Auth',
+      title: 'Remdii',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: kPrimaryColor,

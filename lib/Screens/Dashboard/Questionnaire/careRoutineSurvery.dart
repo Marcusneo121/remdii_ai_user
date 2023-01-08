@@ -289,9 +289,9 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         '(publishedAt, user_id, month, week, year,'
         'egg, cowMilk, soy, peanut, seafood, wheat, '
         'dust, sun, sweat, pets,'
-        'fragrance, rubber, nickel, formaldehyde, sanitizer,'
+        'fragrance, rubber, nickel, formaldehyde, preservatives, sanitizer, '
         'moisturizer, steroids, medicines, immunosuppressant, wetWrapTherapy, bleachBath) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           nowTime.toUtc(),
           prefs.getInt('userID'),
@@ -312,6 +312,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           contactAllergenSurveyModel.rubber == true ? 1 : 0,
           contactAllergenSurveyModel.nickel == true ? 1 : 0,
           contactAllergenSurveyModel.formaldehyde == true ? 1 : 0,
+          contactAllergenSurveyModel.preservatives == true ? 1 : 0,
           contactAllergenSurveyModel.sanitiser == true ? 1 : 0,
           careRoutineSurveyModel.moisturiser == true ? 1 : 0,
           careRoutineSurveyModel.topicalSteroids == true ? 1 : 0,
@@ -330,7 +331,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         'UPDATE radarChartData SET publishedAt = ?,'
         'egg = ? , cowMilk = ? , soy = ? , peanut = ? , seafood = ? , wheat = ? , '
         'dust = ? , sun = ? , sweat = ? , pets = ? ,'
-        'fragrance = ? , rubber = ? , nickel = ? , formaldehyde = ? , sanitizer = ? ,'
+        'fragrance = ? , rubber = ? , nickel = ? , formaldehyde = ? , preservatives = ?, sanitizer = ? ,'
         'moisturizer = ? , steroids = ? , medicines = ? , immunosuppressant = ? , wetWrapTherapy = ? , bleachBath = ? '
         'WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
         [
@@ -349,6 +350,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           contactAllergenSurveyModel.rubber == true ? 1 : 0,
           contactAllergenSurveyModel.nickel == true ? 1 : 0,
           contactAllergenSurveyModel.formaldehyde == true ? 1 : 0,
+          contactAllergenSurveyModel.preservatives == true ? 1 : 0,
           contactAllergenSurveyModel.sanitiser == true ? 1 : 0,
           careRoutineSurveyModel.moisturiser == true ? 1 : 0,
           careRoutineSurveyModel.topicalSteroids == true ? 1 : 0,
@@ -391,9 +393,9 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         [
           row[2],
           row[1],
-          row[24].toString(),
           row[25].toString(),
           row[26].toString(),
+          row[27].toString(),
           row[0],
         ],
       );
@@ -419,9 +421,9 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         [
           row[2],
           row[1],
-          row[24].toString(),
           row[25].toString(),
           row[26].toString(),
+          row[27].toString(),
           row[0],
         ],
       );
@@ -452,6 +454,8 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
     } else if (int.parse(poemScore) >= 17 && int.parse(poemScore) <= 24) {
       eczemaLevel = 3;
     } else if (int.parse(poemScore) >= 25 && int.parse(poemScore) <= 28) {
+      eczemaLevel = 4;
+    } else if (int.parse(poemScore) >= 29 && int.parse(poemScore) <= 31) {
       eczemaLevel = 4;
     }
 

@@ -5,6 +5,7 @@ import 'package:fyp/DB_Models/Tracker/YearTracker.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/Screens/Tracker/tracker_month_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
+import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
@@ -61,6 +62,7 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
           );
         }
       }
+      await conn.close();
       return yearList;
     } catch (e) {
       print("Error message : $e");
@@ -102,7 +104,7 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return Bounceable(
                         onTap: () {
-                          Vibration.vibrate(amplitude: 128);
+                          //Vibration.vibrate(amplitude: 128);
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
@@ -117,11 +119,11 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                           width: size.width,
                           height: 80,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 5.0),
+                              horizontal: 15.0, vertical: 5.0),
                           child: Card(
                             elevation: 8,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Container(
                               width: size.width,
@@ -152,11 +154,13 @@ class _TrackerMainScreenState extends State<TrackerMainScreen> {
                   ),
                 );
               } else {
-                return Center(child: Text('Your order history is empty now.'));
+                return Center(child: Text('Your history is empty now.'));
               }
             }
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: buttonColor,
+              ),
             );
           },
         ),
