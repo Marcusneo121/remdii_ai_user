@@ -220,10 +220,10 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
         ));
       }
 
-      for (var i = 0; i <= 3; i++) {
-        //print(i);
-        print(weekLevel[i].toString());
-      }
+      // for (var i = 0; i <= 3; i++) {
+      //   //print(i);
+      //   print(weekLevel[i].toString());
+      // }
 
       await conn.close();
       return lineChartData;
