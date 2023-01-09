@@ -172,7 +172,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             padding: EdgeInsets.only(top: 15, bottom: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey[100],
+                              color: Color(0xFF241F48),
                             ),
                             child: Column(
                               children: [
@@ -182,6 +182,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 Divider(
@@ -201,7 +202,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 30),
                         Bounceable(
                           onTap: () {},
                           child: Container(
@@ -209,7 +210,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             padding: EdgeInsets.only(top: 15, bottom: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey[100],
+                              color: Color(0xFF241F48),
                             ),
                             child: Column(
                               children: [
@@ -219,6 +220,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 Divider(
@@ -238,7 +240,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 30),
                         Bounceable(
                           onTap: () {},
                           child: Container(
@@ -246,7 +248,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             padding: EdgeInsets.only(top: 15, bottom: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey[100],
+                              color: Color(0xFF241F48),
                             ),
                             child: Column(
                               children: [
@@ -256,6 +258,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 Divider(
@@ -276,7 +279,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 30),
                         Bounceable(
                           onTap: () {},
                           child: Container(
@@ -284,7 +287,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             padding: EdgeInsets.only(top: 15, bottom: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey[100],
+                              color: Color(0xFF241F48),
                             ),
                             child: Column(
                               children: [
@@ -294,6 +297,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 Divider(
@@ -313,7 +317,7 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 30),
                       ],
                     );
                   }

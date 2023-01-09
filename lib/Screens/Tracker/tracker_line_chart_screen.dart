@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fyp/DB_Models/Tracker/LineChartPoint.dart';
 import 'package:fyp/DB_Models/Tracker/LineChartTracker.dart';
 import 'package:fyp/Screens/Tracker/widgets/lineChartWidget.dart';
@@ -8,6 +9,7 @@ import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vibration/vibration.dart';
 
 class TrackerLineChartScreen extends StatefulWidget {
   const TrackerLineChartScreen(
@@ -46,6 +48,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
   List<LineChartTracker> lineChartData = [];
   List<double> data = <double>[];
   List<LineChartDataCarry> dataCarryLineChart = [];
+  List<int?> weekLevel = [];
 
   @override
   void initState() {
@@ -91,6 +94,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                 radarChartID: null,
                 onPressedTitle: 'No record yet.',
               ));
+              weekLevel.add(null);
             } else {
               for (var row in lineChartTrackerResults) {
                 lineChartData.add(LineChartTracker(
@@ -104,6 +108,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                   radarChartID: row[8],
                   onPressedTitle: row[2].toString(),
                 ));
+                weekLevel.add(row[1]);
               }
             }
             break;
@@ -120,6 +125,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                 radarChartID: null,
                 onPressedTitle: 'No record yet.',
               ));
+              weekLevel.add(null);
             } else {
               for (var row in lineChartTrackerResults) {
                 lineChartData.add(LineChartTracker(
@@ -133,6 +139,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                   radarChartID: row[8],
                   onPressedTitle: row[2].toString(),
                 ));
+                weekLevel.add(row[1]);
               }
             }
             break;
@@ -149,6 +156,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                 radarChartID: null,
                 onPressedTitle: 'No record yet.',
               ));
+              weekLevel.add(null);
             } else {
               for (var row in lineChartTrackerResults) {
                 lineChartData.add(LineChartTracker(
@@ -162,6 +170,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                   radarChartID: row[8],
                   onPressedTitle: row[2].toString(),
                 ));
+                weekLevel.add(row[1]);
               }
             }
             break;
@@ -178,6 +187,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                 radarChartID: null,
                 onPressedTitle: 'No record yet.',
               ));
+              weekLevel.add(null);
             } else {
               for (var row in lineChartTrackerResults) {
                 lineChartData.add(LineChartTracker(
@@ -191,6 +201,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                   radarChartID: row[8],
                   onPressedTitle: row[2].toString(),
                 ));
+                weekLevel.add(row[1]);
               }
             }
             break;
@@ -208,9 +219,21 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
           weekLevel: item.weekLevel,
         ));
       }
+
+      for (var i = 0; i <= 3; i++) {
+        //print(i);
+        print(weekLevel[i].toString());
+      }
+
       await conn.close();
       return lineChartData;
     } catch (e) {
+      print("Error message : $e");
+    }
+  }
+
+  fetchCompareData(var conn, SharedPreferences prefs) async {
+    try {} catch (e) {
       print("Error message : $e");
     }
   }
@@ -255,6 +278,112 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
                                 context: context,
                                 dataCollections: dataCarryLineChart),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 260,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Week 1',
+                                style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13.0,
+                                ),
+                              ),
+                              Text(
+                                'Week 2',
+                                style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13.0,
+                                ),
+                              ),
+                              Text(
+                                'Week 3',
+                                style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13.0,
+                                ),
+                              ),
+                              Text(
+                                'Week 4',
+                                style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Bounceable(
+                              onTap: () {
+                                Vibration.vibrate(amplitude: 40, duration: 200);
+                              },
+                              child: Container(
+                                width: 70,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.red[400],
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Bounceable(
+                              onTap: () {
+                                Vibration.vibrate(amplitude: 40, duration: 200);
+                              },
+                              child: Container(
+                                width: 70,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.green[400],
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Bounceable(
+                              onTap: () {
+                                Vibration.vibrate(amplitude: 40, duration: 200);
+                              },
+                              child: Container(
+                                width: 70,
+                                height: 50,
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.red[400],
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     );

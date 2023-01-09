@@ -31,7 +31,7 @@ class LineChartWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'EczemaLevel',
+          'Eczema Level',
           style: TextStyle(
             fontFamily: 'Lato',
             fontWeight: FontWeight.bold,
