@@ -80,6 +80,17 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
 
   String weekNum1 = "1";
   String weekNum2 = "2";
+  bool week1Empty = false;
+  bool week2Empty = false;
+
+  List<String> titleUI = [];
+  List<bool?> weekNum1UI = [];
+  List<bool?> weekNum2UI = [];
+
+  Color colorBox1 = Colors.grey;
+  Color colorBox2 = Colors.grey;
+  Color colorBox3 = Colors.grey;
+
   bool summaryLoading = false;
 
   @override
@@ -97,6 +108,7 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
 
   fetchLineChartData() async {
     try {
+      weekLevel.clear();
       var conn = await MySqlConnection.connect(settings);
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -111,6 +123,15 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
             ]);
 
         print(lineChartTrackerResults);
+
+        // if (lineChartTrackerResults.isEmpty) {
+        //   weekLevel.add(null);
+        // } else {
+        //   for (var rowWeekLevel in lineChartTrackerResults) {
+        //     print(rowWeekLevel[1]);
+        //     weekLevel.add(rowWeekLevel[1]);
+        //   }
+        // }
 
         switch (i) {
           case 1:
@@ -251,6 +272,45 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
           weekLevel: item.weekLevel,
         ));
       }
+      print(weekLevel[0]);
+      print(weekLevel[1]);
+      print(weekLevel[2]);
+      print(weekLevel[3]);
+      if (weekLevel[0] == null || weekLevel[1] == null) {
+        colorBox1 = Colors.white;
+      } else {
+        if (weekLevel[0]! > weekLevel[1]!) {
+          colorBox1 = Colors.green[400]!;
+        } else if (weekLevel[0]! == weekLevel[1]!) {
+          colorBox1 = Colors.grey;
+        } else {
+          colorBox1 = Colors.red[400]!;
+        }
+      }
+
+      if (weekLevel[1] == null || weekLevel[2] == null) {
+        colorBox2 = Colors.white;
+      } else {
+        if (weekLevel[1]! > weekLevel[2]!) {
+          colorBox2 = Colors.green[400]!;
+        } else if (weekLevel[1]! == weekLevel[2]!) {
+          colorBox2 = Colors.grey;
+        } else {
+          colorBox2 = Colors.red[400]!;
+        }
+      }
+
+      if (weekLevel[2] == null || weekLevel[3] == null) {
+        colorBox3 = Colors.white;
+      } else {
+        if (weekLevel[2]! > weekLevel[3]!) {
+          colorBox3 = Colors.green[400]!;
+        } else if (weekLevel[2]! == weekLevel[3]!) {
+          colorBox3 = Colors.grey;
+        } else {
+          colorBox3 = Colors.red[400]!;
+        }
+      }
 
       await fetchCompareData(conn, prefs, weekNum1, weekNum2);
 
@@ -290,6 +350,12 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
 
       weekNum1DataBoolean.clear();
       weekNum2DataBoolean.clear();
+      titleUI.clear();
+      weekNum1UI.clear();
+      weekNum2UI.clear();
+      summaryDiffer.clear();
+      week1Empty = false;
+      week2Empty = false;
 
       for (var row1 in week1SummaryTrackerResults) {
         for (var rowNum = 3; rowNum <= 24; rowNum++) {
@@ -304,19 +370,45 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
           //print(row2[rowNum]);
         }
       }
+      if (weekNum1DataBoolean.isEmpty) {
+        week1Empty = true;
+      }
+      if (weekNum2DataBoolean.isEmpty) {
+        week2Empty = true;
+      }
 
-      for (var i = 0; i < titleList.length; i++) {
-        if (weekNum1DataBoolean[i] != weekNum2DataBoolean[i]) {
-          // print(
-          //     "${titleList[i].toString()} => ${weekNum1DataBoolean[i]} : ${weekNum2DataBoolean[i]}");
+      if (week1Empty == true && week2Empty == false) {
+        for (var i = 0; i < titleList.length; i++) {
+          summaryDiffer.add(SummaryDifferentiate(
+            title: titleList[i],
+            weekNum1: null,
+            weekNum2: weekNum2DataBoolean[i] == 1 ? true : false,
+          ));
+        }
+      } else if (week1Empty == false && week2Empty == true) {
+        for (var i = 0; i < titleList.length; i++) {
           summaryDiffer.add(SummaryDifferentiate(
             title: titleList[i],
             weekNum1: weekNum1DataBoolean[i] == 1 ? true : false,
-            weekNum2: weekNum2DataBoolean[i] == 1 ? true : false,
+            weekNum2: null,
           ));
-        } else {
-          // print(
-          //     "${titleList[i].toString()} are equal value. ${weekNum1DataBoolean[i]} : ${weekNum2DataBoolean[i]}");
+        }
+      } else if (week1Empty == true && week2Empty == true) {
+        summaryDiffer.clear();
+      } else if (week1Empty == false && week2Empty == false) {
+        for (var i = 0; i < titleList.length; i++) {
+          if (weekNum1DataBoolean[i] != weekNum2DataBoolean[i]) {
+            // print(
+            //     "${titleList[i].toString()} => ${weekNum1DataBoolean[i]} : ${weekNum2DataBoolean[i]}");
+            summaryDiffer.add(SummaryDifferentiate(
+              title: titleList[i],
+              weekNum1: weekNum1DataBoolean[i] == 1 ? true : false,
+              weekNum2: weekNum2DataBoolean[i] == 1 ? true : false,
+            ));
+          } else {
+            // print(
+            //     "${titleList[i].toString()} are equal value. ${weekNum1DataBoolean[i]} : ${weekNum2DataBoolean[i]}");
+          }
         }
       }
 
@@ -343,11 +435,177 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
       //   }
       // }
 
+      for (var item in summaryDiffer) {
+        titleUI.add(item.title);
+      }
+
+      for (var itemWeek1 in summaryDiffer) {
+        if (itemWeek1.weekNum1 != null) {
+          weekNum1UI.add(itemWeek1.weekNum1);
+        }
+      }
+
+      for (var itemWeek2 in summaryDiffer) {
+        if (itemWeek2.weekNum2 != null) {
+          weekNum2UI.add(itemWeek2.weekNum2);
+        }
+      }
+
       setState(() {
         summaryLoading = false;
       });
     } catch (e) {
       print("Error message : $e");
+    }
+  }
+
+  Widget summaryUIGenerator() {
+    if (weekNum1UI.isEmpty && weekNum2UI.isNotEmpty) {
+      return Container(
+        child: Center(
+          child: Text("Week ${weekNum1} data is empty. No Summary available"),
+        ),
+      );
+    } else if (weekNum1UI.isNotEmpty && weekNum2UI.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text("Week ${weekNum2} data is empty. No Summary available"),
+        ),
+      );
+    } else if (weekNum1UI.isEmpty && weekNum2UI.isEmpty) {
+      return Container(
+        child: Center(
+          child: Column(
+            children: [
+              Text("Week ${weekNum1} and Week ${weekNum2} data is empty,"),
+              Text('No summary available.')
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Bounceable(
+        onTap: () {},
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            width: MediaQuery.of(context).size.width - 60,
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width - 190,
+                  padding: EdgeInsets.only(top: 0.0),
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: titleUI.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 50,
+                        // decoration: BoxDecoration(
+                        //   color: Colors.amberAccent,
+                        //   borderRadius: BorderRadius.circular(10),
+                        //   border: Border.all(
+                        //     color: Colors.black,
+                        //     width: 2,
+                        //   ),
+                        // ),
+                        color: Colors.green.withOpacity(0.5),
+                        child: Center(
+                          child: Text(
+                            titleUI[index].toString(),
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    // itemCount: snapshot.data.length,
+                    itemCount: weekNum1UI.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (weekNum1UI.isEmpty) {
+                        return Container(
+                          child: Center(
+                            child: Text("Empty"),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            //borderRadius: BorderRadius.circular(10),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 2,
+                            // ),
+                          ),
+                          child: Center(
+                            child: weekNum1UI[index] == true
+                                ? Icon(
+                                    Icons.done_rounded,
+                                  )
+                                : Icon(
+                                    Icons.close_rounded,
+                                  ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    // itemCount: snapshot.data.length,
+                    itemCount: weekNum2UI.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (weekNum2UI.isEmpty) {
+                        return Container(
+                          child: Center(
+                            child: Text("Empty"),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            //borderRadius: BorderRadius.circular(10),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 2,
+                            // ),
+                          ),
+                          child: Center(
+                            child: weekNum2UI[index] == true
+                                ? Icon(
+                                    Icons.done_rounded,
+                                  )
+                                : Icon(
+                                    Icons.close_rounded,
+                                  ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -370,305 +628,470 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
         elevation: 0.0,
       ),
       backgroundColor: Colors.white,
-      body: Container(
-        child: Center(
-          child: FutureBuilder(
-              future: _futureDataResults,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.data.length > 0) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 25, top: 20),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 70,
-                            child: LineChartWidget(
-                                points: getlineChartPoints,
-                                year: widget.year,
-                                month: widget.month,
-                                monthTitle: widget.monthTitle,
-                                context: context,
-                                dataCollections: dataCarryLineChart),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Center(
+            child: FutureBuilder(
+                future: _futureDataResults,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.data.length > 0) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 25, top: 20),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width - 70,
+                              child: LineChartWidget(
+                                  points: getlineChartPoints,
+                                  year: widget.year,
+                                  month: widget.month,
+                                  monthTitle: widget.monthTitle,
+                                  context: context,
+                                  dataCollections: dataCarryLineChart),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        summaryLoading == false
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Summary',
-                                    style: TextStyle(
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
+                          SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Summary',
+                                style: TextStyle(
+                                  //fontFamily: 'Lato',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                height: 1,
+                                margin: EdgeInsets.only(right: 20),
+                                color: Colors.black.withOpacity(0.4),
+                                width: 75,
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: 260,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                                color: Colors.green[400],
+                                                borderRadius:
+                                                    BorderRadius.circular(40)),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Text(
+                                            "Healing",
+                                            style: TextStyle(
+                                              // fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Container(
-                                    height: 1,
-                                    margin: EdgeInsets.only(right: 20),
-                                    color: Colors.black.withOpacity(0.4),
-                                    width: 75,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 60,
-                                    padding: EdgeInsets.only(
-                                        left: 20,
-                                        right: 20,
-                                        top: 20,
-                                        bottom: 20),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.2),
-                                          spreadRadius: 2,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              2), // changes position of shadow
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black.withOpacity(0.1),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                                color: Colors.red[400],
+                                                borderRadius:
+                                                    BorderRadius.circular(40)),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Text(
+                                            "Worsen",
+                                            style: TextStyle(
+                                              // fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    child: Column(
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(40)),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Text(
+                                            "Neutral",
+                                            style: TextStyle(
+                                              // fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.black,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(40)),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Text(
+                                            "Empty",
+                                            style: TextStyle(
+                                              // fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 60,
+                                padding: EdgeInsets.only(
+                                    left: 20, right: 20, top: 20, bottom: 20),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black.withOpacity(0.1),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 260,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Week 1',
+                                            style: TextStyle(
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 13.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Week 2',
+                                            style: TextStyle(
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 13.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Week 3',
+                                            style: TextStyle(
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 13.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Week 4',
+                                            style: TextStyle(
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 13.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          width: 260,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Week 1',
-                                                style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 13.0,
+                                        Bounceable(
+                                          onTap: () async {
+                                            Vibration.vibrate(
+                                                amplitude: 40, duration: 200);
+                                            var conn =
+                                                await MySqlConnection.connect(
+                                                    settings);
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+
+                                            if (weekNum1 != "1" &&
+                                                weekNum2 != "2") {
+                                              setState(() {
+                                                summaryLoading = true;
+                                                weekNum1 = "1";
+                                                weekNum2 = "2";
+                                              });
+                                              await fetchCompareData(conn,
+                                                  prefs, weekNum1, weekNum2);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 70,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.9),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 3,
+                                                  offset: Offset(0,
+                                                      2), // changes position of shadow
                                                 ),
+                                              ],
+                                              color: colorBox1,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                color: Colors.black,
+                                                width: 2,
                                               ),
-                                              Text(
-                                                'Week 2',
-                                                style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 13.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Week 3',
-                                                style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 13.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Week 4',
-                                                style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 13.0,
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 10,
+                                          width: 2,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                        Bounceable(
+                                          onTap: () async {
+                                            Vibration.vibrate(
+                                                amplitude: 40, duration: 200);
+                                            var conn =
+                                                await MySqlConnection.connect(
+                                                    settings);
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+
+                                            if (weekNum1 != "2" &&
+                                                weekNum2 != "3") {
+                                              setState(() {
+                                                summaryLoading = true;
+                                                weekNum1 = "2";
+                                                weekNum2 = "3";
+                                              });
+                                              await fetchCompareData(conn,
+                                                  prefs, weekNum1, weekNum2);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 70,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.9),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 3,
+                                                  offset: Offset(0,
+                                                      2), // changes position of shadow
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: colorBox2,
+                                              border: Border.all(
+                                                color: Colors.black,
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Bounceable(
+                                          onTap: () async {
+                                            Vibration.vibrate(
+                                                amplitude: 40, duration: 200);
+                                            var conn =
+                                                await MySqlConnection.connect(
+                                                    settings);
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            if (weekNum1 != "3" &&
+                                                weekNum2 != "4") {
+                                              setState(() {
+                                                summaryLoading = true;
+                                                weekNum1 = "3";
+                                                weekNum2 = "4";
+                                              });
+                                              await fetchCompareData(conn,
+                                                  prefs, weekNum1, weekNum2);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 70,
+                                            height: 50,
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.9),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 3,
+                                                  offset: Offset(0,
+                                                      2), // changes position of shadow
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: colorBox3,
+                                              border: Border.all(
+                                                color: Colors.black,
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          summaryLoading == false
+                              ? Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        height: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                60,
+                                        child: Row(
                                           children: [
-                                            Bounceable(
-                                              onTap: () async {
-                                                Vibration.vibrate(
-                                                    amplitude: 40,
-                                                    duration: 200);
-                                                var conn = await MySqlConnection
-                                                    .connect(settings);
-                                                SharedPreferences prefs =
-                                                    await SharedPreferences
-                                                        .getInstance();
-
-                                                if (weekNum1 != "1" &&
-                                                    weekNum2 != "2") {
-                                                  setState(() {
-                                                    summaryLoading = true;
-                                                    weekNum1 = "1";
-                                                    weekNum2 = "2";
-                                                  });
-                                                  await fetchCompareData(
-                                                      conn,
-                                                      prefs,
-                                                      weekNum1,
-                                                      weekNum2);
-                                                }
-                                              },
-                                              child: Container(
-                                                width: 70,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.9),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 3,
-                                                      offset: Offset(0,
-                                                          2), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.red[400],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 2,
-                                                  ),
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  190,
+                                              color:
+                                                  Colors.green.withOpacity(0.5),
+                                              child: Center(
+                                                  child: Text(
+                                                "Items",
+                                                style: TextStyle(
+                                                  //fontFamily: 'Lato',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 19.0,
                                                 ),
+                                              )),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    190,
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Week ${weekNum1.toString()}",
+                                                  style: TextStyle(
+                                                    //fontFamily: 'Lato',
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0,
+                                                  ),
+                                                )),
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: 2,
-                                            ),
-                                            Bounceable(
-                                              onTap: () async {
-                                                Vibration.vibrate(
-                                                    amplitude: 40,
-                                                    duration: 200);
-                                                var conn = await MySqlConnection
-                                                    .connect(settings);
-                                                SharedPreferences prefs =
-                                                    await SharedPreferences
-                                                        .getInstance();
-
-                                                if (weekNum1 != "2" &&
-                                                    weekNum2 != "3") {
-                                                  setState(() {
-                                                    summaryLoading = true;
-                                                    weekNum1 = "2";
-                                                    weekNum2 = "3";
-                                                  });
-                                                  await fetchCompareData(
-                                                      conn,
-                                                      prefs,
-                                                      weekNum1,
-                                                      weekNum2);
-                                                }
-                                              },
+                                            Expanded(
                                               child: Container(
-                                                width: 70,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.9),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 3,
-                                                      offset: Offset(0,
-                                                          2), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Colors.green[400],
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 2,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    190,
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Week ${weekNum2.toString()}",
+                                                  style: TextStyle(
+                                                    //fontFamily: 'Lato',
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0,
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2,
-                                            ),
-                                            Bounceable(
-                                              onTap: () async {
-                                                Vibration.vibrate(
-                                                    amplitude: 40,
-                                                    duration: 200);
-                                                var conn = await MySqlConnection
-                                                    .connect(settings);
-                                                SharedPreferences prefs =
-                                                    await SharedPreferences
-                                                        .getInstance();
-                                                if (weekNum1 != "3" &&
-                                                    weekNum2 != "4") {
-                                                  setState(() {
-                                                    summaryLoading = true;
-                                                    weekNum1 = "3";
-                                                    weekNum2 = "4";
-                                                  });
-                                                  await fetchCompareData(
-                                                      conn,
-                                                      prefs,
-                                                      weekNum1,
-                                                      weekNum2);
-                                                }
-                                              },
-                                              child: Container(
-                                                width: 70,
-                                                height: 50,
-                                                padding: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.9),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 3,
-                                                      offset: Offset(0,
-                                                          2), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Colors.red[400],
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 2,
-                                                  ),
-                                                ),
+                                                )),
                                               ),
                                             ),
                                           ],
                                         ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    summaryUIGenerator(),
+                                  ],
+                                )
+                              : Container(
+                                  child: Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 120),
+                                        CircularProgressIndicator(
+                                          color: buttonColor,
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              )
-                            : Container(
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 120),
-                                      CircularProgressIndicator(
-                                        color: buttonColor,
-                                      ),
-                                    ],
-                                  ),
                                 ),
-                              ),
-                      ],
-                    );
-                  } else {
-                    return Center(child: Text('Your history is empty now.'));
+                          SizedBox(height: 20),
+                        ],
+                      );
+                    } else {
+                      return Center(child: Text('Your history is empty now.'));
+                    }
                   }
-                }
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: buttonColor,
-                  ),
-                );
-              }),
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: buttonColor,
+                    ),
+                  );
+                }),
+          ),
         ),
       ),
     );
