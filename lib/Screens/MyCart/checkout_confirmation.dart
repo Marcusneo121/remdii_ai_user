@@ -212,11 +212,11 @@ class _CheckoutConfirmationState extends State<CheckoutConfirmation>
   requestPayment() {
     PaymentRequest request = PaymentRequest(
       version: '1.5.0',
-      cid: "M161-U-40588",
+      cid: "M161-U-40585",
       currency: 'MYR',
       amount: widget.total.toString(),
       cartid: DateTime.now().millisecondsSinceEpoch.toString(),
-      signatureKey: "JrgDJp7O4cz14Yu",
+      signatureKey: "WJm8IeUvtGqxOxh",
       paymentCallback: this,
     );
 
