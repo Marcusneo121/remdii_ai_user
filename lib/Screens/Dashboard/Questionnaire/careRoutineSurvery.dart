@@ -290,8 +290,8 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         'egg, cowMilk, soy, peanut, seafood, wheat, '
         'dust, sun, sweat, pets,'
         'fragrance, rubber, nickel, formaldehyde, preservatives, sanitizer, '
-        'moisturizer, steroids, medicines, immunosuppressant, wetWrapTherapy, bleachBath) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'moisturizer, steroids, medicines, immunosuppressant, wetWrapTherapy, bleachBath, image) '
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           nowTime.toUtc(),
           prefs.getInt('userID'),
@@ -320,6 +320,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           careRoutineSurveyModel.immunosuppressant == true ? 1 : 0,
           careRoutineSurveyModel.wetWrapTherapy == true ? 1 : 0,
           careRoutineSurveyModel.bleachBath == true ? 1 : 0,
+          prefs.getString('caseImg'),
         ],
       );
 
@@ -332,7 +333,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
         'egg = ? , cowMilk = ? , soy = ? , peanut = ? , seafood = ? , wheat = ? , '
         'dust = ? , sun = ? , sweat = ? , pets = ? ,'
         'fragrance = ? , rubber = ? , nickel = ? , formaldehyde = ? , preservatives = ?, sanitizer = ? ,'
-        'moisturizer = ? , steroids = ? , medicines = ? , immunosuppressant = ? , wetWrapTherapy = ? , bleachBath = ? '
+        'moisturizer = ? , steroids = ? , medicines = ? , immunosuppressant = ? , wetWrapTherapy = ? , bleachBath = ? , image = ? '
         'WHERE user_id = ? AND week = ? AND month = ? AND year = ?',
         [
           nowTime.toUtc(),
@@ -358,6 +359,7 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
           careRoutineSurveyModel.immunosuppressant == true ? 1 : 0,
           careRoutineSurveyModel.wetWrapTherapy == true ? 1 : 0,
           careRoutineSurveyModel.bleachBath == true ? 1 : 0,
+          prefs.getString('caseImg'),
           prefs.getInt('userID'),
           prefs.getString('currentWeek').toString(),
           prefs.getString('currentMonth').toString(),

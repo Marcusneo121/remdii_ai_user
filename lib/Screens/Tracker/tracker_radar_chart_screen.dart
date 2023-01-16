@@ -15,6 +15,7 @@ import 'package:fyp/Screens/Tracker/widgets/radarChartWidget/foodRadarChartWidge
 import 'package:fyp/constants.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class TrackerRadarChartScreen extends StatefulWidget {
   const TrackerRadarChartScreen({
@@ -45,6 +46,9 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
   List<RawDataSet> environmentRadarData = [];
   List<RawDataSet> contactAllergensRadarData = [];
   List<RawDataSet> careRoutineRadarData = [];
+
+  late Blob eczemaImage;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -126,6 +130,11 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
               ],
             ),
           );
+
+          setState(() {
+            eczemaImage = row[28];
+            isLoading = false;
+          });
         }
       }
       await conn.close();
@@ -162,8 +171,43 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(height: 20),
+                        isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: buttonColor,
+                                ),
+                              )
+                            : eczemaImage == null
+                                ? Container()
+                                : Bounceable(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                50,
+                                        height:
+                                            MediaQuery.of(context).size.width -
+                                                50,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          color: Color(0xFF241F48),
+                                        ),
+                                        child: Image.memory(
+                                          // '${diagnose_img[index]}',
+                                          base64.decode(eczemaImage.toString()),
+                                          fit: BoxFit.fill,
+                                          width: 110.0,
+                                          height: 100.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                         SizedBox(height: 20),
                         Bounceable(
                           onTap: () {},

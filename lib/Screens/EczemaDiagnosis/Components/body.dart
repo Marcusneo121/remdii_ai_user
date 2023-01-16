@@ -3,6 +3,8 @@ import 'dart:io' as io;
 import 'dart:async';
 import 'dart:io';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fyp/Screens/Dashboard/Questionnaire/tracker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -182,11 +184,19 @@ class _BodyState extends State<Body> {
                               print('Checked!!');
                               print(prefs.getString('caseImg'));
 
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) {
+                              //       return AffectBody();
+                              //     },
+                              //   ),
+                              // );
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                   builder: (context) {
-                                    return AffectBody();
+                                    return TrackerScreen();
                                   },
                                 ),
                               );
