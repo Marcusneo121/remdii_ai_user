@@ -171,203 +171,249 @@ class _TrackerRadarChartScreenState extends State<TrackerRadarChartScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
-                        isLoading
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  color: buttonColor,
+                        SizedBox(height: 15),
+                        Container(
+                          padding: EdgeInsets.only(left: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Skin Condition',
+                                style: TextStyle(
+                                  //fontFamily: 'Lato',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
                                 ),
-                              )
-                            : eczemaImage == null
-                                ? Container()
-                                : Bounceable(
-                                    onTap: () {},
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                50,
-                                        height:
-                                            MediaQuery.of(context).size.width -
-                                                50,
-                                        decoration: BoxDecoration(
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                height: 1.5,
+                                margin: EdgeInsets.only(right: 20),
+                                color: Colors.black.withOpacity(0.4),
+                                width: 100,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 10),
+                            isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: buttonColor,
+                                    ),
+                                  )
+                                : eczemaImage == null
+                                    ? Container()
+                                    : Bounceable(
+                                        onTap: () {},
+                                        child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(25),
-                                          color: Color(0xFF241F48),
-                                        ),
-                                        child: Image.memory(
-                                          // '${diagnose_img[index]}',
-                                          base64.decode(eczemaImage.toString()),
-                                          fit: BoxFit.fill,
-                                          width: 110.0,
-                                          height: 100.0,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                50,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                50,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              color: Color(0xFF241F48),
+                                            ),
+                                            child: Image.memory(
+                                              // '${diagnose_img[index]}',
+                                              base64.decode(
+                                                  eczemaImage.toString()),
+                                              fit: BoxFit.fill,
+                                              width: 110.0,
+                                              height: 100.0,
+                                            ),
+                                          ),
                                         ),
                                       ),
+                            SizedBox(height: 20),
+                            Bounceable(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.only(left: 15, right: 15),
+                                padding: EdgeInsets.only(top: 15, bottom: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Color(0xFF241F48),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Food',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                        SizedBox(height: 20),
-                        Bounceable(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
-                            padding: EdgeInsets.only(top: 15, bottom: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Color(0xFF241F48),
+                                    Divider(
+                                      thickness: 1.2,
+                                      color: Colors.grey[400],
+                                      height: 30,
+                                    ),
+                                    SizedBox(height: 20),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          70,
+                                      child: FoodRadarChartWidget(
+                                        foodRawData: foodRadarData,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
+                                ),
+                              ),
                             ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Food',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
+                            SizedBox(height: 30),
+                            Bounceable(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.only(left: 15, right: 15),
+                                padding: EdgeInsets.only(top: 15, bottom: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Color(0xFF241F48),
                                 ),
-                                Divider(
-                                  thickness: 1.2,
-                                  color: Colors.grey[400],
-                                  height: 30,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Environment',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1.2,
+                                      color: Colors.grey[400],
+                                      height: 30,
+                                    ),
+                                    SizedBox(height: 20),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          70,
+                                      child: EnvironmentRadarChartWidget(
+                                        environmentRawData:
+                                            environmentRadarData,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
                                 ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width - 70,
-                                  child: FoodRadarChartWidget(
-                                    foodRawData: foodRadarData,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                              ],
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 30),
+                            Bounceable(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.only(left: 15, right: 15),
+                                padding: EdgeInsets.only(top: 15, bottom: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Color(0xFF241F48),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Contact Allergens',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1.2,
+                                      color: Colors.grey[400],
+                                      height: 30,
+                                    ),
+                                    SizedBox(height: 20),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          70,
+                                      child: ContactAllergensRadarChartWidget(
+                                        contactAllergensRawData:
+                                            contactAllergensRadarData,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            Bounceable(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.only(left: 15, right: 15),
+                                padding: EdgeInsets.only(top: 15, bottom: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Color(0xFF241F48),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Care Routine',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1.2,
+                                      color: Colors.grey[400],
+                                      height: 30,
+                                    ),
+                                    SizedBox(height: 20),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          70,
+                                      child: CareRoutineRadarChartWidget(
+                                        careRoutineRawData:
+                                            careRoutineRadarData,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                          ],
                         ),
-                        SizedBox(height: 30),
-                        Bounceable(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
-                            padding: EdgeInsets.only(top: 15, bottom: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Color(0xFF241F48),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Environment',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Divider(
-                                  thickness: 1.2,
-                                  color: Colors.grey[400],
-                                  height: 30,
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width - 70,
-                                  child: EnvironmentRadarChartWidget(
-                                    environmentRawData: environmentRadarData,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Bounceable(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
-                            padding: EdgeInsets.only(top: 15, bottom: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Color(0xFF241F48),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Contact Allergens',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Divider(
-                                  thickness: 1.2,
-                                  color: Colors.grey[400],
-                                  height: 30,
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width - 70,
-                                  child: ContactAllergensRadarChartWidget(
-                                    contactAllergensRawData:
-                                        contactAllergensRadarData,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Bounceable(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
-                            padding: EdgeInsets.only(top: 15, bottom: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Color(0xFF241F48),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Care Routine',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Divider(
-                                  thickness: 1.2,
-                                  color: Colors.grey[400],
-                                  height: 30,
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width - 70,
-                                  child: CareRoutineRadarChartWidget(
-                                    careRoutineRawData: careRoutineRadarData,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
                       ],
                     );
                   }
                   return Center(
-                    child: CircularProgressIndicator(
-                      color: buttonColor,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                        ),
+                        CircularProgressIndicator(
+                          color: buttonColor,
+                        ),
+                      ],
                     ),
                   );
                 }),

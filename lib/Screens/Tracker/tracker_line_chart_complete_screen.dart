@@ -6,6 +6,7 @@ import 'package:fyp/DB_Models/Tracker/LineChartDataCarry.dart';
 import 'package:fyp/DB_Models/Tracker/LineChartPoint.dart';
 import 'package:fyp/DB_Models/Tracker/LineChartTracker.dart';
 import 'package:fyp/DB_Models/Tracker/SummaryDifferences.dart';
+import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/Screens/Tracker/widgets/lineChartWidget.dart';
 import 'package:fyp/DB_Models/connection.dart';
 import 'package:fyp/constants.dart';
@@ -13,8 +14,8 @@ import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
-class TrackerLineChartScreen extends StatefulWidget {
-  const TrackerLineChartScreen(
+class TrackerLineChartCompleteScreen extends StatefulWidget {
+  const TrackerLineChartCompleteScreen(
       {super.key,
       required this.year,
       required this.month,
@@ -22,10 +23,12 @@ class TrackerLineChartScreen extends StatefulWidget {
   final String year, month, monthTitle;
 
   @override
-  State<TrackerLineChartScreen> createState() => _TrackerLineChartScreenState();
+  State<TrackerLineChartCompleteScreen> createState() =>
+      _TrackerLineChartCompleteScreenState();
 }
 
-class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
+class _TrackerLineChartCompleteScreenState
+    extends State<TrackerLineChartCompleteScreen> {
   var settings = new ConnectionSettings(
       host: connection.host,
       port: connection.port,
@@ -609,6 +612,17 @@ class _TrackerLineChartScreenState extends State<TrackerLineChartScreen> {
             fontSize: 22.0,
           ),
         ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                CupertinoPageRoute(
+                  builder: (BuildContext context) => HomepageScreen(),
+                ),
+                (route) => false,
+              );
+            }),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         bottomOpacity: 0.0,

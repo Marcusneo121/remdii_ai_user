@@ -7,6 +7,8 @@ import 'package:fyp/Models/surveyModel/contact_allergens_survey_model.dart';
 import 'package:fyp/Models/surveyModel/environment_survey_model.dart';
 import 'package:fyp/Models/surveyModel/food_survey_model.dart';
 import 'package:fyp/Screens/Homepage/homepage_screen.dart';
+import 'package:fyp/Screens/Tracker/tracker_line_chart_complete_screen.dart';
+import 'package:fyp/Screens/Tracker/tracker_line_chart_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
 import 'package:fyp/constants.dart';
 import 'package:intl/intl.dart';
@@ -47,6 +49,54 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
     // TODO: implement initState
     super.initState();
     currentDayMonthYearGetter();
+  }
+
+  String monthFinder(String monthNumber) {
+    String foundTitle = '';
+
+    switch (monthNumber) {
+      case '01':
+        foundTitle = 'January';
+        break;
+      case '02':
+        foundTitle = 'February';
+        break;
+      case '03':
+        foundTitle = 'March';
+        break;
+      case '04':
+        foundTitle = 'April';
+        break;
+      case '05':
+        foundTitle = 'May';
+        break;
+      case '06':
+        foundTitle = 'June';
+        break;
+      case '07':
+        foundTitle = 'July';
+        break;
+      case '08':
+        foundTitle = 'August';
+        break;
+      case '09':
+        foundTitle = 'September';
+        break;
+      case '10':
+        foundTitle = 'October';
+        break;
+      case '11':
+        foundTitle = 'November';
+        break;
+      case '12':
+        foundTitle = 'December';
+        break;
+      default:
+        foundTitle = 'Error';
+        break;
+    }
+
+    return foundTitle;
   }
 
   @override
@@ -214,13 +264,26 @@ class _CareRoutineSurveyScreenState extends State<CareRoutineSurveyScreen> {
 
                   await insertRadarChartData();
 
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushReplacement(
                     context,
                     CupertinoPageRoute(
-                      builder: (BuildContext context) => HomepageScreen(),
+                      builder: (BuildContext context) =>
+                          TrackerLineChartCompleteScreen(
+                        year: prefs.getString('currentYear').toString(),
+                        month: prefs.getString('currentMonth').toString(),
+                        monthTitle: monthFinder(
+                            prefs.getString('currentMonth').toString()),
+                      ),
                     ),
-                    (route) => false,
                   );
+
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   CupertinoPageRoute(
+                  //     builder: (BuildContext context) => HomepageScreen(),
+                  //   ),
+                  //   (route) => false,
+                  // );
                 },
               ),
             ],
