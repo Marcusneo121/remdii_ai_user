@@ -6,10 +6,9 @@ import 'package:fyp/Screens/Homepage/homepage_screen.dart';
 import 'package:fyp/Screens/MyCart/order_completed_screen.dart';
 import 'package:fyp/Screens/MyCart/order_failed_screen.dart';
 import 'package:fyp/components/rounded_button.dart';
-import 'package:gkash_payment/gkash_webview.dart';
-import 'package:gkash_payment/model/payment_callback.dart';
-import 'package:gkash_payment/model/payment_request.dart';
-import 'package:gkash_payment/model/payment_response.dart';
+import 'package:gkash_flutter_sdk/gkash_flutter_sdk.dart';
+import 'package:gkash_flutter_sdk/gkash_payment_callback.dart';
+import 'package:gkash_flutter_sdk/payment_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckoutConfirmation extends StatefulWidget {
@@ -21,7 +20,8 @@ class CheckoutConfirmation extends StatefulWidget {
 }
 
 class _CheckoutConfirmationState extends State<CheckoutConfirmation>
-    implements PaymentCallback {
+    implements GkashPaymentCallback {
+  //implements PaymentCallback {
   String buyerName = "";
   String buyerPhoneNo = "";
   String buyeraddress1 = "";
@@ -199,7 +199,7 @@ class _CheckoutConfirmationState extends State<CheckoutConfirmation>
                 RoundedButton(
                     text: "Pay Now",
                     press: () async {
-                      requestPayment();
+                      requestPayment2();
                     })
               ],
             ),
@@ -209,29 +209,51 @@ class _CheckoutConfirmationState extends State<CheckoutConfirmation>
     );
   }
 
-  requestPayment() {
+  requestPayment2() {
+    //Generate your Payment Request
     PaymentRequest request = PaymentRequest(
-      version: '1.5.0',
-      cid: "M161-U-40585",
+      version: '1.5.5',
+      //cid: "M161-U-40588", //Your merchant Id
+      cid: "M102-U-52297",
+      //cid: "M161-U-33",
       currency: 'MYR',
-      amount: widget.total.toString(),
-      cartid: DateTime.now().millisecondsSinceEpoch.toString(),
-      signatureKey: "WJm8IeUvtGqxOxh",
-      paymentCallback: this,
+      amount: widget.total.toString(), // 1.00
+      cartid: DateTime.now().millisecondsSinceEpoch.toString(), //Unique cart Id
+      //signatureKey: "JrgDJp7O4cz14Yu", //Your signature key
+      signatureKey: "cZW27Ta2xsPMIgA",
+      //signatureKey: "oAhVwtUxfrop4cI",
+      billingStreet: buyeraddress1 + " " + buyeraddress2 + " " + buyeraddress3,
+      mobileNo: buyerPhoneNo,
+      firstName: buyerName,
+      
     );
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return GkashWebView(request);
-        },
-      ),
-    );
+    try {
+      // Get instance of GkashPayment
+      GkashFlutterSdk? _gkashFlutterSdk = GkashFlutterSdk.getInstance();
+      // Set environment and start payment
+      _gkashFlutterSdk!.setProductionEnvironment(true);
+      _gkashFlutterSdk.startPayment(context, request, this);
+    } catch (e) {
+      //catch exception when sdk throw exception
+      print(e);
+    }
   }
 
   @override
-  void getPaymentStatus(PaymentResponse response) {
-    if (response.status == "88 - Transferred") {
+  void onPaymentResult(
+      String? status,
+      String? description,
+      String? companyRemId,
+      String? poId,
+      String? cartId,
+      String? amount,
+      String? currency,
+      String? paymentType) {
+    print('Gkash Payment Demo: Payment done.');
+
+    // handle payment response
+    if (status == "88 - Transferred") {
       print("Transferred");
       Future.delayed(Duration(milliseconds: 400), () {
         Navigator.push(
@@ -251,7 +273,7 @@ class _CheckoutConfirmationState extends State<CheckoutConfirmation>
       //   ),
       //   (route) => false,
       // );
-    } else if (response.status == "66 - Failed") {
+    } else if (status == "66 - Failed") {
       print("Failed");
       Future.delayed(Duration(milliseconds: 400), () {
         Navigator.push(
@@ -263,8 +285,68 @@ class _CheckoutConfirmationState extends State<CheckoutConfirmation>
           ),
         );
       });
-    } else if (response.status == "11 - Pending") {
+    } else if (status == "11 - Pending") {
       print("Pending");
     }
   }
+
+  // requestPayment() {
+  //   PaymentRequest request = PaymentRequest(
+  //     version: '1.5.0',
+  //     cid: "M161-U-33",
+  //     currency: 'MYR',
+  //     amount: widget.total.toString(),
+  //     cartid: DateTime.now().millisecondsSinceEpoch.toString(),
+  //     signatureKey: "oAhVwtUxfrop4cI",
+  //     isProd: true,
+  //     paymentCallback: this,
+  //   );
+
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (_) {
+  //         return GkashWebView(request);
+  //       },
+  //     ),
+  //   );
+  // }
+
+  // @override
+  // void getPaymentStatus(PaymentResponse response) {
+  //   if (response.status == "88 - Transferred") {
+  //     print("Transferred");
+  //     Future.delayed(Duration(milliseconds: 400), () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) {
+  //             return OrderCompletedScreen();
+  //           },
+  //         ),
+  //       );
+  //     });
+
+  //     // Navigator.pushAndRemoveUntil(
+  //     //   context,
+  //     //   MaterialPageRoute(
+  //     //     builder: (BuildContext context) => HomepageScreen(),
+  //     //   ),
+  //     //   (route) => false,
+  //     // );
+  //   } else if (response.status == "66 - Failed") {
+  //     print("Failed");
+  //     Future.delayed(Duration(milliseconds: 400), () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) {
+  //             return OrderFailedScreen();
+  //           },
+  //         ),
+  //       );
+  //     });
+  //   } else if (response.status == "11 - Pending") {
+  //     print("Pending");
+  //   }
+  // }
 }

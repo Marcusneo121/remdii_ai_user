@@ -1,4 +1,5 @@
 import 'package:email_auth/email_auth.dart';
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp/Screens/Login/reset_pw_screen.dart';
@@ -22,6 +23,7 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
   final formGlobalKey = GlobalKey<FormState>();
   final OTPController = TextEditingController();
   final EmailAuth emailAuth = new EmailAuth(sessionName: "OTP session");
+  final EmailOTP myauth = EmailOTP();
   bool checkEmail = false;
 
   var settings = new ConnectionSettings(
@@ -90,7 +92,14 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
           otpLength: 6,
         );
 
-        if (result) {
+        myauth.setConfig(
+            appEmail: "lipidware@gmail.com",
+            appName: "Email OTP",
+            userEmail: emailController.value.text,
+            otpLength: 6,
+            otpType: OTPType.digitsOnly);
+
+        if (await myauth.sendOTP() == true) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -127,6 +136,44 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
             },
           );
         }
+
+        // if (result) {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: new Text(
+        //             'One-time password (OTP) has been sent to your email. Please enter the one-time password (OTP) given.'),
+        //         actions: <Widget>[
+        //           ElevatedButton(
+        //             child: new Text("OK"),
+        //             onPressed: () {
+        //               Navigator.of(context).pop();
+        //             },
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // } else {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: new Text(
+        //             'Fail to send one-time password (OTP) to your email. Please re-enter a valid email address.'),
+        //         actions: <Widget>[
+        //           ElevatedButton(
+        //             child: new Text("OK"),
+        //             onPressed: () {
+        //               Navigator.of(context).pop();
+        //             },
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // }
       } else {
         showDialog(
           context: context,
@@ -152,12 +199,8 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
     }
   }
 
-  void verifyOTP() {
-    var result = emailAuth.validateOtp(
-        recipientMail: emailController.value.text,
-        userOtp: OTPController.value.text);
-
-    if (result) {
+  void verifyOTP() async {
+    if (await myauth.verifyOTP(otp: OTPController.value.text) == true) {
       print("OTP Verfied");
       checkEmail = true;
     } else {
@@ -179,6 +222,33 @@ class _ForgotPWScreenState extends State<ForgotPWScreen> {
         },
       );
     }
+
+    // var result = emailAuth.validateOtp(
+    //     recipientMail: emailController.value.text,
+    //     userOtp: OTPController.value.text);
+
+    // if (result) {
+    //   print("OTP Verfied");
+    //   checkEmail = true;
+    // } else {
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: new Text(
+    //             'Invalid one-time password (OTP) given. Please re-enter the one-time password (OTP) sent to your email.'),
+    //         actions: <Widget>[
+    //           ElevatedButton(
+    //             child: new Text("OK"),
+    //             onPressed: () {
+    //               Navigator.of(context).pop();
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
   }
 
   @override
