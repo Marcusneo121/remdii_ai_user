@@ -56,6 +56,36 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
         (_) => getBotResponse(messages[0].messageContent));
+
+    Future.delayed(Duration(milliseconds: 150), () {
+      var chatRoomID = getChatRoomIdByUsername("admin1", myAvatarName);
+
+      Map<String, dynamic> chatRoomInfoMap = {
+        "users": [
+          myID,
+          myUsername,
+          myAvatarName,
+          myProfilePic,
+          0,
+          "admin1"
+          // myID,
+          // myUsername
+        ]
+      };
+
+      DatabaseMethods().createChatRoom(chatRoomID, chatRoomInfoMap);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) {
+          return ChatScreenWithStaff(
+            chatWithName: "REMDII Staff",
+            chatWithUsername: "admin1",
+            chatWithUserID: 0,
+          );
+        }),
+      );
+    });
   }
 
   String profilePicUrl = "", name = "", avatarName = "";

@@ -65,6 +65,22 @@ class _HomepageState extends State<Homepage> {
           foregroundColor: Colors.black,
           bottomOpacity: 0.0,
           elevation: 0.0,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  currentPage = DrawerSections.my_cart;
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10),
+                child: Icon(
+                  Icons.shopping_cart,
+                  size: 25,
+                ),
+              ),
+            ),
+          ],
         ),
         body: container,
         drawer: Drawer(
