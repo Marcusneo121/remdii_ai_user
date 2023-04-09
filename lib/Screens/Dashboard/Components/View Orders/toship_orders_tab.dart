@@ -97,7 +97,7 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
 
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-            'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg '
+            'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg, courier_company '
             'FROM orderhistory WHERE status = "Shipping" '
             'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
@@ -105,19 +105,21 @@ class _ToShipOrderTabState extends State<ToShipOrderTab> {
         for (var row in orderResults) {
           orderList.add(
             Order(
-                orderTime: row[0],
-                orderDate: row[1],
-                orderDetails: orderDetail,
-                amount: row[2],
-                shippingFee: row[3],
-                orderID: row[4].toString(),
-                status: row[5],
-                trackingNo: row[6],
-                comTime: '',
-                comDate: '',
-                shippedTime: row[9],
-                shippedDate: row[8],
-                paymentImg: row[10].toString()),
+              orderTime: row[0],
+              orderDate: row[1],
+              orderDetails: orderDetail,
+              amount: row[2],
+              shippingFee: row[3],
+              orderID: row[4].toString(),
+              status: row[5],
+              trackingNo: row[6],
+              comTime: '',
+              comDate: '',
+              shippedTime: row[9],
+              shippedDate: row[8],
+              paymentImg: row[10].toString(),
+              courierCompany: row[11],
+            ),
           );
         }
         orderDetail = [];

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +7,7 @@ import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Services/database.dart';
 import '../../../constants.dart';
+import 'package:http/http.dart' as http;
 
 class ChatScreenWithStaff extends StatefulWidget {
   final String chatWithUsername, chatWithName;
@@ -34,7 +37,7 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
         pref.getString('userInputEmail')!.replaceAll("@gmail.com", "");
     myUsername = pref.getString('userUsername')!;
 
-    chatRoomID = getChatRoomIdByUsername(myAvatarName, widget.chatWithUsername);
+    chatRoomID = getChatRoomIdByUsername(widget.chatWithUsername, myAvatarName);
     messageStream = DatabaseMethods().getChatRoomMessages(chatRoomID);
     setState(() {});
   }
@@ -47,16 +50,27 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
     }
   }
 
-  addMessage(bool sendClicked) {
+  addMessage(bool sendClicked) async {
     if (messageTextEditingController.text != "") {
       String message = messageTextEditingController.text;
 
-      var lastMessageTs = DateTime.now();
+      //var lastMessageTs = DateTime.now();
+      // var lastMessageTs = Timestamp.now().toDate();
+
+      // print(DateTime.now());
+      // print(Timestamp.now().toDate());
+
+      final response = await http.get(
+          Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Kuala_Lumpur'));
+
+      var jsonDecordedResponse = jsonDecode(response.body);
+
+      print(jsonDecordedResponse);
 
       Map<String, dynamic> messageInfoMap = {
         "message": message,
         "sendBy": myUsername,
-        "timeSent": lastMessageTs,
+        "timeSent": DateTime.parse(jsonDecordedResponse['datetime'].toString()),
       };
 
       if (messageID == "") {
@@ -69,7 +83,8 @@ class _ChatScreenWithStaffState extends State<ChatScreenWithStaff> {
         Map<String, dynamic> lastMessageInfoMap = {
           "lastMessage": message,
           "lastMessageSendBy": myUsername,
-          "lastMessageTimeSent": lastMessageTs,
+          "lastMessageTimeSent":
+              DateTime.parse(jsonDecordedResponse['datetime'].toString()),
         };
 
         DatabaseMethods().updateLastMessageSend(chatRoomID, lastMessageInfoMap);

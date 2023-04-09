@@ -92,7 +92,7 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
         print('a');
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-            'orderID, status, trackingNo, user_id, completedDate, completedTime, shippedDate, shippedTime, paymentImg '
+            'orderID, status, trackingNo, user_id, completedDate, completedTime, shippedDate, shippedTime, paymentImg, courier_company '
             'FROM orderhistory WHERE status = "Completed" '
             'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
@@ -100,19 +100,21 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
         for (var row in orderResults) {
           orderList.add(
             Order(
-                orderTime: row[0],
-                orderDate: row[1],
-                orderDetails: orderDetail,
-                amount: row[2],
-                shippingFee: row[3],
-                orderID: row[4].toString(),
-                status: row[5],
-                trackingNo: row[6],
-                comTime: row[9],
-                comDate: row[8],
-                shippedTime: row[10],
-                shippedDate: row[11],
-                paymentImg: row[12].toString()),
+              orderTime: row[0],
+              orderDate: row[1],
+              orderDetails: orderDetail,
+              amount: row[2],
+              shippingFee: row[3],
+              orderID: row[4].toString(),
+              status: row[5],
+              trackingNo: row[6],
+              comTime: row[9],
+              comDate: row[8],
+              shippedTime: row[10],
+              shippedDate: row[11],
+              paymentImg: row[12].toString(),
+              courierCompany: row[13],
+            ),
           );
         }
         orderDetail = [];

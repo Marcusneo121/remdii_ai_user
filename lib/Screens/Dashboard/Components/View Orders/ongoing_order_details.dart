@@ -279,7 +279,7 @@ class _OngoingOrderDetailsState extends State<OngoingOrderDetails> {
                                 ),
                               ),
                               subtitle: Text(
-                                'UPS Express \nTracking No: ${widget.order.trackingNo} \nDate: ${widget.order.shippedDate} \nTime: ${widget.order.shippedTime}',
+                                'Courier: ${widget.order.courierCompany} \nTracking No: ${widget.order.trackingNo} \nDate: ${widget.order.shippedDate} \nTime: ${widget.order.shippedTime}',
                                 style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,

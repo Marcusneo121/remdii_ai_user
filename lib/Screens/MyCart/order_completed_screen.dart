@@ -92,7 +92,7 @@ class _OrderCompletedScreenState extends State<OrderCompletedScreen> {
                       String formattedTime = time.format(now);
                       await conn.query(
                           'INSERT INTO orderhistory (orderDate, orderTime, orderAmt, shippingFee,'
-                          'trackingNo, status, user_id, shippedDate, shippedTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                          'trackingNo, status, user_id, shippedDate, shippedTime, courier_company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                           [
                             formattedDate,
                             formattedTime,
@@ -101,6 +101,7 @@ class _OrderCompletedScreenState extends State<OrderCompletedScreen> {
                             '-',
                             'Paid', //this was Unpaid, after payment gateway integrated, so need Paid
                             prefs.getInt('userID'),
+                            '-',
                             '-',
                             '-',
                           ]);

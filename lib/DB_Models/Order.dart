@@ -13,6 +13,7 @@ class Order {
   final String comDate;
   final String comTime;
   var paymentImg;
+  final String courierCompany;
 
   Order({
     required this.orderTime,
@@ -28,6 +29,6 @@ class Order {
     required this.shippedDate,
     required this.shippedTime,
     required this.paymentImg,
+    required this.courierCompany,
   });
-
 }

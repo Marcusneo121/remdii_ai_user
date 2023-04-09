@@ -81,7 +81,7 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
 
         var orderResults = await conn.query(
             'SELECT orderTime, orderDate, orderAmt, shippingFee, '
-            'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg '
+            'orderID, status, trackingNo, user_id, shippedDate, shippedTime, paymentImg, courier_company '
             'FROM orderhistory WHERE status = "Ongoing" '
             'AND user_id = ? AND orderID = ?',
             [prefs.getInt('userID').toString(), row1[0].toString()]);
@@ -101,7 +101,8 @@ class _OngoingOrderTabState extends State<OngoingOrderTab> {
                 comDate: '',
                 shippedTime: row[9],
                 shippedDate: row[8],
-                paymentImg: row[10].toString()),
+                paymentImg: row[10].toString(),
+                courierCompany: row[11]),
           );
         }
         orderDetail = [];

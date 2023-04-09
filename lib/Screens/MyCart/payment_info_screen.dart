@@ -45,9 +45,9 @@ final List<Entry> payment_info = <Entry>[
   Entry(
     'Delivery',
     <Entry>[
-      Entry(
-        'All orders shipped with UPS Express.',
-      ),
+      // Entry(
+      //   'All orders shipped with UPS Express.',
+      // ),
       Entry('Always free shipping for orders over RM 250.'),
       Entry('All orders are shipped with a UPS tracking number.'),
     ],
@@ -94,7 +94,6 @@ class EntryItem extends StatelessWidget {
             fontSize: 16.0,
           ),
         ),
-
       );
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),

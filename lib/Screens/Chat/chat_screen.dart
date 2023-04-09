@@ -32,9 +32,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   late int myID;
 
   getChatRoomIdByUsername(String a, String b) {
+    print(a);
+    print(b);
+
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      print("$b\_$a");
       return "$b\_$a";
     } else {
+      print("$a\_$b");
       return "$a\_$b";
     }
   }
